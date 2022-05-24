@@ -1,0 +1,29 @@
+::ng-deep .form-group {
+    &.row {
+        margin-bottom: 0;
+    }
+    &.label-inline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        > label {
+            width: 110px;
+        }
+        .kt-input-icon {
+            flex-grow: 1;
+            width: auto !important;
+        }
+        .error {
+            margin-left: 110px;
+        }
+    }
+    &.form-group-viewer {
+        span {
+            word-break: break-all;
+        }
+    }
+}
+
+.error.invalid-feedback {
+    display: block;
+}

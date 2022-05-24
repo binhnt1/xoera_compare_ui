@@ -1,0 +1,41 @@
+<help-center-breadcrumb></help-center-breadcrumb>
+<section class="doc_documentation_area" id="sticky_doc">
+<div class="overlay_bg"></div>
+<div class="container custom_container" *ngIf="data.questions">
+  <div class="row" style="display: flex; justify-content: space-between;">
+    <div class="col-lg-3" style="min-height: calc(100vh - 156px);">
+      <help-center-sidebar></help-center-sidebar>
+    </div>
+    <div class="col-lg-9 col-md-12">
+      <div class="shortcode_info rvfs-4" id="post" data-rvfs="4">
+        <div class="shortcode_title">
+          <h1 style="margin-bottom: 0;">{{ title }}</h1>
+          <p>Found: {{ countResult }} result</p>
+        </div>
+        <div class="toggle_shortcode">
+          <div class="question_item" *ngFor="let item of items; let i = index;">
+            <a class="toggle_btn" [ngClass]="{'collapsed':item.collapsed}" (click)="toggleItem(item)"><span>{{ (i + 1) + '.' }}</span>{{ item.question }}</a>
+            <div class="collapse multi-collapse" [ngClass]="{'show':!item.collapsed}">
+              <div class="card card-body toggle_body" [innerHTML]="item.answer | sanitizeHtml"></div>
+            </div>
+          </div>
+        </div>
+      
+        <footer>
+          <div class="border_bottom"></div>
+          <div class="row feedback_link">
+            <div class="col-lg-6">
+              <h6><i class="icon_mail_alt"></i>Still stuck? <a data-toggle="modal" data-target="#exampleModal3">How
+                  can we help?</a></h6>
+            </div>
+            <div class="col-lg-6">
+              <p>Was this page helpful? <a class="h_btn">Yes</a><a class="h_btn">No</a></p>
+            </div>
+          </div>
+        </footer>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</section>

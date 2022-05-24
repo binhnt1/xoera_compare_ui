@@ -1,0 +1,10 @@
+.doc_tag_area {
+    padding-top: 50px;
+    .tag_list li a {
+        width: 100%;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}

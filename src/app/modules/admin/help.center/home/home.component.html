@@ -1,0 +1,29 @@
+<section class="doc_tag_area" *ngIf="items">
+  <div class="container">
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane doc_tab_pane fade show active" id="or" role="tabpanel" aria-labelledby="or-tab">
+        <div class="row">
+          <div class="col-lg-4 col-sm-6" *ngFor="let item of items">
+            <div class="doc_tag_item wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+              <div class="doc_tag_title">
+                <h4>{{ item.type }}</h4>
+                <div class="line"></div>
+              </div>
+              <ul class="list-unstyled tag_list">
+                <li>
+                  <a *ngFor="let question of item.questions; let i = index;" routerLink="/helpcenter/question" class="learn_btn"
+                    [queryParams]="{category: item.slug, index: i}" [title]="question.question">
+                    <i class="icon_document_alt"></i>{{ question.question }}
+                  </a>
+                </li>
+              </ul>
+              <a routerLink="/helpcenter/question" class="learn_btn" [queryParams]="{category: item.slug}">
+                View All<i class="arrow_right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

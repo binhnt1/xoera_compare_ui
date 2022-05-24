@@ -1,0 +1,60 @@
+<div wrapper class="paging_wapper">
+    <div>
+        <div class="dataTables_info" id="kt_table_2_info" role="status" aria-live="polite">
+            Showing results from {{from}} to {{to}} in a total of {{ paging && paging.Total}} records
+            <span *ngIf="text && total && !summaryText"> / <b>{{ text }} {{ total | numberx }}</b></span>
+            <span *ngIf="summaryText"> / <span [innerHtml]="summaryText | sanitizeHtml"></span></span>
+        </div>
+    </div>
+    <div class="dataTables_paginate paging_simple_numbers">
+        <div class="dataTables_length" *ngIf="allowReload">
+            <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" title="Auto reload">
+                <input type="checkbox" class="kt-checkable" [(ngModel)]="reload" (change)="reloadChange()"><span></span>
+            </label>
+            <select class="custom-select custom-select-sm form-control form-control-sm" [(ngModel)]="timeReload" (ngModelChange)="timeChanged(paging.Size)">
+                <option *ngFor="let item of times" [value]="item.value">{{ item.label }}</option>
+            </select>
+            <span *ngIf="reload" class="kt-reload">
+                <span> - </span>
+                <input type="text" disabled class="form-control form-control-sm" [value]="counterReload"  title="Time to reload"/>
+            </span>
+            <label style="margin-left: 5px;">Reload</label>
+        </div>
+        <div class="dataTables_length" style="margin-left: 20px;">
+            <label>Show</label>
+            <select class="custom-select custom-select-sm form-control form-control-sm" [(ngModel)]="paging.Size" (ngModelChange)="sizeChanged(paging.Size)">
+                <option *ngFor="let item of sizes" [value]="item">{{ item == 10000 ? 'All' : item }}</option>
+            </select>
+        </div>
+        <div class="dataTables_length page-group" style="max-width: 150px; margin-left: 20px;" *ngIf="paging.Pages > 1">
+            <label style="margin-right: 10px;">Page</label>
+            <input type="number" [min]="1" [max]="paging.Pages" [maxlength]="maxLength" class="custom-select custom-select-sm form-control form-control-sm" [(ngModel)]="page" />
+            <button class="btn btn-sm btn-primary" (click)="goto()">Go</button>
+        </div>
+        <ul class="pagination" *ngIf="paging.Pages > 1">
+            <li class="paginate_button page-item previous" *ngIf="!(paging.Index <= 1)">
+                <a class="page-link" (click)="indexChanged(1)">
+                    <i class="la la-angle-double-left"></i>
+                </a>
+            </li>
+            <li class="paginate_button page-item previous" *ngIf="!(paging.Index <= 1)">
+                <a class="page-link" (click)="indexChanged(paging.Index - 1)">
+                    <i class="la la-angle-left"></i>
+                </a>
+            </li>
+            <li class="paginate_button page-item" *ngFor="let item of numbers" [ngClass]="{'active':paging.Index == item}">
+                <a class="page-link" (click)="indexChanged(item)">{{ item | numberx }}</a>
+            </li>
+            <li class="paginate_button page-item next" *ngIf="!(paging.Pages <= paging.Index)">
+                <a class="page-link" (click)="indexChanged(paging.Index + 1)">
+                    <i class="la la-angle-right"></i>
+                </a>
+            </li>
+            <li class="paginate_button page-item previous" *ngIf="!(paging.Index >= paging.Pages)">
+                <a class="page-link" (click)="indexChanged(paging.Pages)">
+                    <i class="la la-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div wrapper class="dropdown" *ngIf="items && items.length > 0" [ngClass]="{'show':active,'top':direction == 'top'}" (clickOutside)="active = false">
+    <button type="button" class="btn btn-icon-sm dropdown-toggle" [ngClass]="cssClass" (click)="active = !active">
+        <i *ngIf="icon" [ngClass]="icon"></i><span *ngIf="text"> {{ text }}</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right arrow" [ngClass]="{'show':active}">
+        <a class="dropdown-item" *ngIf="subText">
+            <span class="kt-nav__section-text">{{ subText }}</span>
+        </a>
+        <a class="dropdown-item" *ngFor="let item of items" (click)="clickItem(item)" [ngClass]="{'hidden':item.hidden && item.hidden(obj)}">
+            <i *ngIf="item.icon" [ngClass]="'kt-nav__link-icon ' + item.icon"></i>
+            <span class="kt-nav__link-text">{{ item.name }}</span>
+        </a>
+        <span class="form-text text-muted">{{ description }}</span>
+    </div>
+</div>

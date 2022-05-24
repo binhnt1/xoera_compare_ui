@@ -1,0 +1,81 @@
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link" (click)="selectedTab('meter')" [ngClass]="{'active':!tab || tab == 'meter'}">Meter Details</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" (click)="selectedTab('smart')" [ngClass]="{'active':tab == 'smart'}">Smart Data</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" (click)="selectedTab('convertor')" [ngClass]="{'active':tab == 'convertor'}">Convertor Details</a>
+    </li>
+</ul>
+<div class="tab-content px-1 pt-1">
+    <div class="tab-pane" [ngClass]="{'active':!tab || tab == 'meter'}">
+        <div *ngIf="item" class="row" style="margin: 0">
+            <div class="col-sm-4">
+                <editor [(object)]="item" property="MeterStatus" [decorator]="{readonly: true, label: 'Status'}"></editor>
+                <editor [(object)]="item" property="MeterSerialNumber" [decorator]="{readonly: true, label: 'Serial Number'}"></editor>
+                <editor [(object)]="item" property="MeterModelName" [decorator]="{readonly: true, label: 'Model Name'}"></editor>
+                <editor [(object)]="item" property="MeterMechanism" [decorator]="{readonly: true, label: 'Mechanism'}"></editor>
+                <editor [(object)]="item" property="MeterLocationCode" [decorator]="{readonly: true, label: 'Location Code'}"></editor>
+                <editor [(object)]="item" property="MeterType" [decorator]="{readonly: true, label: 'Type'}"></editor>
+                <editor [(object)]="item" property="MeterCollarFittedIndicator" [decorator]="{readonly: true, label: 'CollarFitted Indicator'}"></editor>
+                <editor [(object)]="item" property="LastInspectionDate" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="MeterManufacturerCode" [decorator]="{readonly: true, label: 'Manufacturer Code'}"></editor>
+                <editor [(object)]="item" property="MeterManufacturedYear" [decorator]="{readonly: true, label: 'Year of Manufacture'}"></editor>
+            </div>
+            <div class="col-sm-4">
+                <editor [(object)]="item" property="MeterInstallationDate" [decorator]="{readonly: true, label: 'Installation Date'}"></editor>
+                <editor [(object)]="item" property="EndDate" [decorator]="{readonly: true, label: 'Removal Date'}"></editor>
+                <editor [(object)]="item" property="ImperialMeterIndicator" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="NumberOfDialsOrDigits" [decorator]="{readonly: true, label: 'Number Of Dials'}"></editor>
+                <editor [(object)]="item" property="MeterReadingUnits" [decorator]="{readonly: true, label: 'Reading Units'}"></editor>
+                <editor [(object)]="item" property="MrfTypeCode" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="MeterReadingFactor" [decorator]="{readonly: true, label: 'Reading Factor'}"></editor>
+                <editor [(object)]="item" property="MeterPulseValue" [decorator]="{readonly: true, label: 'Pulse Value'}"></editor>
+                <editor [(object)]="item" property="GasActOwner" [decorator]="{readonly: true, label: 'Gas ACT Owner'}"></editor>
+            </div>
+            <div class="col-sm-4">
+                <editor [(object)]="item" property="CurrentMeterAssetManager" [decorator]="{readonly: true, label: 'Current MAM'}"></editor>
+                <editor [(object)]="item" property="ProspectiveMeterAssetManager" [decorator]="{readonly: true, label: 'Prospective MAM'}"></editor>
+                <editor [(object)]="item" property="ProspectiveMamEffective" [decorator]="{readonly: true, label: 'Prospective MAM Effective'}"></editor>
+                <editor [(object)]="item" property="CorrectedReadingUnits" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="UncorrectedReadingUnits" [decorator]="{readonly: true}"></editor>
+            </div>
+        </div>
+        <div class="row row-loading" *ngIf="loading">
+            <loading></loading>
+        </div>
+    </div>
+    <div class="tab-pane" [ngClass]="{'active':tab == 'smart'}">
+        <div *ngIf="item" class="row" style="margin: 0">
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="AmrIndicator" [decorator]="{readonly: true, label: 'Amr Indicator'}"></editor>
+                <editor [(object)]="item" property="SmsoEfd" [decorator]="{readonly: true, label: 'SMSO EFD'}"></editor>
+                <editor [(object)]="item" property="DccServiceFlagEfd" [decorator]="{readonly: true, label: 'DCC Service Flag EFD'}"></editor>
+                <editor [(object)]="item" property="FirstSmetsInstallationDate" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="NwoShortCode" [decorator]="{readonly: true, label: 'NWO Short Code'}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="SmsoId" [decorator]="{readonly: true, label: 'SMSO ID'}"></editor>
+                <editor [(object)]="item" property="DccServiceFlag" [decorator]="{readonly: true, label: 'DCC Service Flag'}"></editor>
+                <editor [(object)]="item" property="IhdInstallStatus" [decorator]="{readonly: true, label: 'IHD Install Status'}"></editor>
+                <editor [(object)]="item" property="UniquePropertyRefNo" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="NetworkOwnerIdEfd" [decorator]="{readonly: true, label: 'Network Owner Id EFD'}"></editor>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" [ngClass]="{'active':tab == 'convertor'}">
+        <div *ngIf="item" class="row" style="margin: 0">
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="ConvertorModel" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="ConvertorManufacturer" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="ConvertorManufacturedYear" [decorator]="{readonly: true}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="ConvertorSerialNumber" [decorator]="{readonly: true}"></editor>
+                <editor [(object)]="item" property="ConvertorCorrectionFactor" [decorator]="{readonly: true}"></editor>
+            </div>
+        </div>
+    </div>
+</div>

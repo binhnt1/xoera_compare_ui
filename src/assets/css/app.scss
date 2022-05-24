@@ -1,0 +1,78 @@
+.kt-portlet-edit-form {
+    box-shadow: none;
+    .kt-portlet {
+        margin-bottom: 20px !important;
+    }
+    > .kt-portlet__body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: calc(100vh - 210px);
+    }
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .kt-login__fluid {
+        background-color: #fff;
+        .kt-grid--ver {
+            display: none !important;
+        }
+        .kt-login__body {
+            margin: 0 !important;
+        }
+        .kt-login__head {
+            margin: -15px 0 15px 0;
+        }
+    }
+
+    .btn .i {
+        padding: 0;
+    }
+}
+
+.svg.appear {
+    display: flex;
+    height: 1660px;
+    align-items: center;
+    opacity: 1 !important;
+    justify-content: center;
+    svg {
+        max-width: 1500px;
+    }
+    .rectangle {
+        &.white {
+            .st4 {
+                fill: white;
+            }
+        }
+        &.green {
+            .st4 {
+                fill: green;
+            }
+            .st5 {
+                fill: white;
+            }
+            .stred {
+                fill: white;
+                font-size: 10px;
+            }
+        }
+        &.cursor {
+            * {
+                cursor: pointer;
+            }
+        }
+    }
+    .btn {
+        right: 0;
+        top: -20px;
+        display: none;
+        position: absolute;
+        &.btn-plus {
+            right: 50px;
+        }
+    }
+}

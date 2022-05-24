@@ -1,0 +1,480 @@
+<div class="kt-portlet kt-portlet-grid kt-portlet--mobile" *ngIf="obj" [ngClass]="{'kt-portlet-popup':obj.IsPopup}">
+    <div class="kt-portlet__head kt-portlet__head--lg content-header row" *ngIf="!obj.HideHeadActions">
+        <style>
+            thead tr th {
+                top: 0;
+                z-index: 96;
+                position: sticky;
+                background: #efefef;
+            }
+
+            thead {
+                font-weight: 500;
+                color: rgba(0, 0, 0, 0.85);
+            }
+
+            tbody tr:hover {
+                background: #e6f7ff;
+            }
+        </style>
+        <div class="page-bar content-header-left col-md-4 col-12">	
+            <h3 class="content-header-title mb-0" *ngIf="obj.Title">	
+                {{ obj.Title }}	
+            </h3>	
+            <div class="row breadcrumbs-top">	
+                <div class="breadcrumb-wrapper col-12">	
+                    <ol class="breadcrumb" *ngIf="breadcrumbs && breadcrumbs.length > 0">	
+                        <li class="breadcrumb-item" [ngClass]="{'active':!item.Link}" *ngFor="let item of breadcrumbs; let i = index;">	
+                            <a [routerLink]="item.Link" *ngIf="item.Link">{{ item.Name }}</a>	
+                            <span *ngIf="!item.Link">{{ item.Name }}</span>	
+                        </li>	
+                    </ol>	
+                </div>	
+            </div>	
+        </div>
+        <div class="kt-portlet__head-actions content-header-right col-md-8 col-12">
+            <div class="inline-filter-group" *ngIf="inlineFilters && inlineFilters.length > 0">
+                <div class="kt-margin-r-10" [ngStyle]="{width: property.dataType == DataType.DateTime ? '300px' : '200px'}" *ngFor="let property of inlineFilters">
+                    <ng-container [ngSwitch]="property.dataType">
+                        <ng-container *ngSwitchCase="DataType.DateTime">
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="inlineFilter()"></editor>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="DataType.DropDown">
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', placeholder: 'All', type: DataType.DropDown, required: false, allowClear: true, autoSelect: false, readonly: false }" (valueChange)="inlineFilter()"></editor>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="inlineFilter()"></editor>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="input-group" *ngIf="!obj.HideSearch">
+                <div class="kt-input-icon kt-input-icon--right">
+                    <input type="text" class="form-control" [placeholder]="obj.SearchText || 'Type something...'" [(ngModel)]="itemData.Search" (keyup.enter)="search()" (ngModelChange)="clearSearch()" (blur)="onSearchBoxBlur()" (keydown)="onSearchBoxKeypress($event)" maxlength="100">
+                    <span class="kt-input-icon__icon kt-input-icon__icon--right" *ngIf="itemData.Search" (click)="clickClearSearch()">
+                        <span><i class="la la-close"></i></span>
+                    </span>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" (click)="search()">
+                        <i class="la la-search"></i><span>Search</span>
+                    </button>
+                </div>
+            </div>
+            <div class="button-group">
+                <div class="dropdown" *ngIf="!obj.HideCustomFilter && customFilters && customFilters.length > 0">
+                    <button type="button" class="btn btn-outline-primary" (click)="activeCustomFilter = !activeCustomFilter" [ngClass]="activeCustomFilter ? 'btn btn-success' : 'btn btn-outline-primary'">
+                        <span>Filter</span>
+                        <i style="padding: 0 5px 0 15px;" [ngClass]="activeCustomFilter ? 'la la-angle-double-up' : 'la la-angle-double-down'"></i>
+                    </button>
+                </div>
+                <div class="dropdown" *ngIf="obj.StatisticalComponent">
+                    <button type="button" class="btn btn-outline-primary" (click)="toggleActiveStatisticalComponent()" [ngClass]="activeStatisticalComponent ? 'btn btn-success' : 'btn btn-outline-primary'">
+                        <span>Statistical</span>
+                        <i style="padding: 0 5px 0 15px;" [ngClass]="activeStatisticalComponent ? 'la la-angle-double-up' : 'la la-angle-double-down'"></i>
+                    </button>
+                </div>
+                <dropdown *ngIf="obj.Filters && obj.Filters.length > 0" [items]="obj.Filters" text="View Data" subText="Choice" icon="la la-filter" cssClass="btn-outline-primary"></dropdown>
+                <dropdown *ngIf="obj.MoreFeatures && obj.MoreFeatures.Actions && obj.MoreFeatures.Actions.length > 0" [items]="obj.MoreFeatures.Actions" [text]="obj.MoreFeatures.Name" [icon]="obj.MoreFeatures.Icon" cssClass="btn-outline-primary"></dropdown>
+                <div class="dropdown" *ngIf="obj.Features && obj.Features.length > 0">
+                    <ng-container *ngFor="let item of obj.Features">
+                        <a [ngClass]="item.className" (click)="item.click()" *ngIf="!item.hide">
+                            <i [ngClass]="item.icon"></i>
+                            <span> {{ item.name }}</span>
+                        </a>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body card">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="kt-portlet-statistical" *ngIf="activeStatisticalComponent">
+                    <ng-template #container></ng-template>
+                </div>
+                <form class="kt-form kt-form--fit" *ngIf="!obj.HideCustomFilter && customFilters && customFilters.length > 0" [ngClass]="{'active' : activeCustomFilter }">
+                    <div class="row">
+                        <div class="col-lg-3 kt-margin-t-15" *ngFor="let property of customFilters">
+                            <ng-container [ngSwitch]="property.dataType">
+                                <ng-container *ngSwitchCase="DataType.DateTime">
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="DataType.DropDown">
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ placeholder: 'All', type: property.type, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ type: property.type, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                        <div class="col-lg-3 kt-margin-t-15" *ngFor="let item of filterLength;"></div>
+                        <div class="col-lg-3 kt-margin-t-15">
+                            <label *ngIf="customFilters.length % 4 > 0">&nbsp;</label>
+                            <div class="button_custom_filters">
+                                <button class="btn btn-info btn-brand--icon" (click)="customFilter()">
+                                    <span>
+                                        <i class="la la-search"></i>
+                                        <span>Search</span>
+                                    </span>
+                                </button>
+                                <button class="btn btn-secondary btn-secondary--icon" (click)="clearCustomFilter()">
+                                    <span>
+                                        <i class="la la-close"></i>
+                                        <span>Reset</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <ng-template #containerEmbed></ng-template>
+                <div *ngIf="items && items.length > 0" style="border-bottom: 1px solid #ebedf2;">
+                    <div class="paging_fix" *ngIf="!obj.HidePaging">
+                        <paging [allowReload]="true" [sizes]="obj.PageSizes" [paging]="itemData.Paging" (pagingChange)="pageChanged($event)" [summaryText]="summaryText" text="Total (đ): " [total]="itemTotal"></paging>
+                    </div>
+                    <div class="grid-content" [ngClass]="{'grid-popup':obj.IsPopup, 'grid-scroll':items.length >= 5}">
+                        <table [ngClass]="randomClass" class="table table-striped table-bordered table-hover table-checkable dataTable no-footer table-resizable">
+                            <thead>
+                                <tr class="heading" (clickOutside)="closeFilterMenu()">
+                                    <th class="actions" *ngIf="obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        Actions
+                                        <div class="choice-column" (clickOutside)="activeChoiceColumn = false">
+                                            <a (click)="activeChoiceColumn = !activeChoiceColumn"><i class="la la-list"></i></a>
+                                            <div class="dropdown-menu header-filter portlet light" [ngClass]="{'active':activeChoiceColumn}">
+                                                <div class="kt-portlet__body">
+                                                    <h6>Choice columns</h6>
+                                                    <ul class="kt-checkbox-list">
+                                                        <li *ngFor="let column of properties">
+                                                            <editor-checkbox [(value)]="column.Active" [decorator]="{label: column.Title}" (valueChange)="choiceColumnChange()"></editor-checkbox>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">                                
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable">
+                                            <input type="checkbox" class="kt-checkable" [checked]="checkAll" [(ngModel)]="checkAll" (change)="checkAllChange()"> <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="sorting" *ngFor="let item of activeProperties; let i = index;" [style.width]="item.Property == 'Id' ? '60px' : (item.ColumnWidth ? item.ColumnWidth + 'px' : '')" [ngClass]="{'filtering':item.AllowFilter, 'sorting_asc':item.Order == OrderType.Asc, 'sorting_desc':item.Order == OrderType.Desc}">
+                                        <div class="btn-group filter" *ngIf="item.AllowFilter">
+                                            <span (click)="toggleFilterMenu(item)">
+                                                <i class="la la-filter" [ngClass]="{'active':item.ActiveFilter}"></i>
+                                            </span>
+                                            <div class="dropdown-menu portlet light" [ngClass]="{'active':item.ActiveFilter}">
+                                                <div class="kt-portlet__body">
+                                                    <ul class="nav nav-tabs  nav-tabs-line nav-tabs-line-success">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" (click)="activeTabFilterMenu(item, TabFilterType.Basic)" [ngClass]="{'active':item.TabFilterType == TabFilterType.Basic}">
+                                                                Basic
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" (click)="activeTabFilterMenu(item, TabFilterType.Advance)" [ngClass]="{'active':item.TabFilterType == TabFilterType.Advance}">
+                                                                Advance
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane" [ngClass]="{'active':item.TabFilterType == TabFilterType.Basic}">
+                                                            <ng-container [ngSwitch]="item.Type">
+                                                                <ng-container *ngSwitchCase="DataType.String">
+                                                                    <div style="margin-bottom: 10px;">
+                                                                        <editor-textbox [decorator]="{label: '', placeholder: 'Search', type: StringType.Search}" (valueChange)="itemFilterSearchChange($event, item)">
+                                                                        </editor-textbox>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <ng-container *ngSwitchCase="DataType.Boolean">
+                                                                    <div>
+                                                                        <editor-checkbox [decorator]="{label: 'Select all'}">
+                                                                        </editor-checkbox>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <ng-container *ngSwitchCase="DataType.DropDown">
+                                                                    <div>
+                                                                        <editor-checkbox [decorator]="{label: 'Select all'}">
+                                                                        </editor-checkbox>
+                                                                    </div>
+                                                                </ng-container>
+                                                                <ng-container *ngSwitchCase="DataType.Number">
+                                                                    <div style="margin-bottom: 10px;">
+                                                                        <editor-textbox [decorator]="{label: '', placeholder: 'Search', type: StringType.Search}" (valueChange)="itemFilterSearchChange($event, item)">
+                                                                        </editor-textbox>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                            <div class="dropdown-divider"></div>
+                                                            <ul class="kt-checkbox-list" scrollTracker (scrollingFinished)="onScroll(item)">
+                                                                <li *ngFor="let itm of item.ItemFilters">
+                                                                    <editor-checkbox [(value)]="itm.selected" [decorator]="{label: itm.label}"></editor-checkbox>
+                                                                </li>
+                                                                <li class="item-loading" *ngIf="item.LoadingFilter">
+                                                                    <div class="kt-spinner kt-spinner--v2 kt-spinner--primary ">
+                                                                        <span>Loading...</span>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="tab-pane" [ngClass]="{'active':item.TabFilterType == TabFilterType.Advance}">
+                                                            <ul class="kt-checkbox-list">
+                                                                <li class="form-group">
+                                                                    <label>Compare</label>
+                                                                    <div>
+                                                                        <ng-container [ngSwitch]="item.Type">
+                                                                            <ng-container *ngSwitchCase="DataType.String">
+                                                                                <editor-combobox [items]="stringFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.Boolean">
+                                                                                <editor-combobox [items]="boolFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.Number">
+                                                                                <editor-combobox [items]="numberFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.DateTime">
+                                                                                <editor-combobox [items]="datetimeFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.DropDown">
+                                                                                <editor-combobox [items]="foreignFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchDefault>
+                                                                                <editor-combobox [items]="stringFilterTypes" [decorator]="{placeholder:'Choice'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="form-group" style="margin-top: 10px;">
+                                                                    <label>Value</label>
+                                                                    <div>
+                                                                        <ng-container [ngSwitch]="item.Type">
+                                                                            <ng-container *ngSwitchCase="DataType.String">
+                                                                                <editor-textbox [decorator]="{placeholder:'Value'}">
+                                                                                </editor-textbox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.Boolean">
+                                                                                <editor-combobox [items]="item.ItemFilters" [decorator]="{placeholder:'Value'}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.Number">
+                                                                                <editor-numberic [decorator]="{placeholder:'Value 1-10'}">
+                                                                                </editor-numberic>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.DateTime">
+                                                                                <editor-datetime [decorator]="{placeholder:'DateTime'}">
+                                                                                </editor-datetime>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="DataType.DropDown">
+                                                                                <editor-combobox [items]="item.ItemFilters" [decorator]="{placeholder:'Value', multiple: true}">
+                                                                                </editor-combobox>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-primary" (click)="filter(decorator)"> Filter
+                                                            <i class="glyphicon glyphicon-ok"></i></button>
+                                                        <button class="btn btn-warning" (click)="resetFilter(decorator)">
+                                                            Reset <i class="glyphicon glyphicon-refresh"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span *ngIf="item.Property == 'Id' || item.Title == 'Id'; else property_other">
+                                            <span (click)="sort(item)">Id</span>
+                                        </span>
+                                        <div class="handle-resize"></div>
+                                        <ng-template #property_other><span (click)="sort(item)" [attr.title]="item.Title">{{ item.Title }}</span>
+                                        </ng-template>
+                                        <div *ngIf="item.ColumnFilter">
+                                            <ng-container [ngSwitch]="item.ColumnFilter.dataType">
+                                                <ng-container *ngSwitchCase="DataType.String">
+                                                    <editor-textbox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-textbox>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Boolean">
+                                                    <editor-combobox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-combobox>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Number">
+                                                    <editor-numberic [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-numberic>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DateTime">
+                                                    <editor-datetime [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-datetime>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DropDown">
+                                                    <editor-combobox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-combobox>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </th>
+                                    <th *ngIf="obj.LastUpdatedBy">
+                                        Updated
+                                    </th>
+                                    <th class="actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        Actions
+                                        <div class="choice-column" (clickOutside)="activeChoiceColumn = false">
+                                            <a (click)="activeChoiceColumn = !activeChoiceColumn"><i class="la la-list"></i></a>
+                                            <div class="dropdown-menu header-filter portlet light" [ngClass]="{'active':activeChoiceColumn}">
+                                                <div class="kt-portlet__body">
+                                                    <h6>Choice columns</h6>
+                                                    <ul class="kt-checkbox-list">
+                                                        <li *ngFor="let column of properties">
+                                                            <editor-checkbox [(value)]="column.Active" [decorator]="{label: column.Title}" (valueChange)="choiceColumnChange()"></editor-checkbox>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items; let i = index;" [ngClass]="i % 2 == 0 ? 'odd' : 'even'" (dblclick)="rowDoubleClick(item)">
+                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        <div class="btn-group" style="text-align: center;">
+                                            <span *ngFor="let action of obj.Actions">
+                                                <ng-container [ngSwitch]="action.systemName">
+                                                    <ng-container *ngSwitchCase="ActionType.Publish">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
+                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="ActionType.Delete">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
+                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchDefault>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
+                                                            <i [ngClass]="action.icon"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </span>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable && item.Checkable">
+                                            <input type="checkbox" class="kt-checkable" [(ngModel)]="item.Checked" (change)="checkChange($event, item)"> <span></span>
+                                        </label>
+                                        <label class="kt-radio kt-radio--single kt-radio--solid kt-radio--brand" *ngIf="obj.Radioable && item.Checkable">
+                                            <input type="radio" [name]="obj.ReferenceName" class="kt-checkable" [(ngModel)]="item.Checked" (change)="checkRadioChange($event, item)"> <span></span>
+                                        </label>
+                                    </td>
+                                    <td *ngFor="let column of activeProperties" [style.width]="column.Property == 'Id' ? '60px' : (column.ColumnWidth ? column.ColumnWidth + 'px' : '')" [style.textAlign]="column.Align" [attr.data-label]="column.Title">
+                                        <span *ngIf="column.Property == 'Id' || column.Title == 'Id'; else property_other" [ngClass]="{'d-flex': obj.Checkable}" (click)="columlClick($event, item)">
+                                            <span *ngIf="item[column.Property]" [innerHTML]="item[column.Property] | sanitizeHtml"></span>
+                                        </span>
+                                        <ng-template #property_other>
+                                            <ng-container [ngSwitch]="column.Type">
+                                                <ng-container *ngSwitchCase="DataType.String">
+                                                    <div [innerHTML]="item[column.Property] | sanitizeHtml" [ngClass]="item[column.Property + '_Color']" *ngIf="!column.Click && column.Format" (click)="columlClick($event, item)"></div>
+                                                    <span [attr.title]="item[column.Property]" [ngClass]="item[column.Property + '_Color']" *ngIf="!column.Click && !column.Format">
+                                                        {{ item[column.Property] }}
+                                                    </span>
+                                                    <a [innerHTML]="item[column.Property] | sanitizeHtml" [ngClass]="item[column.Property + '_Color']" *ngIf="column.Click" (click)="column.Click(item)">
+                                                    </a>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Number">
+                                                    <span *ngIf="!column.Click">
+                                                        {{ item[column.Property] | numberx }}
+                                                    </span>
+                                                    <a *ngIf="column.Click" (click)="column.Click(item)">
+                                                        {{ item[column.Property] | numberx }}
+                                                    </a>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DateTime">
+                                                    {{ item[column.Property] | datetimex }}
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Image">
+                                                    <img [src]="item[column.Property]" style="max-height: 45px; max-width: 300px;" />
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Boolean">
+                                                    <editor-checkbox *ngIf="!item[column.Property + '_Text']" [(value)]="item[column.Property]" [decorator]="{'readonly':true}">
+                                                    </editor-checkbox>
+                                                    <span *ngIf="item[column.Property + '_Text']">
+                                                        {{ item[column.Property + '_Text'] }}
+                                                    </span>
+                                                </ng-container>
+                                                <ng-container *ngSwitchDefault>
+                                                    {{ item[column.Property] }}
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-template>
+                                    </td>
+                                    <td style="width: 200px;" data-label="Updated" *ngIf="obj.LastUpdatedBy">
+                                        <div><i class="far fa-user"></i>
+                                            {{ item.LastUpdatedBy || item.CreatedBy }}
+                                        </div>
+                                        <div><i class="far fa-calendar"></i>
+                                            {{ (item.LastUpdatedAt || item.CreatedAt) | datetimex }}
+                                        </div>
+                                    </td>
+                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        <div class="btn-group" style="text-align: center;">
+                                            <span *ngFor="let action of obj.Actions">
+                                                <ng-container [ngSwitch]="action.systemName">
+                                                    <ng-container *ngSwitchCase="ActionType.Publish">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
+                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="ActionType.Delete">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
+                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchDefault>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
+                                                            <i [ngClass]="action.icon"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </span>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot *ngIf="activeTotalProperties && activeTotalProperties.length > 0 && totalItem">
+                                <tr>
+                                    <td [attr.colspan]="mergeCount">
+                                        {{ obj.TotalTitle || 'Total' }}
+                                    </td>
+                                    <td *ngFor="let column of activeTotalProperties;">
+                                        <span>{{ totalItem[column.Property] }}</span>
+                                    </td>
+                                    <td *ngFor="let column of [].constructor(notMergeCount);">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div *ngIf="!items || items.length == 0" style="padding: 25px 0;">
+                    {{ message }}
+                </div>
+                <loading *ngIf="loading"></loading>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="prepareForm">
+    <edit-popup></edit-popup>
+</div>
+<input #fileInput type="file" (change)="selectedFile($event)" style="width: 100%; height: 100%; display: none;">

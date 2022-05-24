@@ -1,0 +1,13 @@
+<div class="row" *ngIf="item">
+    <div class="col-sm-4">
+        <editor [(object)]="item" property="Type"></editor>
+    </div>
+    <div class="col-sm-12" *ngIf="siteId">
+        <h6>Meter Reads</h6>
+        <list-meter-read-u01 [siteId]="siteId" (choiceChange)="choiceChange($event)"></list-meter-read-u01>
+        <div class="error invalid-feedback" [ngClass]="{'active': error}">Please select a Meter Read to continue</div>
+    </div>
+    <div class="col-sm-12 error" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+</div>

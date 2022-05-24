@@ -1,0 +1,32 @@
+.kt-menu__item {
+    .kt-menu__link-text {
+        &:hover {
+            color: #fff !important;
+        }
+    }
+}
+
+.kt-header-notify {
+    .dropdown-menu {
+        right: 0;
+        left: unset;
+    }
+}
+
+.kt-header__topbar-item--user {
+    position: relative;
+    .dropdown-menu.dropdown-menu-anim {
+        right: 0;
+        left: unset;
+    }
+}
+
+.kt-header {
+    z-index: 99 !important;
+}
+
+@media screen and (max-width: 768px) {
+    .kt-header {
+        z-index: 96 !important;
+    }
+}

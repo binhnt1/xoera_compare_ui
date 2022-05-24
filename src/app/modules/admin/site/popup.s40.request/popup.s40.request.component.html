@@ -1,0 +1,8 @@
+<div class="row" *ngIf="item">
+    <div class="col-sm-12">
+        <editor [(object)]="item" property="ReasonCode"></editor>
+    </div>
+    <div class="col-sm-12 error" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+</div>

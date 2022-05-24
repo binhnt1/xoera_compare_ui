@@ -1,0 +1,30 @@
+<div class="kt-portlet kt-portlet-edit-form hubFileWrapper">
+    <edit-header *ngIf="breadcrumbs" [breadcrumbs]="breadcrumbs"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row" *ngIf="!loading">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h3 class="content-header-title mb-0">
+                                Diagram
+                            </h3>
+                            <diagram></diagram>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <grid-hubfile-summary (selectedChange)="selectedChange($event)"></grid-hubfile-summary>
+                        </div>
+                        <div class="form-group" *ngIf="hubFileSummaryId">
+                            <grid-hubfile [params]="{id: hubFileSummaryId}"></grid-hubfile>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

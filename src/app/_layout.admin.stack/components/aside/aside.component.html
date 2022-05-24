@@ -1,0 +1,42 @@
+<div wrapper class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main">
+            <li class="nav-item">
+                <a routerLink="/admin">
+                    <i class="feather icon-home"></i><span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="navigation navigation-main" *ngFor="let group of links">
+            <li class="navigation-header" [ngClass]="{'collapsed':data.menuCollapsed}" [attr.tooltip]="data.menuCollapsed ? group.key : ''">
+                <span *ngIf="!data.menuCollapsed">{{ group.key }}</span><i></i>
+            </li>
+            <li class="nav-item" *ngFor="let item of group.items" [ngClass]="{'open':item.Active && !data.menuCollapsed, 'hover':item.Hover && data.menuCollapsed, 'has-sub':item.Childrens && item.Childrens.length > 0}" (mouseenter)="activeHover(item)" (mouseleave)="hideHover(item)">
+                <a *ngIf="item.Childrens && item.Childrens.length > 0; else other_content" (click)="toggleActiveLink(item)">
+                    <i [ngClass]="item.CssIcon" *ngIf="item.CssIcon"></i> <span>{{ item.Name }}</span>
+                </a>
+                <ng-template #other_content>
+                    <a (click)="navigate(item)">
+                        <i [ngClass]="item.CssIcon" *ngIf="item.CssIcon"></i> <span>{{ item.Name }}</span>
+                    </a>
+                </ng-template>
+                <ul class="menu-content" *ngIf="item.Childrens && item.Childrens.length > 0">
+                    <li *ngIf="data.menuCollapsed" class="menu-title">{{ item.Name }}</li>
+                    <li [ngClass]="{'is-shown':child.Active}" *ngFor="let child of item.Childrens">
+                        <a class="menu-item" (click)="navigate(child)">{{ child.Name }}</a>
+                    </li>
+                </ul>
+                <ul class="menu-content" *ngIf="data.menuCollapsed && !(item.Childrens && item.Childrens.length > 0)">
+                    <li *ngIf="data.menuCollapsed" class="menu-title">{{ item.Name }}</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <ul class="navigation navigation-main navigation-bottom">
+        <li class="nav-item">
+            <a routerLink="/helpcenter">
+                <i class="la la-info"></i><span class="menu-title">Help Centre</span>
+            </a>
+        </li>
+    </ul>
+</div>

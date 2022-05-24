@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <base href="/">
+  <title>National Admin</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+  <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- BEGIN: Vendor CSS-->
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../assets/plugins/toastr/build/toastr.css">
+  <link rel="stylesheet" type="text/css" href="../../../assets/plugins/line-awesome/css/line-awesome.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/selects/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
+  <!-- END: Vendor CSS-->
+
+  <!-- BEGIN: Theme CSS-->
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
+  <!-- END: Theme CSS-->
+
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/colors/palette-gradient.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/fonts/simple-line-icons/style.css">
+</head>
+
+<body>
+  <national>
+    <div class="content">
+      <style>
+        body {
+          margin: 0;
+        }
+
+        .content {
+          width: 100%;
+          height: 100vh;
+          background-color: #171f30;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        .content .loading {
+          width: 120px;
+          height: 50px;
+          position: relative;
+        }
+
+        .content p {
+          top: 0;
+          padding: 0;
+          margin: 0;
+          color: #5389a6;
+          font-family: Lexend, Helvetica, sans-serif;
+          font-size: 16px;
+          letter-spacing: 1px;
+        }
+
+        .content .loading span {
+          background-color: #5389a6;
+          border-radius: 50px;
+          display: block;
+          height: 16px;
+          width: 16px;
+          bottom: 0;
+          position: absolute;
+          transform: translateX(64px);
+          animation: loading 3.5s ease both infinite;
+        }
+
+        .content .loading span:before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          background-color: #a6dcee;
+          border-radius: inherit;
+          animation: loading2 3.5s ease both infinite;
+        }
+
+        @keyframes loading {
+          0% {
+            width: 16px;
+            transform: translateX(0px);
+          }
+
+          40% {
+            width: 100%;
+            transform: translateX(0px);
+          }
+
+          80% {
+            width: 16px;
+            transform: translateX(64px);
+          }
+
+          90% {
+            width: 100%;
+            transform: translateX(0px);
+          }
+
+          100% {
+            width: 16px;
+            transform: translateX(0px);
+          }
+        }
+
+        @keyframes loading2 {
+          0% {
+            transform: translateX(0px);
+            width: 16px;
+          }
+
+          40% {
+            transform: translateX(0%);
+            width: 80%;
+          }
+
+          80% {
+            width: 100%;
+            transform: translateX(0px);
+          }
+
+          90% {
+            width: 80%;
+            transform: translateX(15px);
+          }
+
+          100% {
+            transform: translateX(0px);
+            width: 16px;
+          }
+        }
+      </style>
+      <p>Loading...</p>
+      <div class="loading">
+        <span></span>
+      </div>
+    </div>
+  </national>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+.error {
+    color: #ff7588;
+    font-size: smaller;
+    &.active {
+        display: block;
+    }
+}

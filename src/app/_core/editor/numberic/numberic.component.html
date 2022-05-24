@@ -1,0 +1,8 @@
+<div wrapper [ngClass]="{'kt-input-icon kt-input-icon--left':decorator.icon}">
+    <input class="form-control" [readonly]="decorator.readonly" [ngClass]="{'is-invalid':decorator.error}" [type]="type"
+        [placeholder]="decorator.placeholder" [id]="decorator.id" [(ngModel)]="value"
+        [ngModelOptions]="{standalone: true}" (input)="inputChange()" (keydown)="onNumberKeypress($event)" (blur)="onNumberBlur()">
+    <span class="kt-input-icon__icon kt-input-icon__icon--left" *ngIf="decorator.icon">
+        <span><i [ngClass]="decorator.icon"></i></span>
+    </span>
+</div>

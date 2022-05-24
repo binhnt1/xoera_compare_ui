@@ -1,0 +1,6 @@
+<label wrapper class="kt-checkbox" [ngClass]="{'kt-checkbox--disabled':decorator.readonly}">
+    <input type="checkbox" [id]="decorator.id" [checked]="value"
+        [disabled]="decorator.readonly" (change)="inputChange()">
+    <label *ngIf="label" [attr.for]="decorator.id">{{ label }}</label>
+    <span></span>
+</label>

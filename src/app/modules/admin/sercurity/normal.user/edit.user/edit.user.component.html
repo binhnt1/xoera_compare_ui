@@ -1,0 +1,152 @@
+<div class="kt-portlet kt-portlet-edit-form kt-portlet--mobile" *ngIf="item">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body" *ngIf="!loading">
+        <div class="kt-form kt-form--label-right">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <editor #uploadAvatar [(object)]="item" property="Avatar"></editor>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <label class="col-sm-1 col-form-label">First Name *</label>
+                                        <div class="col-sm-4">
+                                            <editor [(object)]="item" property="FirstName" [decorator]="{ label: '', allowClear: true}"></editor>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">Last Name *</label>
+                                        <div class="col-sm-4">
+                                            <editor [(object)]="item" property="LastName" [decorator]="{ label: '', allowClear: true}"></editor>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-1 col-form-label">Email *</label>
+                                        <div class="col-sm-4">
+                                            <editor [(object)]="item" property="Email" [decorator]="{ label: '', allowClear: id ? false : true, readonly: id ? true : false}"></editor>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">Phone</label>
+                                        <div class="col-sm-4">
+                                            <editor [(object)]="item" property="Phone" [decorator]="{ label: '', allowClear: true}"></editor>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="item.Id">
+                                        <label class="col-sm-1 col-form-label">Status</label>
+                                        <div class="col-sm-4" style="padding-top: 10px;">
+                                            <editor [(object)]="item" property="Status" [viewer]="true"></editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="kt-portlet kt-portlet--tabs">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-toolbar">
+                                <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-success nav-tabs-line-2x">
+                                    <li class="nav-item">
+                                        <a class="nav-link" (click)="selectedTab('information')" [ngClass]="{'active':tab == 'information'}">
+                                            <i class="la la-user"></i> Information
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" (click)="selectedTab('permission')" [ngClass]="{'active':tab == 'permission'}">
+                                            <i class="la la-bolt"></i> Permission
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="tab-content">
+                                <div class="tab-pane" [ngClass]="{'active':tab == 'information'}">
+                                    <div class="row">
+                                        <div class="col-sm-6 d-flex">
+                                            <label class="col-sm-2 col-form-label">Birthday</label>
+                                            <div class="col-sm-8">
+                                                <editor [(object)]="item" property="Birthday" [decorator]="{ label: ''}"></editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 d-flex">
+                                            <label class="col-sm-2 col-form-label">Gender</label>
+                                            <div class="col-sm-8" style="padding-top: 8px;">
+                                                <editor [(object)]="item" property="Gender" [decorator]="{ label: ''}">
+                                                </editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 d-flex">
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 d-flex">
+                                            <label class="col-sm-1 col-form-label">Address</label>
+                                            <div class="col-sm-10">
+                                                <editor [(object)]="item" property="Address" [decorator]="{ label: '', allowClear: true}">
+                                                </editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" [ngClass]="{'active':tab == 'permission'}">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div *ngIf="loadingRoleOrganization" style="min-height: 100px;">
+                                                <loading></loading>
+                                            </div>
+                                            <div class="accordion accordion-organization accordion-toggle-arrow" *ngFor="let organization of organizations; let i = index;">
+                                                <div class="card">
+                                                    <div class="card-header" (click)="toggleOrganization(organization)">
+                                                        <div class="card-title" [ngClass]="{'collapsed':!organization.Active}">
+                                                            <i class="flaticon2-layers-1"></i> {{ organization.Name }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse" [ngClass]="{'show':organization.Active}">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="accordion">
+                                                                        <div class="card">
+                                                                            <div class="collapse show" [ngClass]="{'show':organization.PermissionActive}">
+                                                                                <div class="card-body">
+                                                                                    <edit-permission *ngIf="organization.AllPermissions" [items]="organization.AllPermissions" (permissionChange)="permissionChange($event, organization)"></edit-permission>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kt-form" *ngIf="!item">
+            {{ message }}
+        </div>
+    </div>
+    <div class="kt-portlet__body" *ngIf="loading">
+        <loading></loading>
+    </div>
+</div>
+
+<ng-template #empty_content>
+    <td colspan="2" style="margin: 20px;">Not data avaiable</td>
+</ng-template>

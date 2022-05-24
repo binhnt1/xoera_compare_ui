@@ -1,0 +1,27 @@
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body">
+            <section class="row flexbox-container" style="height: 100vh; background-image: url(assets/media/bg/bg-4.jpg);">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="col-lg-2 col-md-6 col-10 box-shadow-2 p-0">
+                        <div class="card border-grey border-lighten-3 m-0">
+                            <div class="card-header border-0">
+                                <div class="card-title text-center">
+                                    <div class="p-1"><img style="width: 100%;" src="../../../assets/media/logos/logo-dark.png" alt="branding logo"></div>
+                                </div>
+                            </div>
+                            <router-outlet></router-outlet>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<modal-alert></modal-alert>
+<modal-confirm></modal-confirm>
+<modal-timeout></modal-timeout>
+<modal-wrapper></modal-wrapper>

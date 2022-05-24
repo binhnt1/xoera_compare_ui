@@ -1,0 +1,19 @@
+<div class="vertical-layout vertical-menu 2-columns fixed-navbar" [ngClass]="{'menu-collapsed' : data.menuCollapsed}">
+    <layout-header></layout-header>
+    <layout-aside></layout-aside>
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <main [@routerTransition]="getState(o)">
+                    <router-outlet #o="outlet"></router-outlet>
+                </main>
+            </div>
+        </div>
+    </div>
+    <layout-footer></layout-footer>
+</div>
+<modal-alert></modal-alert>
+<modal-confirm></modal-confirm>
+<modal-timeout></modal-timeout>
+<modal-wrapper></modal-wrapper>

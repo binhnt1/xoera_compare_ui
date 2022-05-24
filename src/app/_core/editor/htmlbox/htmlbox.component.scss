@@ -1,0 +1,22 @@
+::ng-deep .tox-statusbar__branding {
+    display: none;
+}
+
+::ng-deep .tox-tinymce {
+    border: 1px solid #e2e5ec !important;
+    &:focus {
+        border-color: #9aabff !important;
+    }
+}
+
+::ng-deep .focused {
+    .tox-tinymce {
+        border-color: #9aabff !important;
+    }
+}
+
+::ng-deep .is-invalid {
+    .tox-tinymce {
+        border-color: #fd397a !important;
+    }
+}

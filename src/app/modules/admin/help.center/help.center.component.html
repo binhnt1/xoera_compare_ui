@@ -1,0 +1,5 @@
+<div *ngIf="!loading">
+    <help-center-header></help-center-header>
+    <router-outlet></router-outlet>
+</div>
+<loading *ngIf="loading"></loading>

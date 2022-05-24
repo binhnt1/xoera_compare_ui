@@ -1,0 +1,20 @@
+<div wrapper class="modal fade" [ngClass]="{'show':visible}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" *ngIf="dialog">
+            <div class="modal-header">
+                <h5 class="modal-title">{{dialog.title}}</h5>
+            </div>
+            <div class="modal-body">
+                <span *ngIf="counter">
+                    The system will lock the screen after <b> {{counter}} </b> seconds.
+                </span>
+                <span *ngIf="!counter">
+                    The system has locked the screen successfully, you will need to re-login to use the system ...
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="counter" type="button" class="btn btn-primary" (click)="confirmModal()">Stay here</button>
+            </div>
+        </div>
+    </div>
+</div>

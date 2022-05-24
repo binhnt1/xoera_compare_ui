@@ -1,0 +1,209 @@
+<div class="kt-portlet kt-portlet-edit-form kt-portlet--mobile" *ngIf="item">
+    <edit-header-view *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions"></edit-header-view>
+    <div class="kt-portlet__body" *ngIf="!loading">
+        <div class="kt-form kt-form--label-right">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <editor #uploadAvatar [(object)]="item" property="Avatar" [decorator]="{ readonly: true }"></editor>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <label class="col-sm-2 col-form-label">FullName *</label>
+                                        <div class="col-sm-4">
+                                            <editor [(object)]="item" property="FullName" [decorator]="{ label: '', readonly: true }"></editor>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group" style="display: flex; align-items: center;">
+                                                <label class="col-form-label">Status</label>
+                                                <div style="margin-left: 10px; white-space: nowrap;">
+                                                    <editor [(object)]="item" property="Status" [viewer]="true"></editor>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 col-form-label">Email *</label>
+                                        <div class="col-sm-6">
+                                            <editor [(object)]="item" property="Email" [decorator]="{ label: '', readonly: true }"></editor>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 col-form-label">Phone</label>
+                                        <div class="col-sm-6">
+                                            <editor [(object)]="item" property="Phone" [decorator]="{ label: '', readonly: true }"></editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="kt-portlet kt-portlet--tabs">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-toolbar">
+                                <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-success nav-tabs-line-2x">
+                                    <li class="nav-item">
+                                        <a class="nav-link" (click)="selectedTab('information')" [ngClass]="{'active':tab == 'information'}">
+                                            <i class="la la-user"></i> Information
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" (click)="selectedTab('permission')" [ngClass]="{'active':tab == 'permission'}">
+                                            <i class="la la-briefcase"></i> Permissions
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div class="tab-content">
+                                <div class="tab-pane" [ngClass]="{'active':tab == 'information'}">
+                                    <div class="row">
+                                        <div class="col-sm-6 d-flex">
+                                            <label class="col-sm-2 col-form-label">Country</label>
+                                            <div class="col-sm-8">
+                                                <editor [(object)]="item" property="CountryId" [decorator]="{ label: '', readonly: true }"></editor>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 d-flex">
+                                            <label class="col-sm-2 col-form-label">Birthday</label>
+                                            <div class="col-sm-8">
+                                                <editor [(object)]="item" property="Birthday" [decorator]="{ label: '', readonly: true }"></editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 d-flex">
+                                            <label class="col-sm-2 col-form-label">Gender</label>
+                                            <div class="col-sm-8" style="padding-top: 8px;">
+                                                <editor [(object)]="item" property="Gender" [decorator]="{ label: '', readonly: true }">
+                                                </editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 d-flex">
+                                            <label class="col-sm-1 col-form-label">Address</label>
+                                            <div class="col-sm-10">
+                                                <editor [(object)]="item" property="Address" [decorator]="{ label: '', readonly: true }">
+                                                </editor>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" [ngClass]="{'active':tab == 'permission'}">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div *ngIf="loadingRoleOrganization" style="min-height: 100px;">
+                                                <loading></loading>
+                                            </div>
+                                            <div class="accordion accordion-organization accordion-toggle-arrow" *ngFor="let organization of organizations; let i = index;">
+                                                <div class="card">
+                                                    <div class="card-header" (click)="toggleOrganization(organization)">
+                                                        <div class="card-title">
+                                                            <i class="flaticon2-layers-1"></i> {{ organization.Name }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse" [ngClass]="{'show':organization.Active}">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="kt-portlet kt-portlet--height-fluid">
+                                                                        <div class="kt-portlet__head">
+                                                                            <div class="kt-portlet__head-label">
+                                                                                <h3 class="kt-portlet__head-title">
+                                                                                    List roles
+                                                                                </h3>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="kt-portlet-permission kt-portlet__body row flex-row" style="padding-bottom: 40px;">
+                                                                            <div *ngIf="loadingPermission">
+                                                                                <loading></loading>
+                                                                            </div>
+                                                                            <div class="kt-portlet--tabs">
+                                                                                <div class="kt-portlet__head-toolbar">
+                                                                                    <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-success nav-tabs-line-2x">
+                                                                                        <li class="nav-item">
+                                                                                            <a class="nav-link" (click)="selectedInnerTab('kt_tab_roles')" [ngClass]="{'active':innerTab == 'kt_tab_roles'}">
+                                                                                                <i class="la la-align-center"></i> List roles
+                                                                                            </a>
+                                                                                        </li>
+                                                                                        <li class="nav-item">
+                                                                                            <a class="nav-link" (click)="selectedInnerTab('kt_tab_permissions')" [ngClass]="{'active':innerTab == 'kt_tab_permissions'}">
+                                                                                                <i class="la la-briefcase"></i> Details
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="kt-portlet__body">
+                                                                                    <div class="tab-content">
+                                                                                        <div class="tab-pane" [ngClass]="{'active':innerTab == 'kt_tab_roles'}">
+                                                                                            <div class="table-content">
+                                                                                                <table class="table table-bordered table-hover dataTable no-footer">
+                                                                                                    <thead>
+                                                                                                        <tr class="heading">
+                                                                                                            <th style="width: 80px; text-align: center;">No</th>
+                                                                                                            <th>Information</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody *ngIf="organization.Roles && organization.Roles.length > 0; else empty_content">
+                                                                                                        <tr *ngFor="let item of organization.Roles; let i = index">
+                                                                                                            <td style="text-align: right;">{{ (i + 1) }}</td>
+                                                                                                            <td>
+                                                                                                                <p class="title">
+                                                                                                                    {{ item.Code }} - {{ item.Name }}
+                                                                                                                </p>
+                                                                                                                <span class="sub" *ngIf="item.Description">
+                                                                                                                    {{ item.Description }}
+                                                                                                                </span>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="tab-pane row" [ngClass]="{'active':innerTab == 'kt_tab_permissions'}">
+                                                                                            <edit-permission *ngIf="organization.Permissions && organization.Permissions.length > 0; else empty_content" [items]="organization.Permissions" [readonly]="true"></edit-permission>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kt-form" *ngIf="!item">
+            {{ message }}
+        </div>
+    </div>
+    <div class="kt-portlet__body" *ngIf="loading">
+        <loading></loading>
+    </div>
+</div>
+
+<ng-template #empty_content>
+    <td colspan="2" style="margin: 20px;">Not data avaiable</td>
+</ng-template>
+<div *ngIf="prepareForm">
+    <edit-popup></edit-popup>
+</div>

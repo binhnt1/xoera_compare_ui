@@ -1,0 +1,89 @@
+.agencyNoteWapper {
+    padding: 30px 0 0 0;
+    border-radius: 20px;
+    flex-direction: column;
+    background-color: #fff;
+    .content {
+        display: flex;
+        min-height: unset;
+        justify-content: flex-start;
+        flex-direction: row !important;
+        .card {
+            border: none;
+            margin-top: -10px;
+            padding: 14px 21px;
+            margin-left: -25px;
+            border-radius: 15px;
+            height: fit-content;
+            background-color: #fafafb;
+            .card-header {
+                padding: 0;
+                border: none;
+                background-color: transparent;
+                .owner {
+                    font-size: 14px;
+                    color: #343a40;
+                    font-weight: 600;
+                    letter-spacing: 0.1px;
+                    font-family: "Poppins", sans-serif;
+                }
+                .datetime {
+                    font-size: 12px;
+                    color: #92929d;
+                    font-family: "Roboto", sans-serif;
+                    letter-spacing: 0.08px;
+                }
+            }
+            .card-body {
+                padding: 0;
+                font-size: 14px;
+                line-height: 1.71;
+                margin: 10px 0 0 0;
+                font-family: "Roboto", sans-serif;
+                color: #444444;
+                letter-spacing: 0.1px;
+            }
+        }
+        .avatar {
+            z-index: 1;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            border-radius: 50%;
+            margin-right: 10px;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border: solid 2px #0062ff;
+            .avatar-inner {
+                width: 26px;
+                height: 26px;
+                display: flex;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 500;
+                text-align: center;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                background-color: #828ea5;
+                font-family: "Poppins", sans-serif;
+            }
+        }
+    }
+    > .section {
+        overflow: auto;
+        height: calc(100vh - 565px);
+        &.nocontent {
+            height: 60px;
+            > .content {
+                margin-left: 0;
+                padding-left: 0;
+            }
+        }
+        > .content {
+            margin-left: 0;
+            padding-left: 20px;
+        }
+    }
+}

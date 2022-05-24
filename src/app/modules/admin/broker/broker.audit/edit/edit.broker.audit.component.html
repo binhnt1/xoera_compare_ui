@@ -1,0 +1,45 @@
+<div class="kt-portlet kt-portlet-edit-form">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [moreActions]="moreActions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="TableName" [decorator]="{readonly: true}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="Actions" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="TableIdValue" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="CallingMethod" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="MachineName" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="IpAddress" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-12">
+                                <editor [(object)]="item" property="OldData" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-12">
+                                <editor [(object)]="item" property="NewData" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-12">
+                                <editor [(object)]="item" property="Exception" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

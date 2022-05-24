@@ -1,0 +1,30 @@
+<div wrapper class="modal fade" [ngClass]="{'show':visible}">
+    <div class="modal-dialog modal-dialog-centered" [ngClass]="sizeClass">
+        <div class="modal-content" *ngIf="dialog && obj && item">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="la la-plus" *ngIf="!item.Id"></i>
+                    <i class="la la-eye" *ngIf="item.Id && dialog.type == DialogType.AdminView"></i>
+                    <i class="la la-pencil" *ngIf="item.Id && dialog.type == DialogType.AdminEdit"></i>
+                    {{dialog.title}}
+                </h5>
+                <button *ngIf="!dialog.restrict" type="button" class="close" (click)="close()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" *ngIf="item && !loading">
+                    <div *ngFor="let column of properties" [ngClass]="columnClass.get(column.property)">
+                        <editor [(object)]="item" [property]="column.property" [decorator]="{readonly: disabled}"></editor>                            
+                    </div>
+                </div>
+                <div class="row" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!dialog.restrict">
+                <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+                <editor-button *ngIf="!disabled" [label]="processing ? 'Saving...' : confirmText" [(process)]="processing" (click)="confirm()"></editor-button>
+            </div>
+        </div>
+    </div>
+</div>

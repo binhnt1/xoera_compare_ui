@@ -1,0 +1,160 @@
+<div class="row" *ngIf="item">
+    <div class="col-sm-3">
+        <h4>Client Contractual Customer</h4>
+        <editor [(object)]="item" property="ClientsContractualCustomerName" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <h4>Access Instruction</h4>
+        <editor [(object)]="item" property="AccessInstructions" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <h4>Meter Point AQ</h4>
+        <editor [(object)]="item" property="MeterPointAq" [decorator]="{ readonly: true }"></editor>
+    </div>         
+    <div class="col-sm-3">
+        <h4>Premises Customer Name</h4>
+        <editor [(object)]="item" property="PremisesCustomerName" [decorator]="{ readonly: true }"></editor>
+    </div> 
+    <div class="col-sm-12">
+        <h4>Read Service Request</h4>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="CyclicReadService" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ServiceLevel" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="CyclicReadServiceStartDate" [decorator]="{ readonly: true }"></editor>
+    </div>    
+    <div class="col-sm-12">
+        <h4>Corrector Details</h4>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterSerialNumber" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="MeterPointCorrectionFactor" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterCorrectionFactor" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="NumberOfCorrectedDials" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterReadingUnit" [decorator]="{readonly: true}"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterModelName" [decorator]="{readonly: true}"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterManufacturerName" [decorator]="{readonly: true}"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="ConverterManufactureYear" [decorator]="{readonly: true}"></editor>
+    </div>
+    <div class="col-sm-12">
+        <h4>Meter Details</h4>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="MeterSerialNumber" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="NumberOfDialsOrDigits" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="MeterCollarFittedIndicator" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="ImperialMeterIndicator" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="MeterReadingUnit" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="MeterManufacturerName" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="MeterModelName" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="BypassFittedIndicator" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="MeterMechanism" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="MeterManufacturerYear" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-12">
+        <h4>Meter Location Details</h4>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="MeterLocationCode" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-9">
+        <editor [(object)]="item" property="MeterLocationDescription" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-12">
+        <h4>Address Details</h4>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="BuildingNumber" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-3">
+        <editor [(object)]="item" property="BuildingName" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="SubBuildingName" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="PrincipalStreet" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="DependantStreet" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="DoubleDependantLocality" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="DependantLocality" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="PostTown" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="County" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="PostcodeOutcode" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-2">
+        <editor [(object)]="item" property="PostcodeIncode" [decorator]="{ readonly: true }"></editor>
+    </div>     
+    <div class="col-sm-12">
+        <h4>Password & Speccial Needs</h4>
+    </div>
+    <div class="col-sm-4">
+        <editor [(object)]="item" property="ContactPassword" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-4">
+        <editor [(object)]="item" property="ContactGeneralSpecialNeedsNotes" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-4">
+        <editor [(object)]="item" property="ConditionType" [decorator]="{ readonly: true }"></editor>
+    </div>
+    <div class="col-sm-12 error" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+</div>
+<ng-template #other_content>
+    <div class="row" *ngIf="item">
+        <div class="col-sm-12">
+            <editor [(object)]="item" property="Mam"></editor>
+        </div>
+        <div class="col-sm-12">
+            <editor [(object)]="item" property="EffectiveFromDate"></editor>
+        </div>
+    </div>
+</ng-template>

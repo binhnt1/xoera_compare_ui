@@ -1,0 +1,11 @@
+<div class="row" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <p style="margin-bottom: 20px;">Confirm lock account: {{ item.FullName }}</p>
+    </div>
+    <div class="col-sm-12">
+        <editor [(object)]="item" property="ReasonLock" (valueChange)="valueChange()"></editor>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

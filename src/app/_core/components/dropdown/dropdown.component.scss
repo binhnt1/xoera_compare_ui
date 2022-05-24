@@ -1,0 +1,28 @@
+.dropdown {
+    &.top {
+        .dropdown-menu-right {
+            top: unset;
+            bottom: 100%;
+        }
+    }
+    .dropdown-menu-right {
+        right: 0;
+        left: unset;
+        &.arrow {
+            &:after,
+            &:before {
+                right: 10px;
+                left: unset !important;
+            }
+        }
+    }
+    .dropdown-item {
+        .hidden {
+            display: none;
+        }
+    }
+}
+
+.btn-icon-sm {
+    min-height: 34px !important;
+}

@@ -1,0 +1,44 @@
+<div wrapper class="imageWapper">
+    <div *ngIf="decorator.readonly" class="form-view">
+        <div class="image-container" *ngIf="items && items.length > 0; else empty_content">
+            <div class="image-inner" *ngFor="let item of items">
+                <img [style.backgroundImage]="'url(' + (item.Data || item.Path) + ')'" />
+            </div>
+        </div>
+        <ng-template #empty_content>
+            <div class="image-container">
+                <div class="image-inner">
+                    <i class="la la-user"></i>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div *ngIf="!decorator.readonly" class="input-group">
+        <div class="image-container" *ngIf="items && items.length > 0">
+            <div class="image-inner" *ngFor="let item of items">
+                <img [style.backgroundImage]="'url(' + (item.Data || item.Path) + ')'" />
+                <div class="overlay" *ngIf="item.Name">
+                    <p class="name">{{ item.Name }}</p>
+                    <p class="size" *ngIf="item.Size">
+                        {{item.Size > 0 ? item.Size.toFixed(2) + 'MB' : (item.Size * 1024).toFixed(2) + 'KB'}}
+                    </p>
+                </div>
+                <div class="edit" (click)="selectFileToUpload(item)">
+                    <i class="fa fa-pen"></i>
+                </div>
+                <div class="close" (click)="removeFile(item)">
+                    <i class="fa fa-times"></i>
+                </div>
+                <div class="progress" *ngIf="item.Percent">
+                    <div class="progress-bar" role="progressbar" [style.width]="item.Percent + '%'">{{item.Percent}}%</div>
+                </div>
+            </div>
+        </div>
+        <div class="image-container" (click)="selectFileToUpload()" *ngIf="(!items|| items.length == 0 || decorator.multiple)">
+            <div class="image-inner">
+                <i class="la la-plus-circle"></i>
+            </div>
+        </div>
+        <input #fileInput type="file" [multiple]="decorator.multiple" (change)="selectedFile($event)" style="width: 100%; height: 100%; display: none;" accept="image/jpg,image/jpeg,image/png,image/gif,image/svg+xml">
+    </div>
+</div>

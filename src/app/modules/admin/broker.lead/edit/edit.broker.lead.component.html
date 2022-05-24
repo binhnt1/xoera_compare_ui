@@ -1,0 +1,98 @@
+<div class="kt-portlet kt-portlet-edit-form brokerLeadWrapper">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="selectedTab('company')" [ngClass]="{'active':!tab || tab == 'company'}">Broker Lead Details</a>
+                    </li>
+                    <li class="nav-item" *ngIf="id">
+                        <a class="nav-link" (click)="selectedTab('sent')" [ngClass]="{'active':tab == 'sent'}">Sent Emails</a>
+                    </li>
+                    <li class="nav-item" *ngIf="id">
+                        <a class="nav-link" (click)="selectedTab('note')" [ngClass]="{'active':tab == 'note'}">Notes</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane px-1 pt-1" [ngClass]="{'active':!tab || tab == 'company'}">
+                        <div class="row" *ngIf="item">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <h4 class="col-sm-12">Business Details</h4>
+                                    <div class="col-sm-6">
+                                        <editor [(object)]="item" property="BusinessName" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <editor [(object)]="item" property="ContactName" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <h4 class="col-sm-12">Job Details</h4>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="JobRole" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Website" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <h4 class="col-sm-12">Status</h4>
+                                    <div class="col-sm-4">
+                                        <editor [(object)]="item" property="Active" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <h4 class="col-sm-12">Contact Details</h4>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Phone1" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Phone2" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Email1" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Email2" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Email3" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Mobile1" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <editor [(object)]="item" property="Mobile2" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-loading" *ngIf="loading">
+                            <loading></loading>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" *ngIf="id">
+                    <div class="tab-pane px-1 pt-1" [ngClass]="{'active':tab == 'sent'}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <list-broker-lead-sent-item [brokerLeadId]="id"></list-broker-lead-sent-item>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" *ngIf="id">
+                    <div class="tab-pane px-1 pt-1" [ngClass]="{'active':tab == 'note'}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <broker-lead-note [brokerLeadId]="id"></broker-lead-note>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

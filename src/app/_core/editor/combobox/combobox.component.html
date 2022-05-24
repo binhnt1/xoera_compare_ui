@@ -1,0 +1,6 @@
+<div wrapper [ngClass]="{'kt-input-icon kt-input-icon--left':decorator.icon, 'is-invalid':decorator.error}">
+    <select class="form-control kt-select2" [id]="decorator.id"></select>
+    <span class="kt-input-icon__icon kt-input-icon__icon--left" *ngIf="decorator.icon">
+        <span><i [ngClass]="decorator.icon"></i></span>
+    </span>
+</div>

@@ -1,0 +1,18 @@
+<div wrapper class="modal fade modal-confirm" [ngClass]="{'show':visible}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" *ngIf="dialog">
+            <div class="modal-header">
+                <h5 class="modal-title">{{dialog.title}}</h5>
+                <button *ngIf="!dialog.restrict" type="button" class="close" (click)="closeModal()">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="modal-body" [innerHTML]="dialog.content | sanitizeHtml"></div>
+            <div class="modal-footer" *ngIf="!dialog.restrict">
+                <button type="button" *ngIf="dialog.cancelText" class="btn btn-secondary" (click)="closeModal()">{{ dialog.cancelText }}</button>
+                <editor-button *ngIf="dialog.confirmText" [label]="processing ? 'Processing...' : dialog.confirmText"
+                    [(process)]="processing" (click)="confirmModal()"></editor-button>
+            </div>
+        </div>
+    </div>
+</div>

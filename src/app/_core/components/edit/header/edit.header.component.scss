@@ -1,0 +1,16 @@
+.content-header-right {
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: flex-end;
+    .button-item {
+        margin-left: 5px;
+        i.la {
+            margin-right: 10px;
+        }
+    }
+}
+
+.btn-group {
+    border-radius: 0.25rem;
+}

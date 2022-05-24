@@ -1,0 +1,43 @@
+<div *ngIf="item">
+    <div class="agencyNoteWapper">
+        <div class="section" *ngIf="items && items.length > 0">
+            <div class="content" *ngFor="let data of items;let i = index;">
+                <div class="avatar">
+                    <div class="avatar-inner">
+                        {{data.Character}}
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="owner">{{data.User}}</span>&nbsp;<span class="badge badge-info">noted</span>
+                            on&nbsp;
+                            <span class="datetime">{{data.Datetime | date: 'dd/MM/yyyy HH:mm'}}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-body">
+                            {{data.Title || data.Content}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section nocontent" *ngIf="!items || items.length == 0">
+            <div class="content">
+                There aren't any notes
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <editor [(object)]="item" property="Content"></editor>
+            </div>
+            <div class="col-sm-12">
+                <editor-button icon="fa fa-note" className="btn btn-success" (click)="save()" [process]="processing" label="Add Note"></editor-button>
+            </div>
+        </div>
+    </div>
+    <div class="row row-loading" *ngIf="loading">
+        <loading></loading>
+    </div>
+</div>

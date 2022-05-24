@@ -1,0 +1,34 @@
+<div class="kt-portlet kt-portlet-edit-form emailtemplateWrapper">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <editor [(object)]="item" property="Subject" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-2">
+                                <label style="padding-bottom: 10px;">&nbsp;</label>
+                                <editor [(object)]="item" property="MustAgree" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-12">
+                                <editor [(object)]="item" property="Content" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-12">
+                                <editor [(object)]="item" property="AssignType" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 notice-users" *ngIf="item.AssignType == NoticeAssignType.SpecificUsers">
+                       <list-user [ids]="item.UserIds" (selectedChange)="selectedUserIds($event)"></list-user>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

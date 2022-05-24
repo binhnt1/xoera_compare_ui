@@ -1,0 +1,25 @@
+<div wrapper class="content-header row">
+    <div class="page-bar content-header-left col-md-6 col-12 mb-1">
+        <h3 class="content-header-title mb-0" *ngIf="breadcrumbs && breadcrumbs.length > 0">
+            {{ breadcrumbs[breadcrumbs.length - 1].Name }}
+        </h3>
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb" *ngIf="breadcrumbs && breadcrumbs.length > 0">
+                    <li class="breadcrumb-item" [ngClass]="{'active':!item.Link}" *ngFor="let item of breadcrumbs; let i = index;">
+                        <a [routerLink]="item.Link" *ngIf="item.Link">{{ item.Name }}</a>
+                        <span *ngIf="!item.Link">{{ item.Name }}</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="page-bar content-header-right col-md-6 col-12 mb-1">
+        <span class="button-item" *ngFor="let action of actions">
+            <button class="btn-min-width" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.processButton && (!action.hidden || !action.hidden())">
+                <i [ngClass]="action.icon"></i>
+                <span class="kt-hidden-mobile">{{ action.name }}</span>
+            </button>
+        </span>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+.loadingWapper {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90%;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+
+    .overlay {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+.blockui {
+    background: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    display: table;
+    table-layout: fixed;
+
+    &.blockui-noshadow {
+        box-shadow: none;
+    }
+
+    &.kt-rounded {
+        border-radius: 4px;
+    }
+
+    > span {
+        color: kt-base-color(label, 2);
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0.75rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 400;
+        white-space: nowrap;
+
+        > .kt-loader,
+        > .kt-spinner {
+            margin-right: 1.25rem;
+        }
+    }
+}

@@ -1,0 +1,177 @@
+<div *ngIf="item && item.Type > 1; else other_content">
+    <div class="row">
+        <div class="col-sm-12">
+            <editor [(object)]="item" property="Type" (valueChange)="typeChange()"></editor>
+        </div>
+    </div>
+    <div class="row" *ngIf="item.Type == ONAType.FNDAS || item.Type == ONAType.NEWCN">
+        <div class="col-sm-12">
+            <h4>Info</h4>
+        </div>
+        <div class="col-sm-4">
+            <editor [(object)]="item" property="Mam"></editor>
+        </div>
+        <div class="col-sm-4">
+            <editor [(object)]="item" property="EffectiveFromDate"></editor>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Asset Details</h4>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="AssetClassCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="PaymentMethodCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="ModelCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="ManufacturerCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="YearOfManufacture" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="SerialNumber" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="AssetStatusCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="LocationCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="AssetLocationNotes" [readonly]="true"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Meter Details</h4>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="MeterTypeCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="MeterMechanismCode" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="MeasuringCapacity" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="RoleCode" [readonly]="true"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Register Details</h4>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="RegisterTypeCode"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="NoOfDigits" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="UnitsofMeasure" [readonly]="true"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="MultiplicationFactor" [readonly]="true"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+    </div>
+    <div class="row" *ngIf="item.Type == ONAType.FIX">
+        <div class="col-sm-12">
+            <h4>Info</h4>
+        </div>
+        <div class="col-sm-4">
+            <editor [(object)]="item" property="Mam"></editor>
+        </div>
+        <div class="col-sm-4">
+            <editor [(object)]="item" property="EffectiveFromDate"></editor>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Asset Details</h4>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="AssetClassCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="PaymentMethodCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="ModelCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="ManufacturerCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="LocationCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="AssetLocationNotes"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Meter Details</h4>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="MeterTypeCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="MeterMechanismCode"></editor>
+                </div>
+                <div class="col-sm-4">
+                    <editor [(object)]="item" property="MeasuringCapacity"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Register Details</h4>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="RegisterTypeCode"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="NoOfDigits"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="UnitsofMeasure"></editor>
+                </div>
+                <div class="col-sm-3">
+                    <editor [(object)]="item" property="MultiplicationFactor"></editor>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>
+<ng-template #other_content>
+    <div class="row" *ngIf="item">
+        <div class="col-sm-12">
+            <editor [(object)]="item" property="Mam"></editor>
+        </div>
+        <div class="col-sm-12">
+            <editor [(object)]="item" property="EffectiveFromDate"></editor>
+        </div>
+    </div>
+</ng-template>
