@@ -2,16 +2,16 @@ export class AppConfig {
     public static ApiUrl: string;
     public static SecretKey: string;
     public static SignalrUrl: string;
-    public static AccountTokenKey = 'national.account';
-    public static AdminAccountTokenKey = 'national.admin.account';
+    public static AccountTokenKey = 'xoera.compare.account';
+    public static AdminAccountTokenKey = 'xoera.compare.admin.account';
 
     public static setEnvironment() {
         let port = document.location.port,
             domain = window.location.hostname;
         switch (domain) {
-            case "national.co.uk": {
-                AppConfig.ApiUrl = "https://api.national.co.uk/api";
-                AppConfig.SignalrUrl = "https://api.national.co.uk/notifyhub";
+            case "xoera.compare.co.uk": {
+                AppConfig.ApiUrl = "https://api.xoera.compare.co.uk/api";
+                AppConfig.SignalrUrl = "https://api.xoera.compare.co.uk/notifyhub";
                 AppConfig.SecretKey = 'MM3CRqxyYn1Fa501lDqovopBHl+bL8z0le2qjnbbwNlLz77QVLnoOW5yilst';
             }
                 break;
@@ -40,8 +40,8 @@ export class AppConfig {
                     }
                 } else {
                     if (port && port == '8080') {
-                        AppConfig.ApiUrl = 'https://localhost:44323/api';
-                        AppConfig.SignalrUrl = 'https://localhost:44323/notifyhub';
+                        AppConfig.ApiUrl = 'https://localhost:5001/api';
+                        AppConfig.SignalrUrl = 'https://localhost:5001/notifyhub';
                         AppConfig.SecretKey = 'MM3CRqxyYn1Fa501lDqovopBHl+bL8z0le2qjnbbwNlLz77QVLnoOW5yilst';
                     } else {
                         AppConfig.ApiUrl = 'https://localhost:5001/api';

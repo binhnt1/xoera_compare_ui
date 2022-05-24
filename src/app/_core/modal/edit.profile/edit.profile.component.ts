@@ -1,6 +1,5 @@
 declare var toastr: any;
 import * as _ from 'lodash';
-import { ApiService } from '../../services/api.service';
 import { validation } from '../../decorators/validator';
 import { ResultApi } from '../../domains/data/result.api';
 import { EntityHelper } from '../../helpers/entity.helper';
@@ -21,7 +20,7 @@ export class ModalEditProfileComponent implements OnInit {
     @ViewChild('uploadAvatar') uploadAvatar: EditorComponent;
 
     constructor(
-        public service: ApiService,
+        public service: AdminApiService,
         public adminService: AdminApiService) {
     }
 

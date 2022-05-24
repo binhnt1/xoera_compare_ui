@@ -19,23 +19,9 @@ import { AdminErrorInterceptor } from './_core/interceptor/admin.error.intercept
 
 // client
 import { LayoutModule } from './_layout/layout.module';
-import { ApiService } from './_core/services/api.service';
-import { AuthService } from './_core/services/auth.service';
-import { DataService } from './_core/services/data.service';
-import { EventService } from './_core/services/event.service';
-import { DialogService } from './_core/services/dialog.service';
-import { SiteService } from './modules/admin/site/site.service';
-import { HubFileService } from './modules/admin/hubfile/hubfile.service';
 import { ErrorInterceptor } from './_core/interceptor/error.interceptor';
 import { LayoutAdminStackModule } from './_layout.admin.stack/layout.module';
-import { BulkEmailService } from './modules/admin/bulk.email/bulk.email.service';
-import { CrawWebsiteService } from './modules/admin/craw.website/craw.website.service';
-import { CrawKeywordService } from './modules/admin/craw.keyword/craw.keyword.service';
 import { EmailTemplateService } from './modules/admin/email.template/email.template.service';
-import { CrawRunHistoryService } from './modules/admin/craw.run.history/craw.run.history.service';
-import { BrokerLeadTempService } from './modules/admin/broker.lead.temp/broker.lead.temp.service';
-import { BrokerService } from './modules/admin/broker/broker.service';
-import { BrokerLeadService } from './modules/admin/broker.lead/broker.lead.service';
 
 @NgModule({
   declarations: [
@@ -63,30 +49,16 @@ import { BrokerLeadService } from './modules/admin/broker.lead/broker.lead.servi
       useClass: ErrorInterceptor,
       multi: true
     },    
-    ApiService,
-    AuthService,
-    DataService,
     UserService,
     RoleService,
-    SiteService,
-    EventService,
-    BrokerService,
-    DialogService,
     VersionService,
-    HubFileService,
     UserIdleService,
     AdminApiService,
     AdminAuthService,
     AdminDataService,
-    BulkEmailService,
     AdminEventService,
-    BrokerLeadService,
-    CrawKeywordService,
-    CrawWebsiteService,
     AdminDialogService,
     EmailTemplateService,
-    CrawRunHistoryService,
-    BrokerLeadTempService,
   ],
   bootstrap: [AppComponent]
 })

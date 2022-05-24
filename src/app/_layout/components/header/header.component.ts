@@ -2,14 +2,14 @@ import * as _ from 'lodash';
 import { version } from 'package.json'
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { ApiService } from '../../../_core/services/api.service';
-import { UserDto } from '../../../_core/domains/objects/user.dto';
-import { DataService } from '../../../_core/services/data.service';
-import { AuthService } from '../../../_core/services/auth.service';
 import { ResultApi } from '../../../_core/domains/data/result.api';
 import { NotifyDto } from '../../../_core/domains/objects/notify.dto';
 import { UtilityExHelper } from '../../../_core/helpers/utility.helper';
+import { AdminApiService } from '../../../_core/services/admin.api.service';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
+import { AdminAuthService } from '../../../_core/services/admin.auth.service';
+import { AdminDataService } from '../../../_core/services/admin.data.service';
+import { AdminUserDto, UserDto } from '../../../_core/domains/objects/user.dto';
 import { AdminDialogService } from '../../../_core/services/admin.dialog.service';
 import { LinkPermissionDto } from '../../../_core/domains/objects/link.permission.dto';
 import { ModalViewProfileComponent } from '../../../_core/modal/view.profile/view.profile.component';
@@ -26,17 +26,17 @@ export class LayoutHeaderComponent implements OnInit {
     activeNotify: boolean;
     notifies: NotifyDto[];
 
-    account: UserDto;
     loading: boolean;
     currentUrl: string;
     appVersion = version;
     accountLetter: string;
+    account: AdminUserDto;
 
     constructor(
         public router: Router,
-        public data: DataService,
-        public authen: AuthService,
-        public service: ApiService,
+        public data: AdminDataService,
+        public authen: AdminAuthService,
+        public service: AdminApiService,
         public dialog: AdminDialogService) {
         this.router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {

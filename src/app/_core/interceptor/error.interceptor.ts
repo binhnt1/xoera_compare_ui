@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
 import { ToastrHelper } from '../helpers/toastr.helper';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { AdminAuthService } from '../services/admin.auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(public authen: AuthService) { }
+    constructor(public authen: AdminAuthService) { }
 
     intercept(
         req: HttpRequest<any>,

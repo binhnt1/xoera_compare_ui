@@ -1,13 +1,13 @@
 declare var $: any
 import { Component } from '@angular/core';
-import { DataService } from '../../../_core/services/data.service';
+import { AdminDataService } from '../../../_core/services/admin.data.service';
 
 @Component({
     selector: 'layout-client-header-mobile',
     templateUrl: 'header.mobile.component.html'
 })
 export class LayoutHeaderMobileComponent {
-    constructor(public data: DataService) {
+    constructor(public data: AdminDataService) {
 
     }
 

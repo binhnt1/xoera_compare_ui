@@ -9,7 +9,7 @@ import { ResultApi } from '../domains/data/result.api';
 import { UploadData } from '../domains/data/upload.data';
 import { MethodType } from '../domains/enums/method.type';
 import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { AdminUserLoginDto, AdminUserProfileDto, AdminUserResetPasswordDto } from '../domains/objects/user.dto';
+import { AdminUserLoginDto, AdminUserProfileDto, UserChangePasswordDto, UserForgotPasswordDto, UserLoginDto, UserRegisterDto } from '../domains/objects/user.dto';
 
 @Injectable()
 export class AdminApiService {
@@ -145,11 +145,11 @@ export class AdminApiService {
         return await this.ToResultApi(api, MethodType.Get);
     }
     async permissions(): Promise<ResultApi> {
-        const api = ApiUrl.ToUrl('/admin/user/mypermissions');
+        const api = ApiUrl.ToUrl('/admin/security/permissions');
         return await this.ToResultApi(api, MethodType.Get);
     }
     async linkPermissions(): Promise<ResultApi> {
-        const api = ApiUrl.ToUrl('/admin/linkpermission');
+        const api = ApiUrl.ToUrl('/admin/security/linkpermissions');
         return await this.ToResultApi(api, MethodType.Get);
     }
     async rolePermissions(roleId: number): Promise<ResultApi> {
@@ -172,19 +172,11 @@ export class AdminApiService {
         };
         return await this.ToResultApi(api, MethodType.Post, obj);
     }
-    async signin(obj: AdminUserLoginDto): Promise<ResultApi> {
-        const api = ApiUrl.ToUrl('/admin/user/signin');
-        return await this.ToResultApi(api, MethodType.Post, obj);
-    }
     async verify(code: string, password): Promise<ResultApi> {
         const api = ApiUrl.ToUrl('/admin/user/verify/' + code);
         let obj = {
             Password: password
         }
-        return await this.ToResultApi(api, MethodType.Post, obj);
-    }
-    async signout(obj: AdminUserLoginDto): Promise<ResultApi> {
-        const api = ApiUrl.ToUrl('/admin/user/signout');
         return await this.ToResultApi(api, MethodType.Post, obj);
     }
     async updateProfile(obj: AdminUserProfileDto): Promise<ResultApi> {
@@ -197,8 +189,35 @@ export class AdminApiService {
         };
         return await this.ToResultApi(api, MethodType.Post, param);
     }
-    async changePassword(obj: AdminUserResetPasswordDto): Promise<ResultApi> {
-        const api = ApiUrl.ToUrl('/admin/user/changePassword');
+
+    
+    async signin(obj: UserLoginDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/signin');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+    async signout(obj: UserLoginDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/signout');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+    async register(obj: UserRegisterDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/register');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+    async changePassword(obj: UserChangePasswordDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/changePassword');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+    async forgotPassword(obj: UserForgotPasswordDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/forgotPassword');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+
+    async adminSignin(obj: AdminUserLoginDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/adminSignin');
+        return await this.ToResultApi(api, MethodType.Post, obj);
+    }
+    async adminSignout(obj: AdminUserLoginDto): Promise<ResultApi> {
+        const api = ApiUrl.ToUrl('/admin/security/adminSignout');
         return await this.ToResultApi(api, MethodType.Post, obj);
     }
 

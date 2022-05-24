@@ -12,7 +12,7 @@ const readFile = util.promisify(fs.readFile);
 
 console.log('\nRunning post-build tasks');
 
-const versionFilePath = path.join(__dirname + '/../dist/national/version.json');
+const versionFilePath = path.join(__dirname + '/../dist/xoeracompare/version.json');
 
 let mainHash = '';
 let mainBundleFile = '';
@@ -21,7 +21,7 @@ let mainBundleFile = '';
 let mainBundleRegexp = /^main-es2015.?([a-z0-9]*)?(\.bundle)?.js$/;
 console.log(mainBundleRegexp);
 
-readDir(path.join(__dirname, '../dist/national/'))
+readDir(path.join(__dirname, '../dist/xoeracompare/'))
   .then(files => {
     mainBundleFile = files.find(f => mainBundleRegexp.test(f));
 
@@ -49,7 +49,7 @@ readDir(path.join(__dirname, '../dist/national/'))
     console.log(`Replacing 2 hash in the ${mainHash}`);
 
     // replace hash placeholder in our main.js file so the code knows it's current hash
-    const mainFilepath = path.join(__dirname, '../dist/national/', mainBundleFile);
+    const mainFilepath = path.join(__dirname, '../dist/xoeracompare/', mainBundleFile);
     return readFile(mainFilepath, 'utf8')
       .then(mainFileData => {
         const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);

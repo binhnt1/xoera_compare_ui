@@ -1,6 +1,5 @@
 declare var toastr: any;
 import * as _ from 'lodash';
-import { ApiService } from '../../services/api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ResultApi } from '../../domains/data/result.api';
 import { EntityHelper } from '../../helpers/entity.helper';
@@ -17,7 +16,7 @@ export class ModalViewProfileComponent implements OnInit {
     item = new AdminUserProfileDto();
 
     constructor(
-        public service: ApiService,
+        public service: AdminApiService,
         public adminService: AdminApiService) {
     }
 

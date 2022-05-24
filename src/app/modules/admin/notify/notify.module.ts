@@ -3,9 +3,9 @@ import { Component, NgModule } from "@angular/core";
 import { UtilityModule } from "../../utility.module";
 import { GridData } from "../../../_core/domains/data/grid.data";
 import { AdminAuthGuard } from "../../../_core/guards/admin.auth.guard";
+import { NotifyEntity } from "../../../_core/domains/entities/notify.entity";
 import { ModalSizeType } from "../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
-import { NotifyEntity } from "../../../_core/domains/entities/notify.entity";
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',

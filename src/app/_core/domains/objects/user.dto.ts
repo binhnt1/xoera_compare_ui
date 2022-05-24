@@ -8,7 +8,6 @@ import { StringDecorator } from '../../decorators/string.decorator';
 import { NumberDecorator } from '../../decorators/number.decorator';
 import { BooleanDecorator } from '../../decorators/boolean.decorator';
 import { DateTimeDecorator } from '../../decorators/datetime.decorator';
-import { DropDownDecorator } from '../../decorators/dropdown.decorator';
 import { BooleanType, DateTimeType, StringType } from '../enums/data.type';
 
 @TableDecorator()
@@ -64,6 +63,14 @@ export class UserLoginDto {
 }
 
 @TableDecorator()
+export class UserUpdateDto {
+    Birthday: Date;
+    Avatar: string;
+    FullName: string;
+    Gender: GenderType;
+}
+
+@TableDecorator()
 export class UserProfileDto {
     @NumberDecorator()
     Id: number;
@@ -87,19 +94,7 @@ export class UserProfileDto {
     LastName: string;
 }
 
-export class UserUpdateDto {
-    Birthday: Date;
-    Avatar: string;
-    FullName: string;
-    Gender: GenderType;
-}
-
 @TableDecorator()
-export class UserForgotPasswordDto {
-    @StringDecorator({ required: true, type: StringType.Email })
-    Email: string;
-}
-
 export class UserRegisterDto {
     @StringDecorator({ required: true, type: StringType.Account, max: 100 })
     UserName: string;
@@ -144,7 +139,15 @@ export class UserRegisterDto {
 }
 
 @TableDecorator()
-export class UserResetPasswordDto {
+export class UserForgotPasswordDto {
+    @StringDecorator({ required: true, type: StringType.Email })
+    Email: string;
+
+    Activity?: UserActivityDto;
+}
+
+@TableDecorator()
+export class UserChangePasswordDto {
     @StringDecorator({ required: true, type: StringType.Password, min: 6, max: 100 })
     OldPassword: string;
 
@@ -157,6 +160,7 @@ export class UserResetPasswordDto {
     Activity?: UserActivityDto;
 }
 
+@TableDecorator()
 export class AdminUserDto {
     Id: number;
     Email: string;
@@ -248,7 +252,7 @@ export class AdminUserProfileDto {
 }
 
 @TableDecorator()
-export class AdminUserResetPasswordDto {
+export class AdminUserChangePasswordDto {
     @StringDecorator({ required: true, type: StringType.Password, min: 6, max: 100 })
     OldPassword: string;
 

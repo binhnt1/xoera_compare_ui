@@ -3,15 +3,15 @@ import * as signalR from '@microsoft/signalr';
 import { routerTransition } from "../app.animation";
 import { UserIdleService } from "angular-user-idle";
 import { AppConfig } from '../_core/helpers/app.config';
-import { AuthService } from "../_core/services/auth.service";
-import { DataService } from '../_core/services/data.service';
 import { VersionService } from "../services/version.service";
 import { ToastrHelper } from '../_core/helpers/toastr.helper';
 import { DialogData } from '../_core/domains/data/dialog.data';
 import { NotifyType } from '../_core/domains/enums/notify.type';
-import { DialogService } from "../_core/services/dialog.service";
 import { Component, ViewEncapsulation, OnInit } from "@angular/core";
 import { NotifyEntity } from '../_core/domains/entities/notify.entity';
+import { AdminDataService } from '../_core/services/admin.data.service';
+import { AdminAuthService } from '../_core/services/admin.auth.service';
+import { AdminDialogService } from '../_core/services/admin.dialog.service';
 
 @Component({
   animations: [routerTransition],
@@ -35,10 +35,10 @@ export class LayoutComponent implements OnInit {
   dialogRestrict: DialogData;
 
   constructor(
-    public data: DataService,
-    public authen: AuthService,
-    public dialog: DialogService,
+    public data: AdminDataService,
+    public authen: AdminAuthService,
     public userIdle: UserIdleService,
+    public dialog: AdminDialogService,
     public versionService: VersionService) {
 
   }

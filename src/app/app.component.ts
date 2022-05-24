@@ -2,17 +2,16 @@ import { routerTransition } from './app.animation';
 import { AppConfig } from './_core/helpers/app.config';
 import { Component, HostListener } from '@angular/core';
 import { VersionService } from './services/version.service';
-import { DialogService } from './_core/services/dialog.service';
 import { AdminDialogService } from './_core/services/admin.dialog.service';
 
 @Component({
-  selector: 'national',
+  selector: 'xoera-compare',
   animations: [routerTransition],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
   constructor(
-    public dialog: DialogService,
+    public dialog: AdminDialogService,
     public admindialog: AdminDialogService,
     public versionService: VersionService) {
     AppConfig.setEnvironment();
