@@ -61,7 +61,7 @@ export class SignInComponent implements OnInit {
             let obj: AdminUserLoginDto = _.cloneDeep(this.item);
             obj.Password = UserActivityHelper.CreateHash256(obj.Password);
             obj.Activity = await UserActivityHelper.UserActivity(this.data.countryIp);
-            this.service.signin(obj).then(async (result: ResultApi) => {
+            this.service.adminSignin(obj).then(async (result: ResultApi) => {
                 if (result && result.Type == ResultType.Success) {
                     await this.authen.login(result.Object, this.item.RememberMe);
                 } else ToastrHelper.ErrorResult(result);
