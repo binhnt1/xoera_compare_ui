@@ -139,22 +139,6 @@
                         <table [ngClass]="randomClass" class="table table-striped table-bordered table-hover table-checkable dataTable no-footer table-resizable">
                             <thead>
                                 <tr class="heading" (clickOutside)="closeFilterMenu()">
-                                    <th class="actions" *ngIf="obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
-                                        Actions
-                                        <div class="choice-column" (clickOutside)="activeChoiceColumn = false">
-                                            <a (click)="activeChoiceColumn = !activeChoiceColumn"><i class="la la-list"></i></a>
-                                            <div class="dropdown-menu header-filter portlet light" [ngClass]="{'active':activeChoiceColumn}">
-                                                <div class="kt-portlet__body">
-                                                    <h6>Choice columns</h6>
-                                                    <ul class="kt-checkbox-list">
-                                                        <li *ngFor="let column of properties">
-                                                            <editor-checkbox [(value)]="column.Active" [decorator]="{label: column.Title}" (valueChange)="choiceColumnChange()"></editor-checkbox>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </th>
                                     <th *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
                                         <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable">
                                             <input type="checkbox" class="kt-checkable" [checked]="checkAll" [(ngModel)]="checkAll" (change)="checkAllChange()"> <span></span>
@@ -326,7 +310,7 @@
                                     <th *ngIf="obj.UpdatedBy">
                                         Updated
                                     </th>
-                                    <th class="actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                    <th class="actions" *ngIf="(obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
                                         Actions
                                         <div class="choice-column" (clickOutside)="activeChoiceColumn = false">
                                             <a (click)="activeChoiceColumn = !activeChoiceColumn"><i class="la la-list"></i></a>
@@ -346,31 +330,6 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of items; let i = index;" [ngClass]="i % 2 == 0 ? 'odd' : 'even'" (dblclick)="rowDoubleClick(item)">
-                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
-                                        <div class="btn-group" style="text-align: center;">
-                                            <span *ngFor="let action of obj.Actions">
-                                                <ng-container [ngSwitch]="action.systemName">
-                                                    <ng-container *ngSwitchCase="ActionType.Publish">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
-                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
-                                                        </a>
-                                                    </ng-container>
-                                                    <ng-container *ngSwitchCase="ActionType.Delete">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
-                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
-                                                        </a>
-                                                    </ng-container>
-                                                    <ng-container *ngSwitchDefault>
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
-                                                            <i [ngClass]="action.icon"></i>
-                                                        </a>
-                                                    </ng-container>
-                                                </ng-container>
-                                            </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
-                                                icon="la la-ellipsis-h"></dropdown>
-                                        </div>
-                                    </td>
                                     <td *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
                                         <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable && item.Checkable">
                                             <input type="checkbox" class="kt-checkable" [(ngModel)]="item.Checked" (change)="checkChange($event, item)"> <span></span>
@@ -426,7 +385,7 @@
                                         <div><i class="la la-calendar"></i> {{ (item.UpdatedDate || item.CreatedDate) | datetimex }}
                                         </div>
                                     </td>
-                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="(obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
                                         <div class="btn-group" style="text-align: center;">
                                             <span *ngFor="let action of obj.Actions">
                                                 <ng-container [ngSwitch]="action.systemName">

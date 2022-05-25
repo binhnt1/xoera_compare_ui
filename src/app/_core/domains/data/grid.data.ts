@@ -5,6 +5,7 @@ export class GridData {
     Url?: string;
     Title?: string;
     IsPopup?: boolean;
+    UpdatedBy?: boolean;
     TotalTitle?: string;
     Checkable?: boolean;
     Radioable?: boolean;
@@ -23,8 +24,6 @@ export class GridData {
     Filters?: ActionData[];
     ReferenceName?: string;
     Features?: ActionData[];
-    UpdatedBy?: boolean;
-    ActionIsFirst?: boolean;
     Reference?: new () => {};
     HideHeadActions?: boolean;
     NotKeepPrevData?: boolean;
