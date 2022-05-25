@@ -160,7 +160,6 @@ export class EditRoleComponent extends EditComponent implements OnInit {
             ? [
                 ActionData.back(() => { this.back() }),
                 ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
-                ActionData.history(() => { this.viewHistory(this.item.Id, 'role') })
             ]
             : [
                 ActionData.back(() => { this.back() }),

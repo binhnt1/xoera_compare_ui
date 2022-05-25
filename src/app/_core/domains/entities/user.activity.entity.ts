@@ -1,14 +1,12 @@
 import { BaseEntity } from "./base.entity";
-import { DateTimeType, StringType } from "../enums/data.type";
 import { LookupData } from "../data/lookup.data";
-import { SmtpAccountType } from "../enums/smtp.account.type";
+import { DateTimeType, StringType } from "../enums/data.type";
+import { UserActivityType } from "../enums/user.activity.type";
 import { TableDecorator } from "../../decorators/table.decorator";
 import { StringDecorator } from "../../decorators/string.decorator";
-import { NumberDecorator } from "../../decorators/number.decorator";
 import { BooleanDecorator } from "../../decorators/boolean.decorator";
 import { DropDownDecorator } from "../../decorators/dropdown.decorator";
 import { DateTimeDecorator } from "../../decorators/datetime.decorator";
-import { UserActivityType } from "../enums/user.activity.type";
 
 @TableDecorator({ title: 'Activity log' })
 export class UserActivityEntity extends BaseEntity {

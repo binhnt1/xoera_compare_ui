@@ -42,6 +42,7 @@ export enum DateTimeType {
     Time,
     DateTime,
     DateRange,
+    DateMonth,
     SignleDate,
 }
 export function DateTimeTypeAware(constructor: Function) {

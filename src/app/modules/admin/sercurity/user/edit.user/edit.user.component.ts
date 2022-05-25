@@ -319,7 +319,6 @@ export class EditUserComponent extends EditComponent {
                             });
                         })
                     },
-                ActionData.history(() => { this.viewHistory(this.item.Id, 'user') })
             ]
             : [
                 ActionData.back(() => { this.back() }),

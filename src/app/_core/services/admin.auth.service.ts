@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../helpers/app.config';
+import { UserType } from '../domains/enums/user.type';
 import { AdminApiService } from './admin.api.service';
 import { ResultApi } from '../domains/data/result.api';
 import { ActionData } from '../domains/data/action.data';
@@ -31,6 +32,10 @@ export class AdminAuthService {
 
     public get account(): AdminUserDto {
         return this.accountSubject && this.accountSubject.value;
+    }
+
+    public get management(): boolean {
+        return this.account.IsAdmin || this.account.UserType == UserType.Admin
     }
 
     public async lock() {

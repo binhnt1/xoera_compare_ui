@@ -101,7 +101,7 @@ export class LayoutHeaderComponent implements OnInit {
         this.dialog.WapperAsync({
             title: 'Profile',
             cancelText: 'Close',
-            size: ModalSizeType.Large,
+            size: ModalSizeType.Medium,
             confirmText: 'Edit profile',
             objectExtra: { admin: true },
             object: ModalViewProfileComponent,
@@ -111,7 +111,7 @@ export class LayoutHeaderComponent implements OnInit {
                     cancelText: 'Close',
                     title: 'Edit profile',
                     confirmText: 'Update',
-                    size: ModalSizeType.Large,
+                    size: ModalSizeType.Medium,
                     objectExtra: { admin: true },
                     object: ModalEditProfileComponent,
                 });

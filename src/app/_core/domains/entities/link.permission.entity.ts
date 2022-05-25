@@ -7,7 +7,7 @@ import { StringDecorator } from '../../decorators/string.decorator';
 import { NumberDecorator } from '../../decorators/number.decorator';
 import { DropDownDecorator } from '../../decorators/dropdown.decorator';
 
-@TableDecorator()
+@TableDecorator({ title: 'Link Permission' })
 export class LinkPermissionEntity extends BaseEntity {
     @StringDecorator({ required: true, allowSearch: true, type: StringType.Text, max: 150 })
     Name: string;

@@ -113,7 +113,6 @@ export class ViewUserComponent extends EditComponent {
         let actions: ActionData[] = [
             ActionData.back(() => { this.back() }),
             ActionData.gotoEdit("Edit", () => { this.edit(this.item) }),
-            ActionData.history(() => { this.viewHistory(this.item.Id, 'user') })
         ];
         this.actions = await this.authen.actionsAllow(UserEntity, actions);
     }

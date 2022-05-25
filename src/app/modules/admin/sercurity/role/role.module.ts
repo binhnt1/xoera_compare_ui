@@ -50,9 +50,6 @@ export class RoleComponent extends GridEditComponent {
                     this.popupChoiceUser(item);
                 })
             },
-            ActionData.history((item: RoleEntity) => {
-                this.viewHistory(item.Id);
-            })
         ],
         Reference: RoleEntity,
     };

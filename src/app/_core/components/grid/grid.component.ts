@@ -41,9 +41,10 @@ import { HistoryComponent } from '../edit/history/history.component';
 import { AdminEventService } from '../../services/admin.event.service';
 import { AdminDialogService } from '../../services/admin.dialog.service';
 import { NavigationStateData } from '../../domains/data/navigation.state';
-import { DataType, DateTimeType, StringType } from '../../domains/enums/data.type';
+import { DataType, DateTimeType, StoreType, StringType } from '../../domains/enums/data.type';
 import { ModalExportDataComponent } from '../../modal/export.data/export.data.component';
 import { Component, ComponentFactoryResolver, ComponentRef, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ImageEx } from '../../decorators/image.decorator';
 
 @Component({
     templateUrl: './grid.component.html'
@@ -597,7 +598,14 @@ export abstract class GridComponent {
                                             item[propertyDropDown.property] = UtilityExHelper.createLabel(optionItem.label);
                                         }
                                     }
+                                } else if (property.dataType == DataType.Image) {
+                                    propertyItem.Align = 'center';
+                                    let propertyImage = <ImageEx>property;
+                                    if (propertyImage.store == StoreType.Database) {
+                                        item[propertyImage.property] = 'data:image/png;base64,' + item[propertyImage.property];
+                                    }
                                 } else if (property.dataType == DataType.Boolean) {
+                                    propertyItem.Align = 'center';
                                     let propertyBoolean = <BooleanEx>property;
                                     if (propertyBoolean.lookup && propertyBoolean.lookup.items) {
                                         let values = item[propertyBoolean.property] && JSON.parse(item[propertyBoolean.property]) as any[];
@@ -618,6 +626,18 @@ export abstract class GridComponent {
                                                 item[propertyBoolean.property + '_Color'] = optionItem.color;
                                                 item[propertyBoolean.property] = UtilityExHelper.createLabel(optionItem.label);
                                             }
+                                        }
+                                    }
+                                } else if (property.dataType == DataType.DateTime) {
+                                    propertyItem.Align = 'center';
+                                    let propertyDateTime = <DateTimeEx>property;
+                                    if (propertyDateTime.type == DateTimeType.Time) {
+                                        let value = item[propertyDateTime.property];
+                                        if (value) {
+                                            let hours = value.toString().split(':')[0],
+                                                minutes = value.toString().split(':')[1],
+                                                valueText = hours + ':' + minutes;
+                                            item[propertyDateTime.property] = valueText;
                                         }
                                     }
                                 }
@@ -687,9 +707,9 @@ export abstract class GridComponent {
             return false;
         }
     }
-    
+
     public readFile(files: any) {
-        
+
     }
 
     public selectedFile(event: any) {

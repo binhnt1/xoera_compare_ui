@@ -178,7 +178,6 @@ export class DateTimeComponent implements OnInit, OnChanges, OnDestroy {
                             language: 'en',
                             minDate: minDate,
                             maxDate: maxDate,
-                            todayButton: true,
                             toggleSelected: false,
                             autoClose: !timePicker,
                             timepicker: timePicker,
@@ -187,13 +186,22 @@ export class DateTimeComponent implements OnInit, OnChanges, OnDestroy {
                             view: this.decorator.view,
                             inline: this.decorator.inline,
                             multipleDates: this.decorator.multiple,
+                            todayButton: this.decorator.type != DateTimeType.Time,
+                            onlyTimepicker: this.decorator.type == DateTimeType.Time,
                             onSelect: (formattedDate: string, date: any) => {
                                 if (this.decorator.multiple) this.notCheckChange = true;
                                 if (this.decorator.multiple) {
                                     this.value = date;
                                     this.valueChange.emit(this.value);
                                 } else {
-                                    this.value = date;
+                                    if (this.decorator.type == DateTimeType.Time) {
+                                        let datetime: Date = date,
+                                            hours = datetime.getHours() < 10 ? '0' + datetime.getHours().toString() : datetime.getHours().toString(),
+                                            minutes = datetime.getMinutes() < 10 ? '0' + datetime.getMinutes().toString() : datetime.getMinutes().toString();
+                                        this.value = hours + ':' + minutes;
+                                    } else {
+                                        this.value = date;
+                                    }
                                     this.valueChange.emit(this.value);
                                 }
                                 setTimeout(() => { this.notCheckChange = false }, 100);
@@ -207,19 +215,97 @@ export class DateTimeComponent implements OnInit, OnChanges, OnDestroy {
         }, 300);
     }
 
+    private setValueReadOnly() {
+        setTimeout(() => {
+            if (this.decorator.type == DateTimeType.DateRange) {
+                let $datetime = $("#" + this.decorator.id);
+                if ($datetime && $datetime.length > 0) {
+                    let dateFormat = this.decorator.format
+                        .replace(DateTimeFormat.HM, '')
+                        .toUpperCase()
+                        .trim();
+                    let start = this.value ? moment(this.value[0]).format(dateFormat) : '',
+                        end = this.value ? moment(this.value[1]).format(dateFormat) : '',
+                        range = start ? start + (end ? ' - ' + end : '') : '';
+                    $datetime.val(range);
+                }
+            } else if (this.decorator.type == DateTimeType.DateMonth) {
+                let $datetime = $("#" + this.decorator.id);
+                if ($datetime && $datetime.length > 0) {
+
+                }
+            } else {
+                let $datetime = $("#" + this.decorator.id);
+                if ($datetime && $datetime.length > 0) {
+                    if (!this.decorator.multiple) {
+                        if (this.decorator.type == DateTimeType.Time) {
+                            if (this.value) {
+                                let hours = this.value.toString().split(':')[0],
+                                    minutes = this.value.toString().split(':')[1];
+                                $datetime.val(hours + ':' + minutes);
+                            }
+                        } else {
+                            if (this.value) this.value = new Date(this.value);
+                            let date = this.decorator.type == DateTimeType.DateTime
+                                ? UtilityExHelper.dateTimeString(this.value)
+                                : UtilityExHelper.dateString(this.value);
+                            $datetime.val(date);
+                        }
+                    }
+                }
+            }
+        }, 300);
+    }
     private setValue(values?: any) {
-        if (this.decorator.type != DateTimeType.DateRange) {
+        if (this.decorator.type == DateTimeType.DateRange) {
             let $datetime = $("#" + this.decorator.id);
-            if ($datetime &&
-                $datetime.length > 0 &&
-                $datetime.data('datepicker')) {
-                if (!this.decorator.multiple) {
-                    if (this.value)
-                        this.value = new Date(this.value);
-                    $datetime.data('datepicker').selectDate(this.value);
+            if ($datetime && $datetime.length > 0) {
+                $datetime.data('daterangepicker').setStartDate(this.value && moment(this.value[0]));
+                $datetime.data('daterangepicker').setEndDate(this.value && moment(this.value[1]));
+
+                let dateFormat = this.decorator.format
+                    .replace(DateTimeFormat.HM, '')
+                    .toUpperCase()
+                    .trim();
+                let start = this.value ? moment(this.value[0]).format(dateFormat) : '',
+                    end = this.value ? moment(this.value[1]).format(dateFormat) : '',
+                    range = start ? start + (end ? ' - ' + end : '') : '';
+                this.valueChange.emit(this.value);
+                $datetime.val(range);
+            }
+        } else if (this.decorator.type == DateTimeType.DateMonth) {
+            let $datetime = $("#" + this.decorator.id);
+            if ($datetime && $datetime.length > 0 && $datetime.data('datepicker')) {
+                if (this.value) {
+                    let month = parseInt(this.value.split('/')[0]) - 1,
+                        year = parseInt(this.value.split('/')[1]),
+                        value = new Date(year, month, 1);
+                    $datetime.data('datepicker').selectDate(value);
                     this.valueChange.emit(this.value);
+                } else $datetime.data('datepicker').clear();
+            }
+        } else {
+            let $datetime = $("#" + this.decorator.id);
+            if ($datetime && $datetime.length > 0 && $datetime.data('datepicker')) {
+                if (!this.decorator.multiple) {
+                    if (this.decorator.type == DateTimeType.Time) {
+                        if (this.value) {
+                            let date = new Date(),
+                                hours = this.value.toString().split(':')[0],
+                                minutes = this.value.toString().split(':')[1];
+                            date.setHours(hours); date.setMinutes(minutes);
+                            $datetime.data('datepicker').selectDate(date);
+                            this.valueChange.emit(this.value);
+                        }
+                    } else {
+                        if (this.value)
+                            this.value = new Date(this.value);
+                        $datetime.data('datepicker').selectDate(this.value);
+                        this.valueChange.emit(this.value);
+                    }
                 } else {
                     $datetime.data('datepicker').clear();
+                    if (!values) values = this.value;
                     if (values && values.length > 0) {
                         setTimeout(() => {
                             this.value = values || this.value;
@@ -238,53 +324,7 @@ export class DateTimeComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 }
             }
-        } else {
-            let $datetime = $("#" + this.decorator.id);
-            if ($datetime && $datetime.length > 0) {
-                $datetime.data('daterangepicker').setStartDate(this.value && moment(this.value[0]));
-                $datetime.data('daterangepicker').setEndDate(this.value && moment(this.value[1]));
-
-                let dateFormat = this.decorator.format
-                    .replace(DateTimeFormat.HM, '')
-                    .toUpperCase()
-                    .trim();
-                let start = this.value ? moment(this.value[0]).format(dateFormat) : '',
-                    end = this.value ? moment(this.value[1]).format(dateFormat) : '',
-                    range = start ? start + (end ? ' - ' + end : '') : '';
-                this.valueChange.emit(this.value);
-                $datetime.val(range);
-            }
-
         }
-    }
-
-    private setValueReadOnly() {
-        setTimeout(() => {
-            if (this.decorator.type != DateTimeType.DateRange) {
-                let $datetime = $("#" + this.decorator.id);
-                if ($datetime && $datetime.length > 0) {
-                    if (!this.decorator.multiple) {
-                        if (this.value) this.value = new Date(this.value);
-                        let date = this.decorator.type == DateTimeType.DateTime
-                            ? UtilityExHelper.dateTimeString(this.value)
-                            : UtilityExHelper.dateString(this.value);
-                        $datetime.val(date);
-                    }
-                }
-            } else {
-                let $datetime = $("#" + this.decorator.id);
-                if ($datetime && $datetime.length > 0) {
-                    let dateFormat = this.decorator.format
-                        .replace(DateTimeFormat.HM, '')
-                        .toUpperCase()
-                        .trim();
-                    let start = this.value ? moment(this.value[0]).format(dateFormat) : '',
-                        end = this.value ? moment(this.value[1]).format(dateFormat) : '',
-                        range = start ? start + (end ? ' - ' + end : '') : '';
-                    $datetime.val(range);
-                }
-            }
-        }, 300);
     }
     private monthDiff(d1: Date, d2: Date) {
         let months: number;

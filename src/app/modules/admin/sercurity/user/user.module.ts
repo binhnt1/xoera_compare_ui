@@ -96,9 +96,6 @@ export class UserComponent extends GridComponent {
                     });
                 })
             },
-            ActionData.history((item: UserEntity) => {
-                this.viewHistory(item.Id);
-            })
         ],
     };
 

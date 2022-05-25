@@ -1,0 +1,53 @@
+<div class="kt-portlet kt-portlet-edit-form">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="ZoneName" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="ZoneType" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="Area" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="Region" [decorator]="{readonly: viewer}"></editor>
+                                <div class="d-flex justify-content-between">
+                                    <div style="width: 48%;">
+                                        <editor [(object)]="item" property="Lat" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div style="width: 48%;">
+                                        <editor [(object)]="item" property="Lng" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="LeadTime" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="Radius" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="PickupCharge" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="ParkingPickup" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="ParkingDropoff" [decorator]="{readonly: viewer}"></editor>
+                            </div>
+                            <div class="col-sm-4">
+                                <editor [(object)]="item" property="FreezeStarts" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="FreezeExpires" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="MinDropoffDistance" [decorator]="{readonly: viewer}"></editor>
+                                <editor [(object)]="item" property="MaxDropoffDistance" [decorator]="{readonly: viewer}"></editor>
+                                <div class="d-flex justify-content-between" style="margin-top: 55px;">
+                                    <div style="width: 48%;">
+                                        <editor [(object)]="item" property="IsBookingFrozen" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                    <div style="width: 48%;">
+                                        <editor [(object)]="item" property="Editable" [decorator]="{readonly: viewer}"></editor>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

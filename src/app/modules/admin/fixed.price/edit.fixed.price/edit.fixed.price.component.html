@@ -1,0 +1,22 @@
+<div class="row" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6">
+                <editor *ngIf="authen.management" [(object)]="item" property="AccountId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="TariffId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="VehTypeId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Price" [decorator]="{readonly: viewer}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="Drop" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Return" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Start" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="End" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="ReverseDirection" [decorator]="{readonly: viewer}"></editor>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

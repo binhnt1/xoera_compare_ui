@@ -89,10 +89,19 @@ export class ConstantHelper {
     public static LINKS = [
         '/admin',
         '/admin/user',
+        '/admin/zone',
+        '/admin/role',
+        '/admin/price',
+        '/admin/tariff',
+        '/admin/pricehike',
+        '/admin/pricerule',
+        '/admin/fixedprice',
         '/admin/permission',
+        '/admin/vehicletype',
         '/admin/smtpaccount',
         '/admin/emailtemplate',
         '/admin/linkpermission',
+        '/admin/vehicletypemapping',
     ];
     public static EMAILTEMPLATE_TYPES: OptionItem[] = [
         { label: 'User Register', value: EmailTemplateType.Register },

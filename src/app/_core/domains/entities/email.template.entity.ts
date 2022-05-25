@@ -8,7 +8,7 @@ import { TableDecorator } from "../../decorators/table.decorator";
 import { StringDecorator } from "../../decorators/string.decorator";
 import { DropDownDecorator } from "../../decorators/dropdown.decorator";
 
-@TableDecorator()
+@TableDecorator({ title: 'Email Template' })
 export class EmailTemplateEntity extends BaseEntity {
 
     @DropDownDecorator({ required: true, allowSearch: true, lookup: { items: ConstantHelper.EMAILTEMPLATE_TYPES } })

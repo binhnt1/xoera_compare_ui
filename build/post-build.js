@@ -1,60 +1,78 @@
-const path = require('path');
 const fs = require('fs');
+const fsw = require('fs');
+const path = require('path');
 const util = require('util');
-
-// get application version from package.json
-const appVersion = require('../package.json').version;
+var uglify = require("uglify-js");
 
 // promisify core API's
-const readDir = util.promisify(fs.readdir);
-const writeFile = util.promisify(fs.writeFile);
-const readFile = util.promisify(fs.readFile);
-
-console.log('\nRunning post-build tasks');
-
-const versionFilePath = path.join(__dirname + '/../dist/xoeracompare/version.json');
-
 let mainHash = '';
 let mainBundleFile = '';
+const readDir = util.promisify(fs.readdir);
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
+const appVersion = require('../package.json').version;
+const versionFilePath = path.join(__dirname + '/../dist/xoeracompare/version.json');
 
 // RegExp to find main.bundle.js, even if it doesn't include a hash in it's name (dev build)
-let mainBundleRegexp = /^main-es2015.?([a-z0-9]*)?(\.bundle)?.js$/;
-console.log(mainBundleRegexp);
-
+let mainBundleRegexp = /^main.?([a-z0-9]*)?(\.bundle)?.js$/;
+let vendorBundleRegexp = /^vendor.?([a-z0-9]*)?(\.bundle)?.js$/;
+let scriptBundleRegexp = /^scripts.?([a-z0-9]*)?(\.bundle)?.js$/;
+let polyfillsBundleRegexp = /^polyfills.?([a-z0-9]*)?(\.bundle)?.js$/;
 readDir(path.join(__dirname, '../dist/xoeracompare/'))
-  .then(files => {
-    mainBundleFile = files.find(f => mainBundleRegexp.test(f));
+    .then(files => {
+        mainBundleFile = files.find(f => mainBundleRegexp.test(f));
+        if (mainBundleFile) {
+            let mainFile = path.join(__dirname, '../dist/xoeracompare/') + mainBundleFile;
+            readFile(mainFile, "utf8").then(data => {
+                let result = uglify.minify(data, { mangle: false });
+                console.log('Done: ' + mainBundleFile);
+                writeFile(mainFile, result.code);
+            });
+        }
 
-    if (mainBundleFile) {
-      let matchHash = mainBundleFile.match(mainBundleRegexp);
+        let vendorBundleFile = files.find(f => vendorBundleRegexp.test(f));
+        if (vendorBundleFile) {
+            let vendorFile = path.join(__dirname, '../dist/xoeracompare/') + vendorBundleFile;
+            readFile(vendorFile, "utf8").then(data => {
+                let result = uglify.minify(data);
+                console.log('Done: ' + vendorBundleFile);
+                writeFile(vendorFile, result.code);
+            });
+        }
 
-      // if it has a hash in it's name, mark it down
-      if (matchHash.length > 1 && !!matchHash[1]) {
-        mainHash = matchHash[1];
-      }
-    }
+        let scriptBundleFile = files.find(f => scriptBundleRegexp.test(f));
+        if (scriptBundleFile) {
+            let scriptFile = path.join(__dirname, '../dist/xoeracompare/') + scriptBundleFile;
+            readFile(scriptFile, "utf8").then(data => {
+                let result = uglify.minify(data);
+                console.log('Done: ' + scriptBundleFile);
+                writeFile(scriptFile, result.code);
+            });
+        }
 
-    console.log(`Writing version and hash to ${versionFilePath}`);
+        let polyfillBundleFile = files.find(f => polyfillsBundleRegexp.test(f));
+        if (polyfillBundleFile) {
+            let scriptFile = path.join(__dirname, '../dist/xoeracompare/') + polyfillBundleFile;
+            readFile(scriptFile, "utf8").then(data => {
+                let result = uglify.minify(data);
+                console.log('Done: ' + polyfillBundleFile);
+                writeFile(scriptFile, result.code);
+            });
+        }
 
-    // write current version and hash into the version.json file
-    const src = `{"version": "${appVersion}", "hash": "${mainHash}"}`;
-    return writeFile(versionFilePath, src);
-  }).then(() => {
-    // main bundle file not found, dev build?
-    if (!mainBundleFile) {
-      return;
-    }
+        if (mainBundleFile) {
+            let matchHash = mainBundleFile.match(mainBundleRegexp);
 
-    console.log(`Replacing hash in the ${mainBundleFile}`);
-    console.log(`Replacing 2 hash in the ${mainHash}`);
-
-    // replace hash placeholder in our main.js file so the code knows it's current hash
-    const mainFilepath = path.join(__dirname, '../dist/xoeracompare/', mainBundleFile);
-    return readFile(mainFilepath, 'utf8')
-      .then(mainFileData => {
-        const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);
-        return writeFile(mainFilepath, replacedFile);
-      });
-  }).catch(err => {
-    console.log('Error with post build:', err);
-  });
+            // if it has a hash in it's name, mark it down
+            if (matchHash.length > 1 && !!matchHash[1]) {
+                mainHash = matchHash[1];
+            }
+        }
+        if (mainHash) {
+            console.log(`Hash ${mainHash}`);
+            const src = `{"version": "${appVersion}", "hash": "${mainHash}"}`;
+            return writeFile(versionFilePath, src);
+        }
+    }).catch(err => {
+        console.log('Error with post build:', err);
+    });

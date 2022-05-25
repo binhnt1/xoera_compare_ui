@@ -93,7 +93,6 @@ export class ViewRoleComponent extends EditComponent implements OnInit {
         let actions: ActionData[] = [
             ActionData.back(() => { this.back() }),
             ActionData.gotoEdit("Edit role", () => { this.edit(this.item) }),
-            ActionData.history(() => { this.viewHistory(this.item.Id, 'role') })
         ];
         this.actions = await this.authen.actionsAllow(RoleEntity, actions);
     }
