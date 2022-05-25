@@ -7,37 +7,38 @@
                 position: sticky;
                 background: #efefef;
             }
-
+            
             thead {
                 font-weight: 500;
                 color: rgba(0, 0, 0, 0.85);
             }
-
+            
             tbody tr:hover {
                 background: #e6f7ff;
             }
         </style>
-        <div class="page-bar content-header-left col-md-4 col-12">	
-            <h3 class="content-header-title mb-0" *ngIf="obj.Title">	
-                {{ obj.Title }}	
-            </h3>	
-            <div class="row breadcrumbs-top">	
-                <div class="breadcrumb-wrapper col-12">	
-                    <ol class="breadcrumb" *ngIf="breadcrumbs && breadcrumbs.length > 0">	
-                        <li class="breadcrumb-item" [ngClass]="{'active':!item.Link}" *ngFor="let item of breadcrumbs; let i = index;">	
-                            <a [routerLink]="item.Link" *ngIf="item.Link">{{ item.Name }}</a>	
-                            <span *ngIf="!item.Link">{{ item.Name }}</span>	
-                        </li>	
-                    </ol>	
-                </div>	
-            </div>	
+        <div class="page-bar content-header-left col-md-4 col-12">
+            <h3 class="content-header-title mb-0" *ngIf="obj.Title">
+                {{ obj.Title }}
+            </h3>
+            <div class="row breadcrumbs-top">
+                <div class="breadcrumb-wrapper col-12">
+                    <ol class="breadcrumb" *ngIf="breadcrumbs && breadcrumbs.length > 0">
+                        <li class="breadcrumb-item" [ngClass]="{'active':!item.Link}" *ngFor="let item of breadcrumbs; let i = index;">
+                            <a [routerLink]="item.Link" *ngIf="item.Link">{{ item.Name }}</a>
+                            <span *ngIf="!item.Link">{{ item.Name }}</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </div>
         <div class="kt-portlet__head-actions content-header-right col-md-8 col-12">
             <div class="inline-filter-group" *ngIf="inlineFilters && inlineFilters.length > 0">
                 <div class="kt-margin-r-10" [ngStyle]="{width: property.dataType == DataType.DateTime ? '300px' : '200px'}" *ngFor="let property of inlineFilters">
                     <ng-container [ngSwitch]="property.dataType">
                         <ng-container *ngSwitchCase="DataType.DateTime">
-                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="inlineFilter()"></editor>
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
+                                (valueChange)="inlineFilter()"></editor>
                         </ng-container>
                         <ng-container *ngSwitchCase="DataType.DropDown">
                             <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', placeholder: 'All', type: DataType.DropDown, required: false, allowClear: true, autoSelect: false, readonly: false }" (valueChange)="inlineFilter()"></editor>
@@ -98,7 +99,8 @@
                         <div class="col-lg-3 kt-margin-t-15" *ngFor="let property of customFilters">
                             <ng-container [ngSwitch]="property.dataType">
                                 <ng-container *ngSwitchCase="DataType.DateTime">
-                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
+                                        (valueChange)="autoCustomFilter()"></editor>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="DataType.DropDown">
                                     <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ placeholder: 'All', type: property.type, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
@@ -153,7 +155,7 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <th *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">                                
+                                    <th *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
                                         <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable">
                                             <input type="checkbox" class="kt-checkable" [checked]="checkAll" [(ngModel)]="checkAll" (change)="checkAllChange()"> <span></span>
                                         </label>
@@ -321,7 +323,7 @@
                                             </ng-container>
                                         </div>
                                     </th>
-                                    <th *ngIf="obj.LastUpdatedBy">
+                                    <th *ngIf="obj.UpdatedBy">
                                         Updated
                                     </th>
                                     <th class="actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
@@ -365,7 +367,8 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
+                                                icon="la la-ellipsis-h"></dropdown>
                                         </div>
                                     </td>
                                     <td *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
@@ -417,12 +420,10 @@
                                             </ng-container>
                                         </ng-template>
                                     </td>
-                                    <td style="width: 200px;" data-label="Updated" *ngIf="obj.LastUpdatedBy">
-                                        <div><i class="far fa-user"></i>
-                                            {{ item.LastUpdatedBy || item.CreatedBy }}
+                                    <td style="width: 200px;" data-label="Updated" *ngIf="obj.UpdatedBy">
+                                        <div><i class="la la-user"></i> {{ item.UpdatedBy || item.CreatedBy }}
                                         </div>
-                                        <div><i class="far fa-calendar"></i>
-                                            {{ (item.LastUpdatedAt || item.CreatedAt) | datetimex }}
+                                        <div><i class="la la-calendar"></i> {{ (item.UpdatedDate || item.CreatedDate) | datetimex }}
                                         </div>
                                     </td>
                                     <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="!obj.ActionIsFirst && (obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
@@ -446,7 +447,8 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
+                                                icon="la la-ellipsis-h"></dropdown>
                                         </div>
                                     </td>
                                 </tr>

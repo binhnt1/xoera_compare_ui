@@ -38,7 +38,7 @@ export class ChoiceUserComponent extends GridComponent implements OnInit {
         IsPopup: true,
         Title: 'Choice',
         Checkable: true,
-        LastUpdatedBy: false,
+        UpdatedBy: false,
         Reference: UserEntity,
         HideCustomFilter: true,
     };

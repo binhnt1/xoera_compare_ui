@@ -15,7 +15,7 @@ export class HistoryComponent extends GridComponent implements OnInit {
 
     obj: GridData = {
         IsPopup: true,
-        LastUpdatedBy: false,
+        UpdatedBy: false,
         HideHeadActions: true,
         Size: ModalSizeType.Large,
         Reference: LogActivityEntity,

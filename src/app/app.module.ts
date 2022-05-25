@@ -21,7 +21,6 @@ import { AdminErrorInterceptor } from './_core/interceptor/admin.error.intercept
 import { LayoutModule } from './_layout/layout.module';
 import { ErrorInterceptor } from './_core/interceptor/error.interceptor';
 import { LayoutAdminStackModule } from './_layout.admin.stack/layout.module';
-import { EmailTemplateService } from './modules/admin/email.template/email.template.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +57,6 @@ import { EmailTemplateService } from './modules/admin/email.template/email.templ
     AdminDataService,
     AdminEventService,
     AdminDialogService,
-    EmailTemplateService,
   ],
   bootstrap: [AppComponent]
 })

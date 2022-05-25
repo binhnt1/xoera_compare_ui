@@ -6,26 +6,26 @@
                 <div class="row" *ngIf="item && !loading">
                     <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <editor [(object)]="item" property="Type" [decorator]="{readonly: viewer}"></editor>
                             </div>
-                            <div class="col-sm-4">
-                                <editor [(object)]="item" property="Name" [decorator]="{readonly: viewer}"></editor>
+                            <div class="col-sm-2">
+                                <editor [(object)]="item" property="SmtpAccountId" [decorator]="{readonly: viewer}"></editor>
                             </div>
-                            <div class="col-sm-4">
-                                <editor [(object)]="item" property="EmailSubject" [decorator]="{readonly: viewer}"></editor>
+                            <div class="col-sm-8">
+                                <editor [(object)]="item" property="Title" [decorator]="{readonly: viewer}"></editor>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link" (click)="selectedTab('templateHtml')" [ngClass]="{'active':!tab || tab == 'templateHtml'}">Template Html</a>
+                                <a class="nav-link" (click)="selectedTab('content')" [ngClass]="{'active':!tab || tab == 'content'}">Content</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane" [ngClass]="{'active':tab == 'templateHtml'}">
-                                <editor [(object)]="item" property="TemplateHtml" [decorator]="{readonly: viewer, label: ''}"></editor>
+                            <div class="tab-pane" [ngClass]="{'active':tab == 'content'}">
+                                <editor [(object)]="item" property="Content" [decorator]="{readonly: viewer, label: ''}"></editor>
                             </div>
                         </div>
                     </div>

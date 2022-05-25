@@ -10,7 +10,6 @@ import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
 import { EmailTemplateEntity } from '../../../../_core/domains/entities/email.template.entity';
-import { EmailTemplateService } from '../email.template.service';
 
 @Component({
     templateUrl: './edit.email.template.component.html',
@@ -24,15 +23,15 @@ export class EditEmailTemplateComponent extends EditComponent implements OnInit 
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
+    tab: string = 'content';
     loading: boolean = true;
-    tab: string = 'templateHtml';
-    service: EmailTemplateService;
+    service: AdminApiService;
     loadingTemplate: boolean = false;
     item: EmailTemplateEntity = new EmailTemplateEntity();
 
     constructor() {
         super();
-        this.service = AppInjector.get(EmailTemplateService);
+        this.service = AppInjector.get(AdminApiService);
         this.state = this.getUrlState();
     }
 
@@ -100,7 +99,7 @@ export class EditEmailTemplateComponent extends EditComponent implements OnInit 
             if (await validation(this.item)) {
                 this.processing = true;
                 let obj: EmailTemplateEntity = _.cloneDeep(this.item);
-                return await this.service.saveEmail(obj).then((result: ResultApi) => {
+                return await this.service.save('emailtemplate', obj).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
                         ToastrHelper.Success('Save email template success');

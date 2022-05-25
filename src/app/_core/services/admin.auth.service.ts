@@ -50,15 +50,13 @@ export class AdminAuthService {
         this.router.navigate(['admin/lock'], { queryParams: { returnUrl: this.router.url } });
     }
     public async logout(navigate: boolean = true) {
-        let webview = this.account?.WebView;
         localStorage.removeItem(AppConfig.AdminAccountTokenKey);
         sessionStorage.removeItem(AppConfig.AdminAccountTokenKey);
         if (this.accountSubject) this.accountSubject.next(null);
 
         // Redirect
         if (navigate) {
-            if (webview) this.router.navigateByUrl('/helpcenter');
-            else this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
+            this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
         }
     }
     public async login(account: AdminUserDto, rememberMe: boolean = true) {

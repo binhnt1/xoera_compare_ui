@@ -16,7 +16,7 @@ export class SmtpAccountComponent extends GridComponent {
         Imports: [],
         Exports: [],
         Filters: [],
-        LastUpdatedBy: false,
+        UpdatedBy: false,
         Size: ModalSizeType.Large,
         Reference: SmtpAccountEntity,
     };

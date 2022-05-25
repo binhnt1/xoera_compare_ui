@@ -57,9 +57,9 @@ export class AdminApiService {
             delete obj.Active;
             delete obj.Deleted;
             delete obj.CreatedBy;
-            delete obj.CreatedAt;
-            delete obj.LastUpdatedBy;
-            delete obj.LastUpdatedAt;
+            delete obj.CreatedDate;
+            delete obj.UpdatedBy;
+            delete obj.UpdatedDate;
         }
         return await this.ToResultApi(api, method, obj);
     }

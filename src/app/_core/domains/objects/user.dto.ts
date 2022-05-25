@@ -1,3 +1,4 @@
+import { UserType } from '../enums/user.type';
 import { GenderType } from '../enums/gender.type';
 import { UserEntity } from '../entities/user.entity';
 import { UserActivityDto } from './user.activity.dto';
@@ -167,13 +168,12 @@ export class AdminUserDto {
     Expires?: Date;
     Token?: string;
     Avatar?: string;
-    Balance: number;
     FullName: string;
     Locked?: boolean;
     UserName: string;
-    WebView: boolean;
     IsAdmin?: boolean;
     Gender: GenderType;
+    UserType: UserType;
     Activities: UserActivityDto[];
 }
 

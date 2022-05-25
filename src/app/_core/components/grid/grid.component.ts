@@ -523,7 +523,7 @@ export abstract class GridComponent {
             if (this.items && this.items.length > 0) {
                 let item = this.items[0],
                     properties = Object.keys(item),
-                    ignoreProperties = ['CreatedAt', 'LastUpdatedAt', 'CreatedBy', 'LastUpdatedBy', 'Active', 'Deleted'];
+                    ignoreProperties = ['CreatedDate', 'UpdatedDate', 'CreatedBy', 'UpdatedBy', 'Active', 'Deleted'];
                 if (!this.properties) {
                     this.properties = [];
                     properties.forEach((propertyItem: string) => {
@@ -1030,8 +1030,8 @@ export abstract class GridComponent {
                 this.obj.MoreFeatures.Actions = await this.authen.actionsAllow(this.obj.Reference, actions);
             }
 
-            if (this.obj.LastUpdatedBy == null)
-                this.obj.LastUpdatedBy = true;
+            if (this.obj.UpdatedBy == null)
+                this.obj.UpdatedBy = true;
 
             this.itemData = this.loadItemData();
             if (this.itemData.Search)
@@ -1201,7 +1201,7 @@ export abstract class GridComponent {
             });
             this.mergeCount = this.activeProperties.findIndex(c => c.Property == firstProperty.Property);
             this.notMergeCount = this.activeProperties.length - this.activeTotalProperties.length - this.mergeCount;
-            if (this.obj.LastUpdatedBy) this.notMergeCount += 1;
+            if (this.obj.UpdatedBy) this.notMergeCount += 1;
             if (this.obj.Actions) this.notMergeCount += 1;
         }
     }

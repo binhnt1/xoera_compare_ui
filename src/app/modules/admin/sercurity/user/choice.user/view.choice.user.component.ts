@@ -39,7 +39,7 @@ export class ViewChoiceUserComponent extends GridComponent implements OnInit {
         Actions: [],
         Features: [],
         IsPopup: true,
-        LastUpdatedBy: false,
+        UpdatedBy: false,
         Reference: UserEntity,
         HideCustomFilter: true,
         Title: 'View List Accounts',

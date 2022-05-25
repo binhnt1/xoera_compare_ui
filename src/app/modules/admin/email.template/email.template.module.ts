@@ -14,7 +14,7 @@ import { EditEmailTemplateComponent } from "./edit.email.template/edit.email.tem
 })
 export class EmailTemplateComponent extends GridComponent {
     obj: GridData = {
-        LastUpdatedBy: false,
+        UpdatedBy: false,
         Size: ModalSizeType.FullScreen,
         Reference: EmailTemplateEntity,
     };

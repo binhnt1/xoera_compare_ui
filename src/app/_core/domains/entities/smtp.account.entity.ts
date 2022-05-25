@@ -15,17 +15,14 @@ export class SmtpAccountEntity extends BaseEntity {
     Port: number;
 
     @StringDecorator({ required: true, type: StringType.Account })
-    User: string;
+    UserName: string;
 
     @StringDecorator({ required: true, type: StringType.Password, label: 'Password' })
-    Pass: string;
+    Password: string;
 
     @StringDecorator({ type: StringType.Email })
     EmailFrom: string;
 
     @BooleanDecorator()
     EnableSsl: string;
-
-    @StringDecorator({ type: StringType.Html })
-    EmailSignature: string;
 }

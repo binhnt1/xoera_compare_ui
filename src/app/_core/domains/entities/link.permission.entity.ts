@@ -24,8 +24,8 @@ export class LinkPermissionEntity extends BaseEntity {
     @DropDownDecorator({ lookup: LookupData.Reference(LinkPermissionEntity) })
     ParentId: number;
 
-    @DropDownDecorator({ allowSearch: true, lookup: LookupData.ReferenceStrings(ConstantHelper.PERMISSIONS) })
-    PermissionName: string;
+    @DropDownDecorator({ allowClear: true, required: true, allowSearch: true, lookup: { url: '/permission/lookup', propertyGroup: 'Title' } })
+    PermissionId: string;
 
     @StringDecorator({ type: StringType.Text, max: 150 })
     Group: string;

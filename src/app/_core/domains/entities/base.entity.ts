@@ -19,13 +19,13 @@ export class BaseEntity {
     CreatedBy?: number;
 
     @DateTimeDecorator()
-    CreatedAt?: Date;
+    CreatedDate?: Date;
 
     @DateTimeDecorator()
-    LastUpdatedAt?: Date;
+    UpdatedDate?: Date;
 
     @StringDecorator()
-    LastUpdatedBy?: number;
+    UpdatedBy?: number;
 
     Checked?: boolean;
     Checkable?: boolean;

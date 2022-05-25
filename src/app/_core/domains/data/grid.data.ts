@@ -23,7 +23,7 @@ export class GridData {
     Filters?: ActionData[];
     ReferenceName?: string;
     Features?: ActionData[];
-    LastUpdatedBy?: boolean;
+    UpdatedBy?: boolean;
     ActionIsFirst?: boolean;
     Reference?: new () => {};
     HideHeadActions?: boolean;
