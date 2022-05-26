@@ -11,7 +11,7 @@ import { BooleanDecorator } from "../../decorators/boolean.decorator";
 import { DropDownDecorator } from "../../decorators/dropdown.decorator";
 import { DateTimeDecorator } from "../../decorators/datetime.decorator";
 
-@TableDecorator()
+@TableDecorator({ title: "Users" })
 export class UserEntity extends BaseEntity {
     @BooleanDecorator()
     Locked: boolean;
@@ -40,9 +40,9 @@ export class UserEntity extends BaseEntity {
     @StringDecorator({ type: StringType.MultiText, max: 500 })
     Description: string;
 
-    @DropDownDecorator({ allowSearch: true, lookup: LookupData.ReferenceEnum(GenderType) })
+    @DropDownDecorator({ lookup: LookupData.ReferenceEnum(GenderType) })
     Gender: GenderType;
 
-    @DropDownDecorator({ required: true, allowSearch: true, multiple: true, lookup: LookupData.Reference(RoleEntity) })
+    @DropDownDecorator({ required: true, multiple: true, lookup: LookupData.Reference(RoleEntity) })
     RoleIds: number[];
 }

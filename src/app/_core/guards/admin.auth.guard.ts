@@ -20,7 +20,8 @@ export class AdminAuthGuard implements CanActivate {
             let urls = stateUrl.split('/').filter(c => c != null && c.length > 0),
                 controller = urls[0],
                 action = urls[1];
-
+            if (controller == 'account' || controller == 'customer')
+                controller = 'user';
             return new Promise((resolve, reject) => {
                 let actionType = ActionType.View;
                 if (action) {

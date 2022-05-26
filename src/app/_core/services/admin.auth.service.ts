@@ -4,29 +4,31 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../helpers/app.config';
-import { UserType } from '../domains/enums/user.type';
 import { AdminApiService } from './admin.api.service';
+import { UserType } from '../domains/enums/user.type';
 import { ResultApi } from '../domains/data/result.api';
+import { AdminDataService } from './admin.data.service';
 import { ActionData } from '../domains/data/action.data';
 import { ActionType } from '../domains/enums/action.type';
 import { AdminUserDto } from '../domains/objects/user.dto';
 import { UtilityExHelper } from '../helpers/utility.helper';
 import { DecoratorHelper } from '../helpers/decorator.helper';
+import { PermissionEntity } from '../domains/entities/permission.entity';
 import { LinkPermissionDto } from '../domains/objects/link.permission.dto';
 import { LinkPermissionEntity } from '../domains/entities/link.permission.entity';
 
 @Injectable({ providedIn: 'root' })
 export class AdminAuthService {
     public links: any[];
-    public clientLinks: any[];
-    public permissions: string[];
+    public permissions: PermissionEntity[];
     private accountSubject: BehaviorSubject<AdminUserDto>;
 
     constructor(
-        public router: Router,
-        public service: AdminApiService) {
-        let json = sessionStorage.getItem(AppConfig.AdminAccountTokenKey);
-        if (!json) json = localStorage.getItem(AppConfig.AdminAccountTokenKey);
+        private router: Router,
+        private data: AdminDataService,
+        private service: AdminApiService) {
+        let json = sessionStorage.getItem(AppConfig.AccountTokenKey);
+        if (!json) json = localStorage.getItem(AppConfig.AccountTokenKey);
         if (json) this.accountSubject = new BehaviorSubject<AdminUserDto>(JSON.parse(json));
     }
 
@@ -40,58 +42,53 @@ export class AdminAuthService {
 
     public async lock() {
         let account = this.account;
-        this.account.Locked = true;
+
+        account.Locked = true;
         if (this.accountSubject) this.accountSubject.next(account);
         else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
 
-        let json = sessionStorage.getItem(AppConfig.AdminAccountTokenKey);
-        if (json) sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
+        let json = sessionStorage.getItem(AppConfig.AccountTokenKey);
+        if (json) sessionStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
         else {
-            json = localStorage.getItem(AppConfig.AdminAccountTokenKey);
-            localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
+            json = localStorage.getItem(AppConfig.AccountTokenKey);
+            localStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
         }
 
         // Redirect
-        this.router.navigate(['admin/lock'], { queryParams: { returnUrl: this.router.url } });
+        let url = this.router.url;
+        if (url.indexOf('admin/lock') == -1)
+            this.router.navigate(['admin/lock'], { queryParams: { returnUrl: this.router.url } });
     }
     public async logout(navigate: boolean = true) {
-        localStorage.removeItem(AppConfig.AdminAccountTokenKey);
-        sessionStorage.removeItem(AppConfig.AdminAccountTokenKey);
+        this.service.signout(this.account);
+        localStorage.removeItem(AppConfig.AccountTokenKey);
+        sessionStorage.removeItem(AppConfig.AccountTokenKey);
         if (this.accountSubject) this.accountSubject.next(null);
 
         // Redirect
-        if (navigate) {
-            this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
-        }
+        localStorage.clear();
+        sessionStorage.clear();
+        if (this.data.connection) this.data.connection.stop();
+        if (navigate) this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
     }
     public async login(account: AdminUserDto, rememberMe: boolean = true) {
         if (account) {
             account.Locked = false;
+            if (this.account) this.account.Locked = false;
             if (this.accountSubject) this.accountSubject.next(account);
             else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
 
             if (rememberMe)
-                localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
+                localStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
             else
-                sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
+                sessionStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
 
             // Redirect
             let queryParams = this.router.parseUrl(this.router.url).queryParams,
                 url: string = (queryParams && queryParams['returnUrl']) || '/admin';
-            if (url.indexOf('/error') >= 0) url = '/admin';
+            if (url.indexOf('/error') >= 0 || url.indexOf('/lock') >= 0)
+                url = '/admin';
             window.location.href = url;
-        }
-    }
-    public async appLogin(account: AdminUserDto, rememberMe: boolean = true) {
-        if (account) {
-            account.Locked = false;
-            if (this.accountSubject) this.accountSubject.next(account);
-            else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
-
-            if (rememberMe)
-                localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
-            else
-                sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
         }
     }
 
@@ -124,94 +121,46 @@ export class AdminAuthService {
         });
         return result;
     }
+    public async actionsAllowName(controllerName: string, actions: ActionData[]) {
+        let result: ActionData[] = [];
+        actions.forEach(async (item: ActionData) => {
+            if (item.systemName == ActionType.History) {
+                let controller = item.controllerName || controllerName;
+                let allow = await this.permissionAllow(controller, ActionType.View);
+                if (allow) {
+                    result.push(item);
+                }
+            } else {
+                let controller = item.controllerName || controllerName;
+                let allow = await this.permissionAllow(controller, item.systemName);
+                if (allow) {
+                    result.push(item);
+                }
+            }
+        });
+        return result;
+    }
     public async permissionAllow(controller: string, action?: string): Promise<boolean> {
         await this.loadAuthenData();
-        if (!controller) return true;
-        if (this.account.IsAdmin) return true;
-
-        action = this.correctAction(action);
-        controller = this.correctController(controller);
-        let allows = ["audit", "notify", "helpcenter", "helpquestion", "sentitem"];
-        if (allows.indexOf(action.toLowerCase()) >= 0)
+        if (controller == 'useractivity') return true;
+        if (this.account && this.account.IsAdmin) return true;
+        if (!controller && (!action || action == ActionType.View.toString()))
             return true;
-        if (allows.indexOf(controller.toLowerCase()) >= 0)
-            return true;
+        if (!action) action = ActionType.View;
+        if (controller) controller = UtilityExHelper.trimChar(controller.toLowerCase(), '/');
         if (controller && action && this.permissions) {
-            let permissionName = this.correctPermission(controller, action);
-            let item = this.permissions.find(c => c.toLowerCase() == permissionName);
+            let item = this.permissions
+                .filter(c => c.Controller.toLowerCase() == controller)
+                .find(c => c.Action.toLowerCase() == action.toLowerCase());
             if (item) return true;
         }
         return false;
     }
 
-    private correctAction(action: string) {
-        if (!action) action = ActionType.View;
-        if (action == ActionType.AddNew) action = 'Add';
-        return action.toLowerCase();
-    }
-    private correctController(controller: string) {
-        controller = UtilityExHelper.trimChar(controller.toLowerCase(), '/');
-        switch (controller) {
-            case "broker":
-                controller = "agency";
-                break;
-            case "agencynote":
-            case "agencycontact":
-            case "agencyaddress":
-            case "agencydocument":
-            case "agencycommission":
-            case "agencybankaccount":
-                controller = "agency";
-                break;
-            case "brokerleadtemp":
-                controller = "brokerlead";
-                break;
-            case "hubfilesummary":
-                controller = "hubfile";
-                break;
-            case "meter":
-            case "meterread":
-            case "meterpoint":
-                controller = "site";
-                break;
-        }
-        return controller.toLowerCase();
-    }
-    private correctPermission(controller: string, action: string) {
-        let permissionName = action + controller;
-        switch (controller) {
-            case 'site': {
-                switch (action) {
-                    case 'test': permissionName = 'viewfileflowcontenttest'; break;
-                }
-            } break;
-            case 'hubfile': {
-                switch (action) {
-                    case 'view': permissionName = 'viewfileflowhub'; break;
-                    case 'test': permissionName = 'viewfileflowvalidationtest'; break;
-                    default: {
-                        if (action.indexOf('test') > 0)
-                            permissionName = 'viewfileflowvalidationtest';
-                        else if (action.indexOf('reports') > 0)
-                            permissionName = 'viewfileflowreport';
-                        else
-                            permissionName = 'viewfileflowhub';
-                    } break;
-                }
-            } break;
-            case 'sendemail': permissionName = 'sendBulkEmail'.toLowerCase(); break;
-            case 'smtpaccount': permissionName = 'editSystemSetting'.toLowerCase(); break;
-            case 'helpquestion': permissionName = 'editSystemSetting'.toLowerCase(); break;
-            case 'linkpermission': permissionName = 'editSystemSetting'.toLowerCase(); break;
-            case 'hubfilevalidation': permissionName = 'editSystemSetting'.toLowerCase(); break;
-        }
-        return permissionName;
-    }
-
     private async loadPermissions() {
         await this.service.permissions().then((result: ResultApi) => {
             if (ResultApi.IsSuccess(result)) {
-                this.permissions = result.Object as string[];
+                this.permissions = result.Object as PermissionEntity[];
             }
         });
     }

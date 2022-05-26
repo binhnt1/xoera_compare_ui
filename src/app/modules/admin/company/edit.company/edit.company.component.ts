@@ -6,17 +6,17 @@ import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
-import { TariffEntity } from '../../../../_core/domains/entities/tariff.entity';
+import { CompanyEntity } from '../../../../_core/domains/entities/company.entity';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 
 @Component({
-    templateUrl: './edit.tariff.component.html',
+    templateUrl: './edit.company.component.html',
     styleUrls: [
-        './edit.tariff.component.scss',
+        './edit.company.component.scss',
         '../../../../../assets/css/modal.scss'
     ],
 })
-export class EditTariffComponent extends EditComponent implements OnInit {
+export class EditCompanyComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
@@ -25,7 +25,7 @@ export class EditTariffComponent extends EditComponent implements OnInit {
     loading: boolean = true;
     service: AdminApiService;
     loadingTemplate: boolean = false;
-    item: TariffEntity = new TariffEntity();
+    item: CompanyEntity = new CompanyEntity();
 
     constructor() {
         super();
@@ -53,11 +53,11 @@ export class EditTariffComponent extends EditComponent implements OnInit {
     }
 
     private async loadItem() {
-        this.item = new TariffEntity();
+        this.item = new CompanyEntity();
         if (this.id) {
-            await this.service.item('tariff', this.id).then((result: ResultApi) => {
+            await this.service.item('company', this.id).then((result: ResultApi) => {
                 if (ResultApi.IsSuccess(result)) {
-                    this.item = EntityHelper.createEntity(TariffEntity, result.Object as TariffEntity);
+                    this.item = EntityHelper.createEntity(CompanyEntity, result.Object as CompanyEntity);
                 } else {
                     ToastrHelper.ErrorResult(result);
                 }
@@ -71,16 +71,16 @@ export class EditTariffComponent extends EditComponent implements OnInit {
                 : ['Name']
             if (await validation(this.item, columns)) {
                 this.processing = true;
-                let obj: TariffEntity = _.cloneDeep(this.item);
+                let obj: CompanyEntity = _.cloneDeep(this.item);
                 
                 // accountId
                 if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
 
                 // save
-                return await this.service.save('tariff', obj).then((result: ResultApi) => {
+                return await this.service.save('company', obj).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save tariff success');
+                        ToastrHelper.Success('Save company success');
                         if (complete) complete();
                         return true;
                     } else {

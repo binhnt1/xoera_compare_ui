@@ -26,7 +26,7 @@ import { NavigationStateData } from '../../../../_core/domains/data/navigation.s
 })
 export class UserComponent extends GridComponent {
     obj: GridData = {
-        Title: 'Account',
+        Title: 'Users',
         Reference: UserEntity,
         Filters: [],
         Exports: [],
