@@ -75,6 +75,13 @@ export function StringTypeAware(constructor: Function) {
     constructor.prototype.StringType = StringType;
 }
 
+
+export enum DropdownType {
+    Normal = 1,
+    Between,
+    BetweenArea,
+    BetweenPrice,
+}
 export enum DropdownLoadType {
     All = 1,
     Ajax

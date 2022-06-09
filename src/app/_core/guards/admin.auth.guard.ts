@@ -14,14 +14,21 @@ export class AdminAuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        const account = this.authService.account;
+        let account = this.authService.account,
+            stateUrl = state.url.replace('/admin', '');
+        stateUrl = stateUrl.replace('/account', '/user');
+        stateUrl = stateUrl.replace('/customer', '/user');
         if (account) {
-            let stateUrl = state.url.replace('/admin', '');
+            if (account.Locked) {
+                if (stateUrl.indexOf('/admin/lock') == -1) {
+                    this.router.navigate(['/admin/lock'], { queryParams: { returnUrl: state.url } });
+                }
+                return false;
+            }
             let urls = stateUrl.split('/').filter(c => c != null && c.length > 0),
                 controller = urls[0],
                 action = urls[1];
-            if (controller == 'account' || controller == 'customer')
-                controller = 'user';
+
             return new Promise((resolve, reject) => {
                 let actionType = ActionType.View;
                 if (action) {
@@ -33,7 +40,7 @@ export class AdminAuthGuard implements CanActivate {
                     }
                     else {
                         resolve(false);
-                        this.router.navigate(['/admin/error/503']);
+                        this.router.navigate(['/admin/error/403']);
                     }
                 });
             });

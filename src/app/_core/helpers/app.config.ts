@@ -10,8 +10,8 @@ export class AppConfig {
             domain = window.location.hostname;
         switch (domain) {
             case "xoerapartners.com": {
-                AppConfig.ApiUrl = "https://api.partner.xoera.co.uk/api";
-                AppConfig.SignalrUrl = "https://api.partner.xoera.co.uk/notifyhub";
+                AppConfig.ApiUrl = "https://api.xoerapartners.com/api";
+                AppConfig.SignalrUrl = "https://api.xoerapartners.com/notifyhub";
                 AppConfig.SecretKey = 'MM3CRqxyYn1Fa501lDqovopBHl+bL8z0le2qjnbbwNlLz77QVLnoOW5yilst';
             }
                 break;

@@ -49,6 +49,12 @@ export class AdminApiService {
         const api = ApiUrl.ToUrl('/admin/' + obj.Name.toLowerCase() + '/export');
         return this.http.post(api, obj, this.getHeaders()).toPromise();
     }
+    async callApi(controller: string, action: string, obj: any = null, method: MethodType = MethodType.Get) {
+        let url = controller;
+        if (action) url += '/' + action;
+        const api = ApiUrl.ToUrl('/admin/' + url);
+        return await this.ToResultApi(api, method, obj);
+    }
     async save(objName: string, obj: any) {
         let method = obj.Id ? MethodType.Put : MethodType.Post;
         const api = ApiUrl.ToUrl('/admin/' + objName);

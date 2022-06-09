@@ -4,10 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../helpers/app.config';
-import { AdminApiService } from './admin.api.service';
 import { UserType } from '../domains/enums/user.type';
+import { AdminApiService } from './admin.api.service';
 import { ResultApi } from '../domains/data/result.api';
-import { AdminDataService } from './admin.data.service';
 import { ActionData } from '../domains/data/action.data';
 import { ActionType } from '../domains/enums/action.type';
 import { AdminUserDto } from '../domains/objects/user.dto';
@@ -20,15 +19,15 @@ import { LinkPermissionEntity } from '../domains/entities/link.permission.entity
 @Injectable({ providedIn: 'root' })
 export class AdminAuthService {
     public links: any[];
+    public clientLinks: any[];
     public permissions: PermissionEntity[];
     private accountSubject: BehaviorSubject<AdminUserDto>;
 
     constructor(
-        private router: Router,
-        private data: AdminDataService,
-        private service: AdminApiService) {
-        let json = sessionStorage.getItem(AppConfig.AccountTokenKey);
-        if (!json) json = localStorage.getItem(AppConfig.AccountTokenKey);
+        public router: Router,
+        public service: AdminApiService) {
+        let json = sessionStorage.getItem(AppConfig.AdminAccountTokenKey);
+        if (!json) json = localStorage.getItem(AppConfig.AdminAccountTokenKey);
         if (json) this.accountSubject = new BehaviorSubject<AdminUserDto>(JSON.parse(json));
     }
 
@@ -42,53 +41,58 @@ export class AdminAuthService {
 
     public async lock() {
         let account = this.account;
-
-        account.Locked = true;
+        this.account.Locked = true;
         if (this.accountSubject) this.accountSubject.next(account);
         else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
 
-        let json = sessionStorage.getItem(AppConfig.AccountTokenKey);
-        if (json) sessionStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
+        let json = sessionStorage.getItem(AppConfig.AdminAccountTokenKey);
+        if (json) sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
         else {
-            json = localStorage.getItem(AppConfig.AccountTokenKey);
-            localStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
+            json = localStorage.getItem(AppConfig.AdminAccountTokenKey);
+            localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
         }
 
         // Redirect
-        let url = this.router.url;
-        if (url.indexOf('admin/lock') == -1)
-            this.router.navigate(['admin/lock'], { queryParams: { returnUrl: this.router.url } });
+        this.router.navigate(['admin/lock'], { queryParams: { returnUrl: this.router.url } });
     }
     public async logout(navigate: boolean = true) {
-        this.service.signout(this.account);
-        localStorage.removeItem(AppConfig.AccountTokenKey);
-        sessionStorage.removeItem(AppConfig.AccountTokenKey);
+        localStorage.removeItem(AppConfig.AdminAccountTokenKey);
+        sessionStorage.removeItem(AppConfig.AdminAccountTokenKey);
         if (this.accountSubject) this.accountSubject.next(null);
 
         // Redirect
-        localStorage.clear();
-        sessionStorage.clear();
-        if (this.data.connection) this.data.connection.stop();
-        if (navigate) this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
+        if (navigate) {
+            this.router.navigate(['admin/signin'], { queryParams: { returnUrl: this.router.url } });
+        }
     }
     public async login(account: AdminUserDto, rememberMe: boolean = true) {
         if (account) {
             account.Locked = false;
-            if (this.account) this.account.Locked = false;
             if (this.accountSubject) this.accountSubject.next(account);
             else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
 
             if (rememberMe)
-                localStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
+                localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
             else
-                sessionStorage.setItem(AppConfig.AccountTokenKey, JSON.stringify(account));
+                sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
 
             // Redirect
             let queryParams = this.router.parseUrl(this.router.url).queryParams,
                 url: string = (queryParams && queryParams['returnUrl']) || '/admin';
-            if (url.indexOf('/error') >= 0 || url.indexOf('/lock') >= 0)
-                url = '/admin';
+            if (url.indexOf('/error') >= 0) url = '/admin';
             window.location.href = url;
+        }
+    }
+    public async appLogin(account: AdminUserDto, rememberMe: boolean = true) {
+        if (account) {
+            account.Locked = false;
+            if (this.accountSubject) this.accountSubject.next(account);
+            else this.accountSubject = new BehaviorSubject<AdminUserDto>(account);
+
+            if (rememberMe)
+                localStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
+            else
+                sessionStorage.setItem(AppConfig.AdminAccountTokenKey, JSON.stringify(account));
         }
     }
 
@@ -113,25 +117,6 @@ export class AdminAuthService {
                 }
             } else {
                 let controller = item.controllerName || table.name;
-                let allow = await this.permissionAllow(controller, item.systemName);
-                if (allow) {
-                    result.push(item);
-                }
-            }
-        });
-        return result;
-    }
-    public async actionsAllowName(controllerName: string, actions: ActionData[]) {
-        let result: ActionData[] = [];
-        actions.forEach(async (item: ActionData) => {
-            if (item.systemName == ActionType.History) {
-                let controller = item.controllerName || controllerName;
-                let allow = await this.permissionAllow(controller, ActionType.View);
-                if (allow) {
-                    result.push(item);
-                }
-            } else {
-                let controller = item.controllerName || controllerName;
                 let allow = await this.permissionAllow(controller, item.systemName);
                 if (allow) {
                     result.push(item);

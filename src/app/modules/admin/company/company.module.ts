@@ -20,10 +20,10 @@ export class CompanyComponent extends GridComponent {
         Size: ModalSizeType.Small,
         Actions: [
             ActionData.view((item: any) => this.view(item)),
-            ActionData.edit((item: any) => this.edit(item)),
         ],
         Features: [
-            ActionData.reload(() => this.loadItems())
+            ActionData.addNew(() => this.addNew()),
+            ActionData.reload(() => this.loadItems()),
         ]
     };
 
@@ -41,6 +41,18 @@ export class CompanyComponent extends GridComponent {
             this.properties.splice(1, 0, { Property: 'Account', Type: DataType.String });
         }
         this.render(this.obj);
+    }
+
+    addNew() {
+        this.dialogService.WapperAsync({
+            cancelText: 'Close',
+            confirmText: 'Create',
+            title: 'Create Company',
+            size: ModalSizeType.Large,
+            object: EditCompanyComponent,
+        }, async () => {
+            await this.loadItems();
+        });
     }
 
     edit(item: CompanyEntity) {

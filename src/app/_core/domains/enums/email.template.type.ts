@@ -5,4 +5,6 @@ export enum EmailTemplateType {
     AdminActiveCode,
     AdminResetPassword,
     AdminForgotPassword,
+    AdminCreateCompany = 10,
+    AdminCreateCustomer,
 }

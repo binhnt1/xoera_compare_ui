@@ -148,4 +148,37 @@ export class UtilityExHelper {
             }
         }, 500);
     }
+
+    public static FormatUnitArea(value: any): string {
+        let number = Number(value);
+        return number >= 10000
+            ? ' ha'
+            : ' m2';
+    }
+    public static FormatUnitPrice(value: any): string {
+        let number = Number(value);
+        return number >= 1000000
+            ? ' tỷ'
+            : number >= 1000
+                ? ' triệu'
+                : ' nghìn';
+    }
+    public static FormatNumberArea(value: any): string {
+        let number = Number(value);
+        let result = number >= 10000
+            ? number / 10000
+            : number;
+        result = Math.round(result * 100) / 100;
+        return result.toLocaleString('vi-VN');
+    }
+    public static FormatNumberPrice(value: any): string {
+        let number = Number(value);
+        let result = number >= 1000000
+            ? number / 1000000
+            : number >= 1000
+                ? number / 1000
+                : number;
+        result = Math.round(result * 100) / 100;
+        return result.toLocaleString('vi-VN');
+    }
 }

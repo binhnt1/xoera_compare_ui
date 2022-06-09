@@ -6,27 +6,27 @@ import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
 import { MethodType } from '../../../../_core/domains/enums/method.type';
-import { CompanyDto } from '../../../../_core/domains/objects/company.dto';
 import { UtilityExHelper } from '../../../../_core/helpers/utility.helper';
+import { CustomerDto } from '../../../../_core/domains/objects/customer.dto';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { UserActivityHelper } from '../../../../_core/helpers/user.activity.helper';
 
 @Component({
-    templateUrl: './edit.company.component.html',
+    templateUrl: './edit.customer.component.html',
     styleUrls: [
-        './edit.company.component.scss',
+        './edit.customer.component.scss',
         '../../../../../assets/css/modal.scss'
     ],
 })
-export class EditCompanyComponent extends EditComponent implements OnInit {
+export class EditCustomerComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
     loading: boolean = true;
     service: AdminApiService;
-    item: CompanyDto = new CompanyDto();
+    item: CustomerDto = new CustomerDto();
 
     constructor() {
         super();
@@ -50,11 +50,11 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
     }
 
     private async loadItem() {
-        this.item = new CompanyDto();
+        this.item = new CustomerDto();
         if (this.id) {
             await this.service.item('company', this.id).then((result: ResultApi) => {
                 if (ResultApi.IsSuccess(result)) {
-                    this.item = EntityHelper.createEntity(CompanyDto, result.Object as CompanyDto);
+                    this.item = EntityHelper.createEntity(CustomerDto, result.Object as CustomerDto);
                 } else {
                     ToastrHelper.ErrorResult(result);
                 }
@@ -64,19 +64,19 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
             let columns = this.authen.management 
-                ? ['FullName', 'Phone', 'Email', 'CompanyName', 'CompanyPhone', 'CompanyEmail']
-                : ['FullName', 'Phone', 'Email', 'CompanyName', 'CompanyPhone', 'CompanyEmail'];
+                ? ['OwnerIds', 'FullName', 'Phone', 'Email']
+                : ['FullName', 'Phone', 'Email'];
             if (await validation(this.item, columns)) {
                 this.processing = true;
-                let obj: CompanyDto = _.cloneDeep(this.item);
+                let obj: CustomerDto = _.cloneDeep(this.item);
 
                 // save
                 obj.RawPassword = UtilityExHelper.randomText(6);
                 obj.Password = UserActivityHelper.CreateHash256(obj.RawPassword);
-                return await this.service.callApi('user',  'adminCreateCompany', obj, MethodType.Put).then((result: ResultApi) => {
+                return await this.service.callApi('user',  'adminCreateCustomer', obj, MethodType.Put).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Create company success');
+                        ToastrHelper.Success('Create customer success');
                         if (complete) complete();
                         return true;
                     } else {

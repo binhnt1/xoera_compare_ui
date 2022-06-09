@@ -30,7 +30,7 @@ export class NumbericComponent implements OnInit {
     async ngOnInit() {
         this.type = 'text';
         if (!this.decorator)
-            this.decorator = new DropDownEx();
+            this.decorator = new NumberEx();
         if (!this.decorator.min) this.decorator.min = 0;
         this.decorator.id = UtilityExHelper.randomText(8);
         if (!this.decorator.step) this.decorator.step = 1;

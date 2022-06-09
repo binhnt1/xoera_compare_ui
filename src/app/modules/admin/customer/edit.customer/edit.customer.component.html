@@ -1,0 +1,31 @@
+<div class="row edit-customer" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <div class="row" *ngIf="authen.management">
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="OwnerIds" [decorator]="{readonly: viewer}"></editor>
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="FullName" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Phone" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Email" [decorator]="{readonly: viewer}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <editor [(object)]="item" property="Birthday" [decorator]="{readonly: viewer}"></editor>
+                    </div>
+                    <div class="col-sm-6">
+                        <editor [(object)]="item" property="Gender" [decorator]="{readonly: viewer}"></editor>
+                    </div>
+                </div>
+                <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

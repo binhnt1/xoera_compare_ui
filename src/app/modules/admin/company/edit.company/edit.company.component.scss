@@ -1,5 +1,14 @@
-::ng-deep .vehicle-type {
+::ng-deep .edit-customer {
     textarea {
         height: 122px;
+    }
+}
+
+.box-item {
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    h5 {
+        font-weight: bold;
     }
 }

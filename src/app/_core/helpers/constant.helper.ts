@@ -102,6 +102,7 @@ export class ConstantHelper {
         '/admin/permission',
         '/admin/vehicletype',
         '/admin/smtpaccount',
+        '/admin/useractivity',
         '/admin/emailtemplate',
         '/admin/linkpermission',
         '/admin/vehicletypemapping',
@@ -113,6 +114,8 @@ export class ConstantHelper {
         { label: 'Admin Send Active Code', value: EmailTemplateType.AdminActiveCode },
         { label: 'Admin Reset Password', value: EmailTemplateType.AdminResetPassword },
         { label: 'Admin Forgot Password', value: EmailTemplateType.AdminForgotPassword },
+        { label: 'Admin Create Company', value: EmailTemplateType.AdminCreateCompany },
+        { label: 'Admin Create Customer', value: EmailTemplateType.AdminCreateCustomer },
     ];
     public static LABELS: Dictionary<string> = new Dictionary<string>([
 

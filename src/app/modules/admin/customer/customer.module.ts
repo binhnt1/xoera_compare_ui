@@ -10,6 +10,8 @@ import { AdminAuthGuard } from "../../../_core/guards/admin.auth.guard";
 import { UtilityExHelper } from "../../../_core/helpers/utility.helper";
 import { UserEntity } from "../../../_core/domains/entities/user.entity";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
+import { EditCustomerComponent } from "./edit.customer/edit.customer.component";
+import { ModalSizeType } from "src/app/_core/domains/enums/modal.size.type";
 
 
 @Component({
@@ -22,7 +24,18 @@ export class CustomerComponent extends GridComponent {
         Imports: [],
         Actions: [],
         Features: [
-            ActionData.reload(() => this.loadItems())
+            ActionData.reload(() => this.loadItems()),
+            ActionData.addNew(() => {
+                this.dialogService.WapperAsync({
+                    cancelText: 'Close',
+                    confirmText: 'Create',
+                    title: 'Create customer',
+                    size: ModalSizeType.Large,
+                    object: EditCustomerComponent,
+                }, async () => {
+                    this.loadItems();
+                });
+            })
         ],
         Title: 'Customers',
         Reference: UserEntity,
@@ -62,6 +75,7 @@ export class CustomerComponent extends GridComponent {
 @NgModule({
     declarations: [
         CustomerComponent,
+        EditCustomerComponent
     ],
     imports: [
         UtilityModule,
