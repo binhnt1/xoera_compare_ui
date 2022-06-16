@@ -17,7 +17,7 @@ export class EmailTemplateEntity extends BaseEntity {
     @StringDecorator({ required: true, allowSearch: true, type: StringType.Text, max: 550 })
     Title: string;
 
-    @DropDownDecorator({ label: 'Tài khoản gửi mail', required: true, allowSearch: true, lookup: LookupData.Reference(SmtpAccountEntity, ['UserName', 'Host']) })
+    @DropDownDecorator({ label: 'Smtp account', required: true, allowSearch: true, lookup: LookupData.Reference(SmtpAccountEntity, ['UserName', 'Host']) })
     SmtpAccountId: number;
 
     @StringDecorator({

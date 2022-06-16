@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PipeModule } from '../pipes/_pipe.module';
-import { ChatComponent } from './chat/chat.component';
 import { EditorModule } from '../editor/editor.module';
 import { PagingComponent } from './paging/paging.component';
 import { LoadingComponent } from './loading/loading.component';
@@ -24,7 +23,6 @@ import { EditHeaderViewComponent } from './edit/header.view/edit.header.view.com
         DirectiveModule
     ],
     declarations: [
-        ChatComponent,
         PagingComponent,
         LoadingComponent,
         HistoryComponent,
@@ -34,7 +32,6 @@ import { EditHeaderViewComponent } from './edit/header.view/edit.header.view.com
         EditHeaderViewComponent
     ],
     exports: [
-        ChatComponent,
         PagingComponent,
         LoadingComponent,
         HistoryComponent,
