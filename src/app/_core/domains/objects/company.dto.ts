@@ -6,7 +6,8 @@ import { TableDecorator } from '../../decorators/table.decorator';
 import { StringDecorator } from '../../decorators/string.decorator';
 import { BooleanDecorator } from '../../decorators/boolean.decorator';
 import { DateTimeDecorator } from '../../decorators/datetime.decorator';
-import { BooleanType, DateTimeType, StringType } from '../enums/data.type';
+import { BooleanType, DateTimeType, NumberType, StringType } from '../enums/data.type';
+import { NumberDecorator } from '../../decorators/number.decorator';
 
 @TableDecorator({ name: 'CompanyDto' })
 export class CompanyDto {   
@@ -49,6 +50,12 @@ export class CompanyDto {
     @StringDecorator({ label: 'Phone', required: true, type: StringType.PhoneText, max: 15, min: 10 })
     CompanyPhone: string;
 
-    @StringDecorator({ type: StringType.MultiText, max: 500 })
+    @StringDecorator({ type: StringType.Text, max: 500 })
     CompanyAddress: string;
+
+    @NumberDecorator({ decimals: 6, type: NumberType.Text })
+    Lat: number;
+
+    @NumberDecorator({ decimals: 6, type: NumberType.Text })
+    Lng: number;
 }

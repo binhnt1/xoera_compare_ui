@@ -8,5 +8,5 @@
         <span><i class="la la-close"></i></span>
     </span>
     <span class="kt-maxlength" *ngIf="value">{{ value.length + '/' + decorator.max }}</span>
-    <button *ngIf="decorator.type == StringType.AutoGenerate" type="button" class="btn btn-success btn-generate" (click)="onGenerate()">Generate</button>
+    <button *ngIf="decorator.type == StringType.AutoGenerate && !decorator.readonly" type="button" class="btn btn-success btn-generate" (click)="onGenerate()">Generate</button>
 </div>

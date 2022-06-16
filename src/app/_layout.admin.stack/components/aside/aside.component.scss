@@ -100,8 +100,8 @@
     }
 
     .main-menu-content {
-        overflow: visible;
-        height: calc(100% - 60px);
+        overflow: auto;
+        height: calc(100% - 80px);
     }
 }
 

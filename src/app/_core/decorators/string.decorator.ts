@@ -12,6 +12,7 @@ export class StringEx extends ObjectEx {
     public type?: StringType;
     public requiredMatch?: string;
     public variables?: EditorParamData[];
+    public generateFunction?: () => string;
 }
 
 export function StringDecorator(options?: StringEx) {

@@ -93,11 +93,13 @@ export class ConstantHelper {
         '/admin/role',
         '/admin/price',
         '/admin/tariff',
+        '/admin/licence',
         '/admin/company',
         '/admin/account',
         '/admin/customer',
         '/admin/pricehike',
         '/admin/pricerule',
+        '/admin/agreement',
         '/admin/fixedprice',
         '/admin/permission',
         '/admin/vehicletype',
@@ -105,6 +107,7 @@ export class ConstantHelper {
         '/admin/useractivity',
         '/admin/emailtemplate',
         '/admin/linkpermission',
+        '/admin/companypartner',
         '/admin/vehicletypemapping',
     ];
     public static EMAILTEMPLATE_TYPES: OptionItem[] = [

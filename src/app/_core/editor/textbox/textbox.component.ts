@@ -32,9 +32,9 @@ export class TextBoxComponent {
             this.decorator = new StringEx();
         if (!this.decorator.min) this.decorator.min = 0;
         if (!this.decorator.max) this.decorator.max = 250;
-        this.decorator.id = UtilityExHelper.randomText(8);
         if (!this.decorator.type) this.decorator.type = StringType.Text;
         if (!this.decorator.placeholder) this.decorator.placeholder = '';
+        if (!this.decorator.id) this.decorator.id = UtilityExHelper.randomText(8);
         switch (this.decorator.type) {
             case StringType.Link: this.type = 'url'; break;
             case StringType.Email: this.type = 'text'; break;
@@ -61,14 +61,17 @@ export class TextBoxComponent {
     }
 
     onGenerate() {
-        if (this.decorator.type == StringType.AutoGenerate) {
+        if (this.decorator.generateFunction) {
+            let value = this.decorator.generateFunction();
+            this.value = value;
+            this.valueChange.emit(this.value);
+        } else if (this.decorator.type == StringType.AutoGenerate) {
             let max = this.decorator.max || 10,
                 value = UtilityExHelper.randomText(max);
             this.value = value;
             this.valueChange.emit(this.value);
         }
     }
-
     onTextBoxBlur() {
         try {
             if (this.value) {

@@ -1,3 +1,4 @@
+declare var google;
 import * as _ from 'lodash';
 import { AppInjector } from '../../../../app.module';
 import { Component, Input, OnInit } from "@angular/core";
@@ -21,6 +22,9 @@ import { UserActivityHelper } from '../../../../_core/helpers/user.activity.help
 })
 export class EditCompanyComponent extends EditComponent implements OnInit {
     id: number;
+    tab: string;
+    circle: any;
+    options: any;
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
@@ -46,7 +50,13 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
             }
         }
         await this.loadItem();
+        setTimeout(() => {
+            this.renderGoogleAddress();
+        }, 500);
         this.loading = false;
+    }
+    selectedTab(tab: string) {
+        this.tab = tab;
     }
 
     private async loadItem() {
@@ -60,6 +70,31 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
                 }
             });
         }
+    }
+    private renderGoogleAddress() {
+        setTimeout(() => {
+            this.options = {
+                componentRestrictions: {
+                    country: 'gb'
+                }
+            };
+            this.circle = new google.maps.Circle({
+                radius: 775000,
+                center: {
+                    lat: 54.093409,
+                    lng: -2.89479
+                }
+            });
+            let inputPlace = new google.maps.places.Autocomplete(document.getElementById('company-address'), this.options);
+            inputPlace.setBounds(this.circle.getBounds());
+            google.maps.event.addListener(inputPlace, 'place_changed', () => {
+                let place = inputPlace.getPlace(),
+                    lat = place.geometry.location.lat(),
+                    lng = place.geometry.location.lng();
+                    this.item.Lat = parseFloat(lat.toFixed(6));
+                    this.item.Lng = parseFloat(lng.toFixed(6));
+            });
+        }, 1000);
     }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {

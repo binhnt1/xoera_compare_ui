@@ -1,0 +1,19 @@
+<div class="row" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="CompanyId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DeviceId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="ExpiryDate" [decorator]="{readonly: viewer}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="Type" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="ClientKey" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DesktopClientKey" [decorator]="{readonly: viewer}"></editor>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

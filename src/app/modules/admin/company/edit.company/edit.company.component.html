@@ -19,7 +19,11 @@
                     <editor [(object)]="item" property="CompanyPhone" [decorator]="{readonly: viewer}"></editor>
                     <editor [(object)]="item" property="CompanyEmail" [decorator]="{readonly: viewer}"></editor>
                     <editor [(object)]="item" property="Leader" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="CompanyAddress" [decorator]="{readonly: viewer}"></editor>
+                    <editor [(object)]="item" property="CompanyAddress" [decorator]="{readonly: viewer, id: 'company-address'}"></editor>
+                    <div class="d-flex">
+                        <editor [(object)]="item" property="Lat" [decorator]="{readonly: true}"></editor>
+                        <editor [(object)]="item" property="Lng" [decorator]="{readonly: true}"></editor>
+                    </div>
                 </div>
             </div>
         </div>
