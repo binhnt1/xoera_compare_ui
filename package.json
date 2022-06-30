@@ -1,6 +1,6 @@
 {
   "name": "xoeracompare",
-  "version": "1.0.334",
+  "version": "1.0.338",
   "scripts": {
     "ng": "ng",
     "postbuild": "node ./build/post-build.js",

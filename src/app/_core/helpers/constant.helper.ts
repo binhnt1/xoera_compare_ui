@@ -112,6 +112,7 @@ export class ConstantHelper {
     ];
     public static EMAILTEMPLATE_TYPES: OptionItem[] = [
         { label: 'User Register', value: EmailTemplateType.Register },
+        { label: 'Admin Approved', value: EmailTemplateType.Approved },
         { label: 'User Send Active Code', value: EmailTemplateType.ActiveCode },
         { label: 'User Forgot Password', value: EmailTemplateType.ForgotPassword },
         { label: 'Admin Send Active Code', value: EmailTemplateType.AdminActiveCode },

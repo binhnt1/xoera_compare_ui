@@ -9,6 +9,10 @@ import { EditCompanyComponent } from "./edit.company/edit.company.component";
 import { ModalSizeType } from "../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
 import { CompanyEntity } from "../../../_core/domains/entities/company.entity";
+import { ActionType } from "src/app/_core/domains/enums/action.type";
+import { MethodType } from "src/app/_core/domains/enums/method.type";
+import { ResultApi } from "src/app/_core/domains/data/result.api";
+import { ToastrHelper } from "src/app/_core/helpers/toastr.helper";
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -20,6 +24,24 @@ export class CompanyComponent extends GridComponent {
         Size: ModalSizeType.Small,
         Actions: [
             ActionData.view((item: any) => this.view(item)),
+            {
+                name: 'Approve',
+                icon: 'la la-check',
+                className: 'btn btn-primary',
+                systemName: ActionType.Approve,
+                click: (item: any) => {
+                    this.dialogService.ConfirmAsync('Do you want approve company: <b>' + item.Name + '</b>', async () => {
+                        let name = item.Name,
+                            userId = item.UserId;
+                        await this.service.callApi('user', 'approve/' + userId, null, MethodType.Post).then((result: ResultApi) => {
+                            if (ResultApi.IsSuccess(result)) {
+                                ToastrHelper.Success('Approve company: <b>' + name + '</b> success');
+                                this.loadItems();
+                            } else ToastrHelper.ErrorResult(result);
+                        });
+                    })
+                }
+            }
         ],
         Features: [
             ActionData.addNew(() => this.addNew()),

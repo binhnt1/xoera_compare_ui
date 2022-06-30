@@ -1,5 +1,6 @@
 export enum EmailTemplateType {
     Register = 1,
+    Approved,
     ActiveCode,
     ForgotPassword,
     AdminActiveCode,
