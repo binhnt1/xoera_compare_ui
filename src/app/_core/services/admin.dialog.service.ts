@@ -94,6 +94,7 @@ export class AdminDialogService {
             size: obj.size,
             title: obj.title,
             object: obj.object,
+            restrict: obj.restrict,
             type: DialogType.Wrapper,
             cancelText: obj.cancelText,
             rejectText: obj.rejectText,

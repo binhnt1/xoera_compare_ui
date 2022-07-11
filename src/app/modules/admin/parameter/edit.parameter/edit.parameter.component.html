@@ -1,0 +1,30 @@
+<div class="row" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6">
+                <editor #uploadLogo [(object)]="item" property="Logo" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DbName" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DbUser" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DbPass" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DatabaseIp" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="SchDbName" [decorator]="{readonly: viewer}"></editor>
+            </div>
+            <div class="col-sm-6">
+                <editor [(object)]="item" property="LicenceId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="BingKey" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="ImUserPfx" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="CustAppApiUrl" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="XcfcmServerKey" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="RoutingEngineIp" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="DriversAppApiUrl" [decorator]="{readonly: viewer}"></editor>
+                <div class="d-flex justify-content-between">
+                    <editor [(object)]="item" property="RoutingEnginePermitted" [decorator]="{readonly: viewer}"></editor>
+                    <editor [(object)]="item" property="AddressSearchPermitted" [decorator]="{readonly: viewer}"></editor>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

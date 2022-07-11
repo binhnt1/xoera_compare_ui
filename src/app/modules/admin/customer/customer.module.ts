@@ -9,9 +9,9 @@ import { StatusType } from "../../../_core/domains/enums/status.type";
 import { AdminAuthGuard } from "../../../_core/guards/admin.auth.guard";
 import { UtilityExHelper } from "../../../_core/helpers/utility.helper";
 import { UserEntity } from "../../../_core/domains/entities/user.entity";
+import { ModalSizeType } from "../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
 import { EditCustomerComponent } from "./edit.customer/edit.customer.component";
-import { ModalSizeType } from "src/app/_core/domains/enums/modal.size.type";
 
 
 @Component({

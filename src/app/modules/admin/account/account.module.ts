@@ -4,12 +4,12 @@ import { UtilityModule } from "../../utility.module";
 import { AppConfig } from "../../../_core/helpers/app.config";
 import { GridData } from "../../../_core/domains/data/grid.data";
 import { DataType } from "../../../_core/domains/enums/data.type";
+import { ActionData } from "../../../_core/domains/data/action.data";
 import { StatusType } from "../../../_core/domains/enums/status.type";
 import { AdminAuthGuard } from "../../../_core/guards/admin.auth.guard";
 import { UtilityExHelper } from "../../../_core/helpers/utility.helper";
 import { UserEntity } from "../../../_core/domains/entities/user.entity";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
-import { ActionData } from "src/app/_core/domains/data/action.data";
 
 
 @Component({

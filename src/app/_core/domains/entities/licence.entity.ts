@@ -33,4 +33,10 @@ export class LicenceEntity extends BaseEntity {
 
     @NumberDecorator({ max: 100000, type: NumberType.Text })
     Type: number;
+
+    @NumberDecorator({ max: 100000, type: NumberType.Text })
+    MaximumDrivers: number;
+
+    @StringDecorator({ label: 'Whitelist IPs', type: StringType.Text, max: 500 })
+    WhitelistIPs: string;
 }

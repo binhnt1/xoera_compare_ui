@@ -5,10 +5,10 @@ import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
-import { LicenceEntity } from '../../../../_core/domains/entities/licence.entity';
+import { UtilityExHelper } from '../../../../_core/helpers/utility.helper';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
-import { UtilityExHelper } from 'src/app/_core/helpers/utility.helper';
+import { LicenceEntity } from '../../../../_core/domains/entities/licence.entity';
 
 @Component({
     templateUrl: './edit.licence.component.html',

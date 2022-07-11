@@ -2,11 +2,16 @@ declare var require: any
 import { routerTransition } from '../app.animation';
 import { UserIdleService } from "angular-user-idle";
 import { VersionService } from "../services/version.service";
+import { ResultApi } from '../_core/domains/data/result.api';
 import { DialogData } from '../_core/domains/data/dialog.data';
 import { Component, ViewEncapsulation, OnInit } from "@angular/core";
+import { AdminApiService } from '../_core/services/admin.api.service';
+import { ModalSizeType } from '../_core/domains/enums/modal.size.type';
 import { AdminAuthService } from "../_core/services/admin.auth.service";
 import { AdminDataService } from '../_core/services/admin.data.service';
 import { AdminDialogService } from "../_core/services/admin.dialog.service";
+import { AgreementEntity } from '../_core/domains/entities/agreement.entity';
+import { AcceptAgreementComponent } from '../_core/components/accept.agreement/accept.agreement.component';
 
 @Component({
   animations: [routerTransition],
@@ -31,6 +36,7 @@ export class LayoutAdminStackComponent implements OnInit {
 
   constructor(
     public data: AdminDataService,
+    public service: AdminApiService,
     public authen: AdminAuthService,
     public userIdle: UserIdleService,
     public dialog: AdminDialogService,
@@ -51,20 +57,34 @@ export class LayoutAdminStackComponent implements OnInit {
         });
       } 
     }, 1000);
-    // sysend.on('notification', (type: string) => {
-    //   if (type == 'new') {
-    //     sysend.broadcast('notification', 'close');
-    //     if (this.dialogRestrict)
-    //       this.dialog.EventHideDialog.emit(this.dialogRestrict);
-    //   } else {
-    //     this.dialogRestrict = this.dialog.Alert('Hạn chế', 'Bạn đang sử dụng website ở trên một tab khác', true);
-    //   }
-    // });
-    // sysend.broadcast('notification', 'new');
+    if (!this.authen.account?.IsAdmin) {
+        this.loadNotYetAgreements();
+    }
   }
 
 
   getState(outlet: any) {
     return outlet.activatedRouteData.state;
+  }
+
+  private loadNotYetAgreements() {
+      this.service.callApi('UserAgreement', 'NotYetAgreements').then((result: ResultApi) => {
+          if (ResultApi.IsSuccess(result)) {
+              let items: AgreementEntity[] = result.Object;
+              if (items && items.length > 0) {
+                  this.dialog.WapperAsync({
+                      restrict: true,
+                      cancelText: '',
+                      confirmText: '',
+                      title: 'Agreement',
+                      size: ModalSizeType.ExtraLarge,
+                      object: AcceptAgreementComponent,
+                      objectExtra: {
+                        items: items
+                      }
+                  });
+              }
+          }
+      })
   }
 }

@@ -174,6 +174,7 @@ export class AdminUserDto {
     IsAdmin?: boolean;
     Gender: GenderType;
     UserType: UserType;
+    CompanyId?: number;
     Activities: UserActivityDto[];
 }
 

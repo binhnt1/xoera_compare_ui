@@ -4,10 +4,12 @@
             <div class="col-sm-6">
                 <editor [(object)]="item" property="CompanyId" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="DeviceId" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Type" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="ExpiryDate" [decorator]="{readonly: viewer}"></editor>
             </div>
             <div class="col-sm-6">
-                <editor [(object)]="item" property="Type" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="MaximumDrivers" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="WhitelistIPs" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="ClientKey" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="DesktopClientKey" [decorator]="{readonly: viewer}"></editor>
             </div>

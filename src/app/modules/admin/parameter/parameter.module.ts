@@ -3,40 +3,37 @@ import { Component, NgModule } from '@angular/core';
 import { UtilityModule } from '../../utility.module';
 import { GridData } from '../../../_core/domains/data/grid.data';
 import { DataType } from '../../../_core/domains/enums/data.type';
-import { EditLicenceComponent } from './edit.licence/edit.licence.component';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
-import { LicenceEntity } from '../../../_core/domains/entities/licence.entity';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
+import { ParameterEntity } from '../../../_core/domains/entities/parameter.entity';
+import { EditParameterComponent } from './edit.parameter/edit.parameter.component';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
 })
-export class LicenceComponent extends GridComponent {
+export class ParameterComponent extends GridComponent {
     obj: GridData = {
         Imports: [],
         Exports: [],
         Filters: [],
         UpdatedBy: false,
         Size: ModalSizeType.Small,
-        Reference: LicenceEntity,
+        Reference: ParameterEntity,
     };
 
     constructor() {
         super();
         this.properties = [
             { Property: 'Id', Type: DataType.Number },
-            { Property: 'Company', Type: DataType.String },
-            { Property: 'Type', Type: DataType.Number },           
-            { Property: 'DeviceId', Type: DataType.String },
-            { Property: 'ClientKey', Type: DataType.String },           
-            { Property: 'DesktopClientKey', Type: DataType.String },       
-            { Property: 'MaximumDrivers', Type: DataType.Number },       
-            { Property: 'WhitelistIPs', Type: DataType.String },       
+            { Property: 'Logo', Type: DataType.Image },
+            { Property: 'DatabaseIp', Type: DataType.String },
+            { Property: 'DbName', Type: DataType.String },
+            { Property: 'DbUser', Type: DataType.String },
+            { Property: 'RoutingEngineIp', Type: DataType.String },
+            { Property: 'CustAppApiUrl', Type: DataType.String },
+            { Property: 'DriversAppApiUrl', Type: DataType.String },
         ];
-        if (this.authen.management) {
-            this.properties.splice(1, 0, { Property: 'Account', Type: DataType.String });
-        }
         this.render(this.obj);
     }
 
@@ -44,21 +41,21 @@ export class LicenceComponent extends GridComponent {
         this.dialogService.WapperAsync({
             cancelText: 'Close',
             confirmText: 'Create',
-            title: 'Create Licence',
+            title: 'Create Parameter',
             size: ModalSizeType.Large,
-            object: EditLicenceComponent,
+            object: EditParameterComponent,
         }, async () => {
             await this.loadItems();
         });
     }
 
-    edit(item: LicenceEntity) {
+    edit(item: ParameterEntity) {
         this.dialogService.WapperAsync({
             cancelText: 'Close',
             confirmText: 'Save',
-            title: 'Edit Licence',
+            title: 'Edit Parameter',
             size: ModalSizeType.Large,
-            object: EditLicenceComponent,
+            object: EditParameterComponent,
             objectExtra: {
                 id: item.Id,
             }
@@ -67,12 +64,12 @@ export class LicenceComponent extends GridComponent {
         });
     }
 
-    view(item: LicenceEntity) {
+    view(item: ParameterEntity) {
         this.dialogService.WapperAsync({
             cancelText: 'Close',
-            title: 'View Licence',
+            title: 'View Parameter',
             size: ModalSizeType.Large,
-            object: EditLicenceComponent,
+            object: EditParameterComponent,
             objectExtra: {
                 id: item.Id,
                 viewer: true,
@@ -82,12 +79,12 @@ export class LicenceComponent extends GridComponent {
 }
 
 @NgModule({
-    declarations: [LicenceComponent, EditLicenceComponent],
+    declarations: [ParameterComponent, EditParameterComponent],
     imports: [
         UtilityModule,
         RouterModule.forChild([
-            { path: '', component: LicenceComponent, pathMatch: 'full', data: { state: 'licence' }, canActivate: [AdminAuthGuard] },
+            { path: '', component: ParameterComponent, pathMatch: 'full', data: { state: 'parameter' }, canActivate: [AdminAuthGuard] },
         ])
     ]
 })
-export class LicenceModule { }
+export class ParameterModule { }

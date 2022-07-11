@@ -6,9 +6,15 @@ import { DropDownDecorator } from '../../decorators/dropdown.decorator';
 
 @TableDecorator({ name: 'CompanyPartnerDto' })
 export class CompanyPartnerDto {    
-    @DropDownDecorator({ lookup: LookupData.Reference(CompanyEntity) })
+    @DropDownDecorator({ required: true, lookup: LookupData.Reference(CompanyEntity) })
     CompanyId: number;
 
-    @DropDownDecorator({ lookup: LookupData.Reference(CompanyEntity), multiple: true })
+    @DropDownDecorator({ required: true, lookup: LookupData.Reference(CompanyEntity), multiple: true })
+    PartnerIds: number[];
+}
+
+@TableDecorator({ name: 'CompanyPartnerLiteDto' })
+export class CompanyPartnerLiteDto {    
+    @DropDownDecorator({ required: true, lookup: LookupData.ReferenceUrl('company/LookupPartners'), multiple: true })
     PartnerIds: number[];
 }

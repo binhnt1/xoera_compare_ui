@@ -2,6 +2,7 @@ import { RouterModule } from "@angular/router";
 import { Component, NgModule } from "@angular/core";
 import { UtilityModule } from "../../../utility.module";
 import { GridData } from "../../../../_core/domains/data/grid.data";
+import { ActionData } from "../../../../_core/domains/data/action.data";
 import { AdminAuthGuard } from "../../../../_core/guards/admin.auth.guard";
 import { ModalSizeType } from "../../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../../_core/components/grid/grid.component";
@@ -12,6 +13,9 @@ import { UserActivityEntity } from "../../../../_core/domains/entities/user.acti
 })
 export class UserActivityComponent extends GridComponent {
     obj: GridData = {
+        Features: [            
+            ActionData.reload(),
+        ],
         Size: ModalSizeType.Large,
         Reference: UserActivityEntity,
     };

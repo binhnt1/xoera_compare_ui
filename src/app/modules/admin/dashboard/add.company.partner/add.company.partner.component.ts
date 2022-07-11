@@ -4,19 +4,20 @@ import { Component, Input, OnInit } from "@angular/core";
 import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
-import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { MethodType } from '../../../../_core/domains/enums/method.type';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
-import { AgreementEntity } from '../../../../_core/domains/entities/agreement.entity';
+import { CompanyPartnerLiteDto } from '../../../../_core/domains/objects/company.partner.dto';
+import { CompanyPartnerEntity } from '../../../../_core/domains/entities/company.partner.entity';
 
 @Component({
-    templateUrl: './edit.agreement.component.html',
+    templateUrl: './add.company.partner.component.html',
     styleUrls: [
-        './edit.agreement.component.scss',
+        './add.company.partner.component.scss',
         '../../../../../assets/css/modal.scss'
     ],
 })
-export class EditAgreementComponent extends EditComponent implements OnInit {
+export class AddCompanyPartnerComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
@@ -24,7 +25,7 @@ export class EditAgreementComponent extends EditComponent implements OnInit {
     loading: boolean = true;
     service: AdminApiService;
     loadingTemplate: boolean = false;
-    item: AgreementEntity = new AgreementEntity();
+    item: CompanyPartnerLiteDto = new CompanyPartnerLiteDto();
 
     constructor() {
         super();
@@ -43,33 +44,20 @@ export class EditAgreementComponent extends EditComponent implements OnInit {
                 this.addBreadcrumb(this.id ? 'Edit' : 'Add');
             }
         }
-        await this.loadItem();
         this.loading = false;
     }
-
-    private async loadItem() {
-        this.item = new AgreementEntity();
-        if (this.id) {
-            await this.service.item('agreement', this.id).then((result: ResultApi) => {
-                if (ResultApi.IsSuccess(result)) {
-                    this.item = EntityHelper.createEntity(AgreementEntity, result.Object as AgreementEntity);
-                } else {
-                    ToastrHelper.ErrorResult(result);
-                }
-            });
-        }
-    }
+    
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            if (await validation(this.item)) {
+            if (await validation(this.item, ['PartnerIds'])) {
                 this.processing = true;
-                let obj: AgreementEntity = _.cloneDeep(this.item);
+                let obj: CompanyPartnerEntity = _.cloneDeep(this.item);
 
                 // save
-                return await this.service.save('agreement', obj).then((result: ResultApi) => {
+                return await this.service.callApi('companypartner', 'addnew', obj, MethodType.Post).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save agreement success');
+                        ToastrHelper.Success('Save company partner success');
                         if (complete) complete();
                         return true;
                     } else {

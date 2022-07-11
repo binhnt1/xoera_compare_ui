@@ -1006,19 +1006,19 @@ export abstract class GridComponent {
                 });
                 let allowView = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.View);
                 if (!allowView) {
-                    this.obj.Actions = this.obj.Actions.filter(c => c.name.toLowerCase() != ActionType.View.toLowerCase());
+                    this.obj.Actions = this.obj.Actions.filter(c => c.systemName.toLowerCase() != ActionType.View.toLowerCase());
                 }
                 let allowEdit = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.Edit);
                 if (!allowEdit) {
-                    this.obj.Actions = this.obj.Actions.filter(c => c.name.toLowerCase() != ActionType.Edit.toLowerCase());
+                    this.obj.Actions = this.obj.Actions.filter(c => c.systemName.toLowerCase() != ActionType.Edit.toLowerCase());
                 }
                 let allowDelete = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.Delete);
                 if (!allowDelete) {
-                    this.obj.Actions = this.obj.Actions.filter(c => c.name.toLowerCase() != ActionType.Delete.toLowerCase());
+                    this.obj.Actions = this.obj.Actions.filter(c => c.systemName.toLowerCase() != ActionType.Delete.toLowerCase());
                 }
                 // let allowPublish = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.Publish);
                 // if (!allowPublish) {
-                //     this.obj.Actions = this.obj.Actions.filter(c => c.name.toLowerCase() != ActionType.Publish.toLowerCase());
+                //     this.obj.Actions = this.obj.Actions.filter(c => c.systemName.toLowerCase() != ActionType.Publish.toLowerCase());
                 // }
             }
 
@@ -1036,7 +1036,7 @@ export abstract class GridComponent {
             } else {
                 let allowAdd = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.AddNew);
                 if (!allowAdd) {
-                    this.obj.Features = this.obj.Features.filter(c => c.name.toLowerCase() != ActionType.AddNew.toLowerCase())
+                    this.obj.Features = this.obj.Features.filter(c => c.systemName.toLowerCase() != ActionType.AddNew.toLowerCase())
                 }
             }
 
@@ -1058,7 +1058,7 @@ export abstract class GridComponent {
                 this.searchClicked = true;
             this.itemData.Name = this.obj.ReferenceName;
             if (this.obj) {
-                if (!this.obj.Title) {
+                if (this.obj.Title == null || this.obj.Title == undefined) {
                     let table = DecoratorHelper.decoratorClass(this.obj.Reference);
                     this.obj.Title = table.title;
                 }

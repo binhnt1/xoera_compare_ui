@@ -1,4 +1,144 @@
-<div class="kt-content  kt-content--fit-top  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+<div class="kt-portlet kt-portlet-edit-form" *ngIf="!auth.account?.IsAdmin">
+    <div class="kt-portlet__body card " style="height: auto !important;">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="edit-company" *ngIf="item && !loading">
+                    <div class="accordion">
+                        <div class="card-header" (click)="activeProfile = !activeProfile">
+                            <div class="card-title" [ngClass]="{'collapsed':!activeProfile}">
+                                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                    </g>
+                                </svg>
+                                <span>Profile</span>
+                            </div>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show':activeProfile}">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="box-item">
+                                        <h5>Profile</h5>
+                                        <editor [(object)]="item" property="FirstName" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="LastName" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Phone" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Email" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Birthday" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Address" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Gender" [decorator]="{readonly: true}"></editor>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="box-item">
+                                        <h5>Company</h5>
+                                        <editor [(object)]="item" property="CompanyName" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="CompanyPhone" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="CompanyEmail" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Leader" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="CompanyAddress" [decorator]="{readonly: true, id: 'company-address'}"></editor>
+                                        <div class="d-flex">
+                                            <editor [(object)]="item" property="Lat" [decorator]="{readonly: true}"></editor>
+                                            <editor [(object)]="item" property="Lng" [decorator]="{readonly: true}"></editor>
+                                            <editor [(object)]="item" property="PostCode" [decorator]="{readonly: true}"></editor>
+                                        </div>
+                                        <editor [(object)]="item" property="IsPublic" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Approved" [decorator]="{readonly: true}"></editor>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="box-item">
+                                        <h5>PHO Details</h5>
+                                        <editor [(object)]="item" property="PHOName" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="PHOPhone" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="PHOAddress" [decorator]="{readonly: true, id: 'pho-address'}"></editor>
+                                        <div class="d-flex">
+                                            <editor [(object)]="item" property="PHOLat" [decorator]="{readonly: true}"></editor>
+                                            <editor [(object)]="item" property="PHOLng" [decorator]="{readonly: true}"></editor>
+                                            <editor [(object)]="item" property="PHOPostCode" [decorator]="{readonly: true}"></editor>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion accordion-grid">
+                        <div class="card-header" (click)="activeLicence = !activeLicence">
+                            <div class="card-title" [ngClass]="{'collapsed':!activeLicence}">
+                                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                    </g>
+                                </svg>
+                                <span>Dispatch System</span>
+                            </div>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show':activeLicence}">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <list-licence [items]="item.Licences"></list-licence>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div class="card-header" (click)="activeExchange = !activeExchange">
+                            <div class="card-title" [ngClass]="{'collapsed':!activeExchange}">
+                                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                    </g>
+                                </svg>
+                                <span>Exchange</span>
+                            </div>
+                        </div>
+                        <div class="collapse company-parters" [ngClass]="{'show':activeExchange}">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h4>Public Profile</h4>
+                                    <editor [(object)]="item" property="IsPublic" [decorator]="{readonly: readonlyIsPublic}" (valueChange)="public()"></editor>
+                                </div>
+                                <div class="col-sm-9">
+                                    <list-company-partner [items]="item.Partners"></list-company-partner>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion accordion-grid">
+                        <div class="card-header" (click)="activePrice = !activePrice">
+                            <div class="card-title" [ngClass]="{'collapsed':!activePrice}">
+                                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="#000000" fill-rule="nonzero"></path>
+                                        <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
+                                    </g>
+                                </svg>
+                                <span>Prices</span>
+                            </div>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show':activePrice}">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <list-price [items]="item.Prices"></list-price>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kt-content  kt-content--fit-top  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" *ngIf="auth.account?.IsAdmin">
 
     <!-- begin:: Content -->
 

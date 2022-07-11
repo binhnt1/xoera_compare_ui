@@ -6,12 +6,14 @@ import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { ActionData } from '../../../../_core/domains/data/action.data';
 import { MethodType } from '../../../../_core/domains/enums/method.type';
 import { CompanyDto } from '../../../../_core/domains/objects/company.dto';
 import { UtilityExHelper } from '../../../../_core/helpers/utility.helper';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { UserActivityHelper } from '../../../../_core/helpers/user.activity.helper';
+import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
 
 @Component({
     templateUrl: './edit.company.component.html',
@@ -46,8 +48,9 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
             if (this.state) {
                 this.id = this.state.id;
                 this.viewer = this.state.viewer;
-                this.addBreadcrumb(this.id ? 'Edit' : 'Add');
+                this.addBreadcrumb(this.id ? (this.viewer ? 'View' : 'Edit') : 'Add');
             }
+            this.renderActions();
         }
         await this.loadItem();
         setTimeout(() => {
@@ -62,7 +65,7 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
     private async loadItem() {
         this.item = new CompanyDto();
         if (this.id) {
-            await this.service.item('company', this.id).then((result: ResultApi) => {
+            await this.service.callApi('company', 'item/' + this.id).then((result: ResultApi) => {
                 if (ResultApi.IsSuccess(result)) {
                     this.item = EntityHelper.createEntity(CompanyDto, result.Object as CompanyDto);
                 } else {
@@ -70,6 +73,25 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
                 }
             });
         }
+    }
+    private async renderActions() {
+        let actions: ActionData[] = this.id
+            ? [
+                ActionData.back(() => { this.back() }),
+                this.viewer
+                    ? ActionData.gotoEdit("Edit", () => { this.edit(this.item) })
+                    : ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
+            ]
+            : [
+                ActionData.back(() => { this.back() }),
+                ActionData.saveAddNew('Add new', () => { this.confirmAndBack() })
+            ];
+        this.actions = await this.authen.actionsAllow(CompanyDto, actions);
+    }
+    private async confirmAndBack() {
+        await this.confirm(() => {
+            this.back();
+        });
     }
     private renderGoogleAddress() {
         setTimeout(() => {
@@ -91,14 +113,49 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
                 let place = inputPlace.getPlace(),
                     lat = place.geometry.location.lat(),
                     lng = place.geometry.location.lng();
-                    this.item.Lat = parseFloat(lat.toFixed(6));
-                    this.item.Lng = parseFloat(lng.toFixed(6));
+                this.item.Lat = parseFloat(lat.toFixed(6));
+                this.item.Lng = parseFloat(lng.toFixed(6));
+                let postCode: string = place.plus_code?.global_code;
+                if (postCode && postCode.indexOf('+') >= 0)
+                    postCode = postCode.split('+')[0];
+                this.item.PostCode = postCode;
+                this.item.CompanyAddress = (<any>document.getElementById('company-address')).value;
+
+                this.item.PHOLat = this.item.Lat;
+                this.item.PHOLng = this.item.Lng;
+                this.item.PHOName = this.item.CompanyName;
+                this.item.PHOPostCode = this.item.PostCode;
+                this.item.PHOPhone = this.item.CompanyPhone;
+                this.item.PHOAddress = this.item.CompanyAddress;
+            });
+
+
+            let inputPHOPlace = new google.maps.places.Autocomplete(document.getElementById('pho-address'), this.options);
+            inputPHOPlace.setBounds(this.circle.getBounds());
+            google.maps.event.addListener(inputPHOPlace, 'place_changed', () => {
+                let place = inputPHOPlace.getPlace(),
+                    lat = place.geometry.location.lat(),
+                    lng = place.geometry.location.lng();
+                this.item.PHOLat = parseFloat(lat.toFixed(6));
+                this.item.PHOLng = parseFloat(lng.toFixed(6));
+                let postCode: string = place.plus_code?.global_code;
+                if (postCode && postCode.indexOf('+') >= 0)
+                    postCode = postCode.split('+')[0];
+                this.item.PHOPostCode = postCode;
             });
         }, 1000);
     }
+    private edit(item: CompanyDto) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevUrl: '/admin/company',
+            prevData: this.state.prevData,
+        };
+        this.router.navigate(['/admin/company/edit'], { state: { params: JSON.stringify(obj) } });
+    }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            let columns = this.authen.management 
+            let columns = this.authen.management
                 ? ['FullName', 'Phone', 'Email', 'CompanyName', 'CompanyPhone', 'CompanyEmail']
                 : ['FullName', 'Phone', 'Email', 'CompanyName', 'CompanyPhone', 'CompanyEmail'];
             if (await validation(this.item, columns)) {
@@ -108,7 +165,7 @@ export class EditCompanyComponent extends EditComponent implements OnInit {
                 // save
                 obj.RawPassword = UtilityExHelper.randomText(6);
                 obj.Password = UserActivityHelper.CreateHash256(obj.RawPassword);
-                return await this.service.callApi('user',  'adminCreateCompany', obj, MethodType.Put).then((result: ResultApi) => {
+                return await this.service.callApi('user', 'adminAddOrUpdateCompany', obj, MethodType.Put).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
                         ToastrHelper.Success('Create company success');

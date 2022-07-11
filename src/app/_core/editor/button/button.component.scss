@@ -1,3 +1,10 @@
 .btn {
     height: fit-content;
 }
+
+.kt-spinner {
+    padding-right: 40px;
+    &:before {
+        margin-right: 10px;
+    } 
+}

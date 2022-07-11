@@ -1,34 +1,60 @@
-<div class="row edit-company" *ngIf="item && !loading">
-    <div class="col-sm-12">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="box-item">
-                    <h5>Profile</h5>
-                    <editor [(object)]="item" property="FullName" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Phone" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Email" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Birthday" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Gender" [decorator]="{readonly: viewer}"></editor>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="box-item">
-                    <h5>Company</h5>
-                    <editor [(object)]="item" property="CompanyName" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="CompanyPhone" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="CompanyEmail" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="Leader" [decorator]="{readonly: viewer}"></editor>
-                    <editor [(object)]="item" property="CompanyAddress" [decorator]="{readonly: viewer, id: 'company-address'}"></editor>
-                    <div class="d-flex">
-                        <editor [(object)]="item" property="Lat" [decorator]="{readonly: true}"></editor>
-                        <editor [(object)]="item" property="Lng" [decorator]="{readonly: true}"></editor>
+<div class="kt-portlet kt-portlet-edit-form">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row edit-company" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="box-item">
+                                    <h5>Profile</h5>
+                                    <editor [(object)]="item" property="FirstName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="LastName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Phone" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Email" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Birthday" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Gender" [decorator]="{readonly: viewer}"></editor>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="box-item">
+                                    <h5>Company</h5>
+                                    <editor [(object)]="item" property="CompanyName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="CompanyPhone" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="CompanyEmail" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Leader" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="CompanyAddress" [decorator]="{readonly: viewer, id: 'company-address'}"></editor>
+                                    <div class="d-flex">
+                                        <editor [(object)]="item" property="Lat" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="Lng" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="PostCode" [decorator]="{readonly: true}"></editor>
+                                    </div>
+                                    <editor [(object)]="item" property="IsPublic" [decorator]="{readonly: true}"></editor>
+                                    <editor [(object)]="item" property="Approved" [decorator]="{readonly: true}"></editor>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="box-item">
+                                    <h5>PHO Details</h5>
+                                    <editor [(object)]="item" property="PHOName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="PHOPhone" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="PHOAddress" [decorator]="{readonly: viewer, id: 'pho-address'}"></editor>
+                                    <div class="d-flex">
+                                        <editor [(object)]="item" property="PHOLat" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="PHOLng" [decorator]="{readonly: true}"></editor>
+                                        <editor [(object)]="item" property="PHOPostCode" [decorator]="{readonly: true}"></editor>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row row-loading" *ngIf="loading">
-    <loading></loading>
 </div>

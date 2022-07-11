@@ -1,22 +1,23 @@
 import * as _ from 'lodash';
 import { AppInjector } from '../../../../app.module';
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { EditorComponent } from '../../../../_core/editor/editor.component';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
-import { AgreementEntity } from '../../../../_core/domains/entities/agreement.entity';
+import { ParameterEntity } from '../../../../_core/domains/entities/parameter.entity';
 
 @Component({
-    templateUrl: './edit.agreement.component.html',
+    templateUrl: './edit.parameter.component.html',
     styleUrls: [
-        './edit.agreement.component.scss',
+        './edit.parameter.component.scss',
         '../../../../../assets/css/modal.scss'
     ],
 })
-export class EditAgreementComponent extends EditComponent implements OnInit {
+export class EditParameterComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
@@ -24,7 +25,8 @@ export class EditAgreementComponent extends EditComponent implements OnInit {
     loading: boolean = true;
     service: AdminApiService;
     loadingTemplate: boolean = false;
-    item: AgreementEntity = new AgreementEntity();
+    item: ParameterEntity = new ParameterEntity();
+    @ViewChild('uploadLogo') uploadLogo: EditorComponent;
 
     constructor() {
         super();
@@ -48,11 +50,11 @@ export class EditAgreementComponent extends EditComponent implements OnInit {
     }
 
     private async loadItem() {
-        this.item = new AgreementEntity();
+        this.item = new ParameterEntity();
         if (this.id) {
-            await this.service.item('agreement', this.id).then((result: ResultApi) => {
+            await this.service.item('parameter', this.id).then((result: ResultApi) => {
                 if (ResultApi.IsSuccess(result)) {
-                    this.item = EntityHelper.createEntity(AgreementEntity, result.Object as AgreementEntity);
+                    this.item = EntityHelper.createEntity(ParameterEntity, result.Object as ParameterEntity);
                 } else {
                     ToastrHelper.ErrorResult(result);
                 }
@@ -63,13 +65,18 @@ export class EditAgreementComponent extends EditComponent implements OnInit {
         if (this.item) {
             if (await validation(this.item)) {
                 this.processing = true;
-                let obj: AgreementEntity = _.cloneDeep(this.item);
+
+                let obj: ParameterEntity = _.cloneDeep(this.item);
+
+                // upload Logo
+                let images = await this.uploadLogo.upload();
+                obj.Logo = images && images.length > 0 && images[0].Base64Data;
 
                 // save
-                return await this.service.save('agreement', obj).then((result: ResultApi) => {
+                return await this.service.save('parameter', obj).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save agreement success');
+                        ToastrHelper.Success('Save parameter success');
                         if (complete) complete();
                         return true;
                     } else {

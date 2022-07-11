@@ -12,6 +12,7 @@ import { HistoryComponent } from './edit/history/history.component';
 import { EditHeaderComponent } from './edit/header/edit.header.component';
 import { GridEditPopupComponent } from './grid/edit.popup/edit.popup.component';
 import { EditHeaderViewComponent } from './edit/header.view/edit.header.view.component';
+import { AcceptAgreementComponent } from './accept.agreement/accept.agreement.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { EditHeaderViewComponent } from './edit/header.view/edit.header.view.com
         DropdownComponent,
         EditHeaderComponent,
         GridEditPopupComponent,
-        EditHeaderViewComponent
+        EditHeaderViewComponent,
+        AcceptAgreementComponent
     ],
     exports: [
         PagingComponent,
@@ -38,7 +40,8 @@ import { EditHeaderViewComponent } from './edit/header.view/edit.header.view.com
         DropdownComponent,
         EditHeaderComponent,
         GridEditPopupComponent,
-        EditHeaderViewComponent
+        EditHeaderViewComponent,
+        AcceptAgreementComponent
     ]
 })
 export class ComponentModule { }
