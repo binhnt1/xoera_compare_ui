@@ -104,6 +104,19 @@ export class ActionData extends ButtonData {
         return item;
     }
 
+    public static download(click?: (item: any) => any): ActionData {
+        let item: ActionData = {
+            icon: 'la la-download',
+            name: ActionType.Download,
+            className: 'btn btn-danger',
+            systemName: ActionType.Download,
+            click: (item: any) => {
+                if (click) click(item);
+            }
+        }
+        return item;
+    }
+
     public static history(click?: (item?: any) => any): ActionData {
         let item: ActionData = {
             icon: 'la la-history',

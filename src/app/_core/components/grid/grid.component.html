@@ -7,12 +7,12 @@
                 position: sticky;
                 background: #efefef;
             }
-            
+
             thead {
                 font-weight: 500;
                 color: rgba(0, 0, 0, 0.85);
             }
-            
+
             tbody tr:hover {
                 background: #e6f7ff;
             }
@@ -37,8 +37,7 @@
                 <div class="kt-margin-r-10" [ngStyle]="{width: property.dataType == DataType.DateTime ? '300px' : '200px'}" *ngFor="let property of inlineFilters">
                     <ng-container [ngSwitch]="property.dataType">
                         <ng-container *ngSwitchCase="DataType.DateTime">
-                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
-                                (valueChange)="inlineFilter()"></editor>
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="inlineFilter()"></editor>
                         </ng-container>
                         <ng-container *ngSwitchCase="DataType.DropDown">
                             <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', placeholder: 'All', type: DataType.DropDown, required: false, allowClear: true, autoSelect: false, readonly: false }" (valueChange)="inlineFilter()"></editor>
@@ -99,8 +98,7 @@
                         <div class="col-lg-3 kt-margin-t-15" *ngFor="let property of customFilters">
                             <ng-container [ngSwitch]="property.dataType">
                                 <ng-container *ngSwitchCase="DataType.DateTime">
-                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
-                                        (valueChange)="autoCustomFilter()"></editor>
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="DataType.DropDown">
                                     <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ placeholder: 'All', type: property.type, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
@@ -361,7 +359,8 @@
                                                     </a>
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="DataType.DateTime">
-                                                    {{ item[column.Property] | datetimex }}
+                                                    <span *ngIf="!column.PipeType || column.PipeType == PipeType.DateTime">{{ item[column.Property] | datetimex }}</span>
+                                                    <span *ngIf="column.PipeType == PipeType.Date">{{ item[column.Property] | datex }}</span>
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="DataType.Image">
                                                     <img [src]="item[column.Property]" style="max-height: 45px; max-width: 300px;" />
@@ -406,8 +405,7 @@
                                                     </ng-container>
                                                 </ng-container>
                                             </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
-                                                icon="la la-ellipsis-h"></dropdown>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
                                         </div>
                                     </td>
                                 </tr>

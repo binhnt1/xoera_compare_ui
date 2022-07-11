@@ -110,6 +110,7 @@ export class ConstantHelper {
         '/admin/useragreement',
         '/admin/linkpermission',
         '/admin/companypartner',
+        '/admin/dispatchinvoice',
         '/admin/vehicletypemapping',
     ];
     public static EMAILTEMPLATE_TYPES: OptionItem[] = [

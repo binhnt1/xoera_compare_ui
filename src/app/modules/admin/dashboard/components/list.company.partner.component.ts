@@ -11,7 +11,7 @@ import { AddCompanyPartnerComponent } from "../add.company.partner/add.company.p
     selector: 'list-company-partner',
     templateUrl: '../../../../_core/components/grid/grid.component.html',
 })
-export class CompanyPartnerComponent extends GridComponent implements OnInit {
+export class ListCompanyPartnerComponent extends GridComponent implements OnInit {
     @Input() items: CompanyPartnerEntity[];
     obj: GridData = {
         Imports: [],

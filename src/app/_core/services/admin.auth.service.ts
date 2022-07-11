@@ -127,6 +127,7 @@ export class AdminAuthService {
     }
     public async permissionAllow(controller: string, action?: string): Promise<boolean> {
         await this.loadAuthenData();
+        if (action == ActionType.Empty) return true;
         if (controller == 'useractivity') return true;
         if (this.account && this.account.IsAdmin) return true;
         if (!controller && (!action || action == ActionType.View.toString()))

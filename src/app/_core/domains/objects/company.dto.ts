@@ -19,6 +19,9 @@ export class CompanyDto {
     @StringDecorator({ type: StringType.PhoneText, min: 10, max: 15 })
     Phone: string;
 
+    @StringDecorator({ type: StringType.PhoneText, min: 10, max: 15 })
+    Mobile: string;
+
     @StringDecorator({ required: true, type: StringType.Email, max: 150 })
     Email: string;
 
@@ -27,6 +30,9 @@ export class CompanyDto {
 
     @ImageDecorator({ url: 'upload/uploadavatar' })
     Avatar: string;
+
+    @StringDecorator({ required: true, type: StringType.Text, max: 150 })
+    Title: string;
 
     @DateTimeDecorator({ type: DateTimeType.Date, view: 'years' })
     Birthday: Date;
@@ -46,8 +52,8 @@ export class CompanyDto {
     @StringDecorator({ type: StringType.Text, min: 6, max: 100 })
     RawPassword?: string;
 
-    @StringDecorator({ label: 'Leader', type: StringType.Text, max: 100 })
-    Leader: string;
+    @StringDecorator({ label: 'Register Number', type: StringType.Text, max: 100 })
+    RegisterNumber: string;
 
     @StringDecorator({ label: 'Name', required: true, type: StringType.Text, max: 100 })
     CompanyName: string;
@@ -91,6 +97,9 @@ export class CompanyDto {
 
     @StringDecorator({ type: StringType.Text, max: 20 })
     PHOPostCode: string;
+
+    @StringDecorator({ type: StringType.Text, max: 200 })
+    PHOLicence: string;
 
     @BooleanDecorator()
     IsPublic: boolean;

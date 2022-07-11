@@ -2,19 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UtilityModule } from '../../utility.module';
 import { DashboardComponent } from './dashboard.component';
-import { PriceComponent } from './components/list.price.component';
-import { LicenceComponent } from './components/list.licence.component';
+import { ListPriceComponent } from './components/list.price.component';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
-import { CompanyPartnerComponent } from './components/list.company.partner.component';
+import { ListLicenceComponent } from './components/list.licence.component';
+import { ListCompanyPartnerComponent } from './components/list.company.partner.component';
+import { ListDispatchInvoiceComponent } from './components/list.dispatch.invoice.component';
 import { AddCompanyPartnerComponent } from './add.company.partner/add.company.partner.component';
 
 @NgModule({
     declarations: [
-        PriceComponent,
-        LicenceComponent,
+        ListPriceComponent,
         DashboardComponent,
-        CompanyPartnerComponent,
-        AddCompanyPartnerComponent
+        ListLicenceComponent,
+        AddCompanyPartnerComponent,
+        ListCompanyPartnerComponent,
+        ListDispatchInvoiceComponent,
     ],
     imports: [
         UtilityModule,

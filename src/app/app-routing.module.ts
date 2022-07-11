@@ -35,6 +35,7 @@ import { LayoutAdminStackSignInComponent } from './_layout.admin.stack/signin/la
           { path: 'emailtemplate', loadChildren: () => import('./modules/admin/email.template/email.template.module').then(m => m.EmailTemplateModule) },
           { path: 'companypartner', loadChildren: () => import('./modules/admin/company.partner/company.partner.module').then(m => m.CompanyPartnerModule) },
           { path: 'useractivity', loadChildren: () => import('./modules/admin/sercurity/user.activity/user.activity.module').then(m => m.UserActivityModule) },
+          { path: 'dispatchinvoice', loadChildren: () => import('./modules/admin/dispatch.invoice/dispatch.invoice.module').then(m => m.DispatchInvoiceModule) },
           { path: 'linkpermission', loadChildren: () => import('./modules/admin/sercurity/link.permission/link.permission.module').then(m => m.LinkPermissionModule) },
           { path: 'vehicletypemapping', loadChildren: () => import('./modules/admin/vehicle.type.mapping/vehicle.type.mapping.module').then(m => m.VehicleTypeMappingModule) },
           { path: '', loadChildren: () => import('./modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AdminAuthGuard] },

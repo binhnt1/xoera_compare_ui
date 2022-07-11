@@ -17,20 +17,15 @@
                             </div>
                         </div>
                         <div class="collapse" [ngClass]="{'show':activeProfile}">
-                            <div class="row">
+                            <div class="row profile-details">
                                 <div class="col-sm-4">
                                     <div class="box-item">
                                         <h4>Personal Details</h4>
                                         <div class="box-item-border">
-                                            <h5>Title</h5>
+                                            <editor [(object)]="item" property="Title" [viewer]="true"></editor>
                                             <editor [(object)]="item" property="FirstName" [viewer]="true"></editor>
                                             <editor [(object)]="item" property="LastName" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="Birthday" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="Address" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="Gender" [viewer]="true"></editor>
-                                        </div>
-                                        <div class="box-item-border">
-                                            <h5>Mobile</h5>
+                                            <editor [(object)]="item" property="Mobile" [viewer]="true"></editor>
                                             <editor [(object)]="item" property="Phone" [viewer]="true"></editor>
                                             <editor [(object)]="item" property="Email" [viewer]="true"></editor>
                                         </div>
@@ -40,25 +35,11 @@
                                     <div class="box-item">
                                         <h4>Company Details</h4>
                                         <div class="box-item-border">
-                                            <h5>Details</h5>
                                             <editor [(object)]="item" property="CompanyName" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="Leader" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="IsPublic" [decorator]="{readonly: true}"></editor>
-                                            <editor [(object)]="item" property="Approved" [decorator]="{readonly: true}"></editor>
-                                        </div>
-                                        <div class="box-item-border">
-                                            <h5>Register Number</h5>
-                                            <editor [(object)]="item" property="CompanyEmail" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="RegisterNumber" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="CompanyAddress" [viewer]="true" [decorator]="{label: 'Address'}"></editor>
                                             <editor [(object)]="item" property="CompanyPhone" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="CompanyAddress" [viewer]="true"></editor>
-                                            <editor [(object)]="item" property="PostCode" [viewer]="true"></editor>
-                                            <div class="d-flex hidden">
-                                                <editor [(object)]="item" property="Lat" [viewer]="true"></editor>
-                                                <editor [(object)]="item" property="Lng" [viewer]="true"></editor>
-                                            </div>
-                                        </div>
-                                        <div class="box-item-border">
-                                            <h5>Website</h5>
+                                            <editor [(object)]="item" property="CompanyEmail" [viewer]="true"></editor>
                                             <editor [(object)]="item" property="Website" [viewer]="true"></editor>
                                         </div>
                                     </div>
@@ -67,19 +48,12 @@
                                     <div class="box-item">
                                         <h5>PHO Details</h5>
                                         <div class="box-item-border">
-                                            <h5>Details</h5>
                                             <editor [(object)]="item" property="PHOName" [viewer]="true"></editor>
-                                            <div class="d-flex hidden">
-                                                <editor [(object)]="item" property="PHOLat" [viewer]="true"></editor>
-                                                <editor [(object)]="item" property="PHOLng" [viewer]="true"></editor>
-                                            </div>
-                                            <div class="box-item-border">
-                                                <h5>PHO Licence</h5>
-                                                <editor [(object)]="item" property="PHOAddress" [viewer]="true"></editor>
-                                                <editor [(object)]="item" property="PHOPostCode" [viewer]="true"></editor>
-                                                <editor [(object)]="item" property="PHOPhone" [viewer]="true"></editor>
-                                                <editor [(object)]="item" property="PHOEmail" [viewer]="true"></editor>
-                                            </div>
+                                            <editor [(object)]="item" property="PHOLicence" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="PHOAddress" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="PHOPostCode" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="PHOPhone" [viewer]="true"></editor>
+                                            <editor [(object)]="item" property="PHOEmail" [viewer]="true"></editor>
                                         </div>
                                     </div>
                                 </div>
@@ -140,13 +114,13 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-12 key-flex">
                                                                         <editor [(object)]="licence" property="ClientKey" [viewer]="true" [decorator]="{label: 'Mobile Client Key'}"></editor>
-                                                                        <button class="btn btn-warning">View</button>
-                                                                        <button class="btn btn-success">Copy</button>
+                                                                        <button class="btn btn-warning" (click)="viewClientKey()">View</button>
+                                                                        <button class="btn btn-success" (click)="copyClientKey()">Copy</button>
                                                                     </div>
                                                                     <div class="col-sm-12 key-flex">
                                                                         <editor [(object)]="licence" property="DesktopClientKey" [viewer]="true"></editor>
-                                                                        <button class="btn btn-warning">View</button>
-                                                                        <button class="btn btn-success">Copy</button>
+                                                                        <button class="btn btn-warning" (click)="viewDesktopClientKey()">View</button>
+                                                                        <button class="btn btn-success" (click)="copyDesktopClientKey()">Copy</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -155,36 +129,8 @@
                                                 </div>
                                                 <div class="tab-pane" [ngClass]="{'active':tabDispatch == 'invoice'}">
                                                     <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div *ngIf="loadingRoleOrganization" style="min-height: 100px;">
-                                                                <loading></loading>
-                                                            </div>
-                                                            <div class="accordion accordion-organization accordion-toggle-arrow" *ngFor="let organization of organizations; let i = index;">
-                                                                <div class="card">
-                                                                    <div class="card-header" (click)="toggleOrganization(organization)">
-                                                                        <div class="card-title" [ngClass]="{'collapsed':!organization.Active}">
-                                                                            <i class="flaticon2-layers-1"></i> {{ organization.Name }}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="collapse" [ngClass]="{'show':organization.Active}">
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <div class="col-sm-12">
-                                                                                    <div class="accordion">
-                                                                                        <div class="card">
-                                                                                            <div class="collapse show" [ngClass]="{'show':organization.PermissionActive}">
-                                                                                                <div class="card-body">
-                                                                                                    <edit-permission *ngIf="organization.AllPermissions" [items]="organization.AllPermissions" (permissionChange)="permissionChange($event, organization)"></edit-permission>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <div class="col-sm-12 grid-invoice">
+                                                            <list-dispatch-invoice></list-dispatch-invoice>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -196,7 +142,7 @@
                         </div>
                     </div>
                     <div class="accordion">
-                        <div class="card-header" (click)="activeExchange = !activeExchange">
+                        <div class="card-header">
                             <div class="card-title" [ngClass]="{'collapsed':!activeExchange}">
                                 <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -205,22 +151,36 @@
                                         <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
                                     </g>
                                 </svg>
-                                <span>Exchange</span>
+                                <span (click)="activeExchange = !activeExchange">Exchange</span>
                                 <div class="card-title-absolute">
-                                    <h4>Public Profile</h4>
-                                    <editor [(object)]="item" property="IsPublic" [decorator]="{readonly: readonlyIsPublic}" (valueChange)="public()"></editor>
+                                    <button class="btn btn-primary">View Details</button>
+                                    <h5>Public Profile</h5>
+                                    <div>
+                                        <input type="checkbox" class="switch" [(ngModel)]="item.IsPublic" [disabled]="readonlyIsPublic">
+                                        <div class="btn-group" tabindex="0" [ngClass]="{'disabled':readonlyIsPublic}">
+                                            <button is="0" type="button" tabindex="-1" class="btn btn-default" [ngClass]="{'active btn-danger':!item.IsPublic}" (click)="toogleIsPublic(false)">No</button>
+                                            <button is="1" type="button" tabindex="-1" class="btn btn-default" [ngClass]="{'active btn-success':item.IsPublic}" (click)="toogleIsPublic(true)">Yes</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="collapse company-parters" [ngClass]="{'show':activeExchange}">
-                            <div class="row">
-                                <div class="col-sm-9">
-                                    <list-company-partner [items]="item.Partners"></list-company-partner>
+                            <div class="row" *ngIf="exchangeDto">
+                                <div class="col-sm-6">
+                                    <editor [(object)]="exchangeDto" property="Partners" [viewer]="true"></editor>
+                                    <editor [(object)]="exchangeDto" property="PublishedJobs" [viewer]="true"></editor>
+                                    <editor [(object)]="exchangeDto" property="AvaiableJobs" [viewer]="true"></editor>
+                                </div>
+                                <div class="col-sm-6">
+                                    <editor [(object)]="exchangeDto" property="CompletedJobs" [viewer]="true"></editor>
+                                    <editor [(object)]="exchangeDto" property="AcceptedJobs" [viewer]="true"></editor>
+                                    <editor [(object)]="exchangeDto" property="PaymentPending" [viewer]="true"></editor>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="accordion accordion-grid">
+                    <div class="accordion accordion-grid" *ngIf="priceDto">
                         <div class="card-header" (click)="activePrice = !activePrice">
                             <div class="card-title" [ngClass]="{'collapsed':!activePrice}">
                                 <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
@@ -230,13 +190,40 @@
                                         <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "></path>
                                     </g>
                                 </svg>
-                                <span>Prices</span>
+                                <span>Price Comparision</span>
                             </div>
                         </div>
-                        <div class="collapse" [ngClass]="{'show':activePrice}">
+                        <div class="collapse price-comparision" [ngClass]="{'show':activePrice}">
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <list-price [items]="item.Prices"></list-price>
+                                <div class="col-sm-12 price-item">
+                                    <label>Tariff</label>
+                                    <editor [(object)]="priceDto" property="Tariff" [viewer]="true" [decorator]="{label: ''}"></editor>
+                                    <label class="description">records</label>
+                                    <a routerLink="/admin/tariff">View Details</a>
+                                </div>
+                                <div class="col-sm-12 price-item">
+                                    <label>Fixed Price</label>
+                                    <editor [(object)]="priceDto" property="FixedPrice" [viewer]="true" [decorator]="{label: ''}"></editor>
+                                    <label class="description">records</label>
+                                    <a routerLink="/admin/fixedprice">View Details</a>
+                                </div>
+                                <div class="col-sm-12 price-item">
+                                    <label>Price Rule</label>
+                                    <editor [(object)]="priceDto" property="PriceRule" [viewer]="true" [decorator]="{label: ''}"></editor>
+                                    <label class="description">records</label>
+                                    <a routerLink="/admin/pricerule">View Details</a>
+                                </div>
+                                <div class="col-sm-12 price-item">
+                                    <label>Price Hike</label>
+                                    <editor [(object)]="priceDto" property="PriceHike" [viewer]="true" [decorator]="{label: ''}"></editor>
+                                    <label class="description">records</label>
+                                    <a routerLink="/admin/pricehike">View Details</a>
+                                </div>
+                                <div class="col-sm-12 price-item">
+                                    <label>Price</label>
+                                    <editor [(object)]="priceDto" property="Price" [viewer]="true" [decorator]="{label: ''}"></editor>
+                                    <label class="description">records</label>
+                                    <a routerLink="/admin/price">View Details</a>
                                 </div>
                             </div>
                         </div>

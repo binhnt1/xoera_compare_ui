@@ -61,8 +61,8 @@ export class CompanyComponent extends GridComponent {
             { Property: 'Name', Type: DataType.String },
             { Property: 'Phone', Type: DataType.Number },
             { Property: 'Email', Type: DataType.Number },
-            { Property: 'Leader', Type: DataType.String },
             { Property: 'Address', Type: DataType.String },
+            { Property: 'RegisterNumber', Type: DataType.String },
             { Property: 'Approved', Type: DataType.Boolean, Align: 'center' },
             { Property: 'IsPublic', Type: DataType.Boolean, Align: 'center' },
         ];

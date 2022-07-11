@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { GridData } from "../../../../_core/domains/data/grid.data";
 import { DataType } from "../../../../_core/domains/enums/data.type";
+import { PriceEntity } from "../../../../_core/domains/entities/price.entity";
 import { ModalSizeType } from "../../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../../_core/components/grid/grid.component";
-import { PriceEntity } from "src/app/_core/domains/entities/price.entity";
 
 @Component({
     selector: 'list-price',
     templateUrl: '../../../../_core/components/grid/grid.component.html',
 })
-export class PriceComponent extends GridComponent implements OnInit {
+export class ListPriceComponent extends GridComponent implements OnInit {
     @Input() items: any[];
     obj: GridData = {
         Imports: [],

@@ -66,12 +66,15 @@
     .kt-content--fit-top .kt-sc {
         margin-top: -15px;
     }
+
     .kt-sc .kt-sc__top .kt-sc__nav .kt-link {
         margin-left: 1rem;
     }
+
     .kt-sc .kt-sc__top .kt-sc__nav .kt-link:first-child {
         margin-left: 0;
     }
+
     .kt-sc .kt-sc__bottom .kt-sc__form .input-group {
         width: 100%;
     }
@@ -85,21 +88,85 @@
 .accordion {
     margin-bottom: 20px;
     border: 1px solid #ccc;
+
     &.accordion-grid {
         .collapse {
             margin: 0;
             padding: 0;
         }
     }
+
     .card-header {
         padding: 10px;
         display: flex;
         align-items: center;
         background-color: #eee;
+
+        .card-title {
+            width: 100%;
+            position: relative;
+
+            .card-title-absolute {
+                top: -9px;
+                right: -8px;
+                display: flex;
+                position: absolute;
+                align-items: center;
+
+                h5 {
+                    margin: 0;
+                    padding: 0;
+                    margin-right: 5px;
+                    font-size: smaller;
+                }
+
+                input {
+                    opacity: 0;
+                }
+
+                button {
+                    border: 1px solid #ccc;
+
+                    &.btn-primary {
+                        margin-right: 20px;
+                    }
+                }
+            }
+        }
     }
+
     .collapse {
         margin: 0;
         padding: 20px 20px 0 20px;
+    }
+}
+
+::ng-deep .grid-invoice {
+
+    .card-body {
+        padding: 0 !important;
+    }
+
+    .kt-portlet__head {
+        margin: 0;
+        padding-bottom: 0 !important;
+
+        &.kt-portlet-popup {
+            padding-bottom: 0 !important;
+        }
+
+        .kt-portlet__head-actions {
+            margin: 0;
+            padding: 0;
+
+            .kt-margin-r-10 {
+                margin: 0 !important;
+            }
+        }
+    }
+
+    .kt-portlet.kt-portlet-popup .kt-portlet__head {
+        padding-bottom: 0 !important;
     }
 }
 
@@ -109,11 +176,14 @@
         font-weight: 400 !important;
         text-transform: none !important;
     }
+
     h4 {
         margin-bottom: 20px;
     }
+
     .kt-portlet-popup {
         margin-top: -10px !important;
+
         .kt-portlet__body {
             .card-body {
                 padding: 0;
@@ -127,12 +197,15 @@
     border-radius: 4px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
+
     &.none-border {
         border: none;
     }
+
     h5 {
         font-weight: bold;
     }
+
     .d-flex {
         &.hidden {
             height: 0;
@@ -140,41 +213,90 @@
             overflow: hidden;
             pointer-events: none;
         }
+
         .form-group {
             margin-bottom: 0;
         }
     }
+
     .key-flex {
         display: flex;
         margin-bottom: 10px;
+
         &:last-of-type {
             margin: 0;
         }
+
         .form-group {
             flex-grow: 1;
         }
+
         .btn {
             max-width: 100px;
+
             &:first-of-type {
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
             }
+
             &:last-of-type {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
             }
         }
     }
+
     .form-group {
         &:last-of-type {
             margin-bottom: 0;
         }
+
         .kt-checkbox {
             margin-bottom: 0;
         }
     }
 }
 
-.tab-content {
-    padding: 0 20px;
+::ng-deep .profile-details {
+    label.col-3 {
+        min-width: 145px;
+    }
+    div.col-9 {
+        max-width: calc(75% - 25px);
+        span {
+            word-break: break-word !important;
+        }
+    }
+}
+
+::ng-deep .price-comparision {
+    padding: 20px 20px 0 20px !important;
+
+    .price-item {
+        display: flex;
+        margin-bottom: 10px;
+        align-items: center;
+
+        label {
+            margin: 0;
+            min-width: 200px;
+
+            &.description {
+                min-width: none;
+                margin-left: 5px;
+                width: fit-content;
+            }
+        }
+    }
+}
+
+.kt-portlet--tabs {
+    margin-top: 10px;
+    margin-left: -1px;
+    padding-bottom: 0;
+    margin-bottom: 0 !important;
+
+    .tab-content {
+        padding: 0 20px;
+    }
 }

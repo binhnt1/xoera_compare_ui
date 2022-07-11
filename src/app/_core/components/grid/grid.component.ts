@@ -5,11 +5,13 @@ import { AppInjector } from '../../../app.module';
 import { EnumHelper } from '../../helpers/enum.helper';
 import { NavigationEnd, Router } from '@angular/router';
 import { GridData } from '../../domains/data/grid.data';
+import { PipeType } from '../../domains/enums/pipe.type';
 import { ResultApi } from '../../domains/data/result.api';
 import { TableData } from '../../domains/data/table.data';
 import { ToastrHelper } from '../../helpers/toastr.helper';
 import { OrderType } from '../../domains/enums/order.type';
 import { EntityHelper } from '../../helpers/entity.helper';
+import { ImageEx } from '../../decorators/image.decorator';
 import { FilterData } from '../../domains/data/filter.data';
 import { PagingData } from '../../domains/data/paging.data';
 import { ActionData } from '../../domains/data/action.data';
@@ -44,7 +46,6 @@ import { NavigationStateData } from '../../domains/data/navigation.state';
 import { DataType, DateTimeType, StoreType, StringType } from '../../domains/enums/data.type';
 import { ModalExportDataComponent } from '../../modal/export.data/export.data.component';
 import { Component, ComponentFactoryResolver, ComponentRef, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { ImageEx } from '../../decorators/image.decorator';
 
 @Component({
     templateUrl: './grid.component.html'
@@ -59,6 +60,7 @@ export abstract class GridComponent {
     checkAll: boolean;
     mergeCount: number;
     rowSelected: number;
+    PipeType = PipeType;
     randomClass: string;
     items: BaseEntity[];
     checkedAll: boolean;
@@ -1001,7 +1003,7 @@ export abstract class GridComponent {
                     let controller = item.controllerName || this.obj.ReferenceName;
                     let allow = await this.authen.permissionAllow(controller, item.systemName);
                     if (!allow) {
-                        this.obj.Actions = this.obj.Actions.filter(c => c.name.toLowerCase() != item.name.toLowerCase());
+                        this.obj.Actions = this.obj.Actions.filter(c => c.systemName.toLowerCase() != item.systemName.toLowerCase());
                     }
                 });
                 let allowView = await this.authen.permissionAllow(this.obj.ReferenceName, ActionType.View);

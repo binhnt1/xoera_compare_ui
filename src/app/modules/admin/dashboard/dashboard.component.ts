@@ -10,6 +10,9 @@ import { EntityHelper } from 'src/app/_core/helpers/entity.helper';
 import { MethodType } from 'src/app/_core/domains/enums/method.type';
 import { ToastrHelper } from 'src/app/_core/helpers/toastr.helper';
 import { LicenceEntity } from 'src/app/_core/domains/entities/licence.entity';
+import { SummaryExchangeDto } from 'src/app/_core/domains/objects/summary.exchange.dto';
+import { SummaryPriceDto } from 'src/app/_core/domains/objects/summary.price.dto';
+import { UtilityExHelper } from 'src/app/_core/helpers/utility.helper';
 
 @Component({
     templateUrl: 'dashboard.component.html',
@@ -20,10 +23,13 @@ export class DashboardComponent implements OnInit {
     tabDispatch: string;
     licence: LicenceEntity;
     loading: boolean = true;
+    priceDto: SummaryPriceDto;
+    licenceClone: LicenceEntity;
     activePrice: boolean = true;
     activeProfile: boolean = true;
     activeLicence: boolean = true;
     activeExchange: boolean = true;
+    exchangeDto: SummaryExchangeDto;
     readonlyIsPublic: boolean = false;
 
     constructor(
@@ -31,6 +37,14 @@ export class DashboardComponent implements OnInit {
         public event: AdminEventService,
         public service: AdminApiService,
         public dialog: AdminDialogService) {
+        this.exchangeDto = EntityHelper.createEntity(SummaryExchangeDto, {
+            Partners: 3,
+            AcceptedJobs: 4,
+            AvaiableJobs: 5,
+            CompletedJobs: 6,
+            PublishedJobs: 5,
+            PaymentPending: 100,
+        });
     }
 
     ngOnInit(): void {
@@ -40,6 +54,12 @@ export class DashboardComponent implements OnInit {
                 this.readonlyIsPublic = this.item.IsPublic;
                 if (this.item.Licences && this.item.Licences.length > 0) {
                     this.licence = EntityHelper.createEntity(LicenceEntity, this.item.Licences[0]);
+                    this.licenceClone = _.cloneDeep(this.licence);
+                    this.licence.ClientKey = "********************";
+                    this.licence.DesktopClientKey = "********************";
+                }
+                if (this.item.Prices && this.item.Prices.length > 0) {
+                    this.priceDto = EntityHelper.createEntity(SummaryPriceDto, this.item.Prices[0]);
                 }
             }
             this.loading = false;
@@ -59,7 +79,30 @@ export class DashboardComponent implements OnInit {
         }
     }
 
+    viewClientKey() {
+        this.licence.ClientKey = this.licenceClone.ClientKey;
+    }
+
+    copyClientKey() {
+        UtilityExHelper.copyString(this.licenceClone.ClientKey);
+        ToastrHelper.Success('Copy mobile client key success');
+    }
+
+    viewDesktopClientKey() {
+        this.licence.DesktopClientKey = this.licenceClone.DesktopClientKey;
+    }
+
+    copyDesktopClientKey() {
+        UtilityExHelper.copyString(this.licenceClone.DesktopClientKey);
+        ToastrHelper.Success('Copy desktop client key success');
+    }
+
     selectTabDispatch(tab: string) {
         this.tabDispatch = tab;
+    }
+
+    toogleIsPublic(item: boolean) {
+        this.item.IsPublic = item;
+        this.public();
     }
 }

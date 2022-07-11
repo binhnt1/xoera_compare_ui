@@ -24,7 +24,7 @@ export class CompanyEntity extends BaseEntity {
     Email: string;
 
     @StringDecorator({ type: StringType.Text, max: 150 })
-    Leader: string;
+    RegisterNumber: string;
 
     @StringDecorator({ type: StringType.MultiText, max: 500 })
     Address: string;
@@ -58,6 +58,9 @@ export class CompanyEntity extends BaseEntity {
 
     @StringDecorator({ type: StringType.Text, max: 20 })
     PHOPostCode: string;
+
+    @StringDecorator({ type: StringType.Text, max: 200 })
+    PHOLicence: string;
 
     @BooleanDecorator()
     IsPublic: boolean;

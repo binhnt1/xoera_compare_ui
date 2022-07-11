@@ -9,7 +9,7 @@ import { LicenceEntity } from "../../../../_core/domains/entities/licence.entity
     selector: 'list-licence',
     templateUrl: '../../../../_core/components/grid/grid.component.html',
 })
-export class LicenceComponent extends GridComponent implements OnInit {
+export class ListLicenceComponent extends GridComponent implements OnInit {
     @Input() items: LicenceEntity[];
     obj: GridData = {
         Imports: [],
