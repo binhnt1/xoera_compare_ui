@@ -9,6 +9,7 @@ import { ResultApi } from 'src/app/_core/domains/data/result.api';
 import { EntityHelper } from 'src/app/_core/helpers/entity.helper';
 import { MethodType } from 'src/app/_core/domains/enums/method.type';
 import { ToastrHelper } from 'src/app/_core/helpers/toastr.helper';
+import { LicenceEntity } from 'src/app/_core/domains/entities/licence.entity';
 
 @Component({
     templateUrl: 'dashboard.component.html',
@@ -16,6 +17,8 @@ import { ToastrHelper } from 'src/app/_core/helpers/toastr.helper';
 })
 export class DashboardComponent implements OnInit {
     item: CompanyDto;
+    tabDispatch: string;
+    licence: LicenceEntity;
     loading: boolean = true;
     activePrice: boolean = true;
     activeProfile: boolean = true;
@@ -35,6 +38,9 @@ export class DashboardComponent implements OnInit {
             if (ResultApi.IsSuccess(result)) {
                 this.item = EntityHelper.createEntity(CompanyDto, result.Object);
                 this.readonlyIsPublic = this.item.IsPublic;
+                if (this.item.Licences && this.item.Licences.length > 0) {
+                    this.licence = EntityHelper.createEntity(LicenceEntity, this.item.Licences[0]);
+                }
             }
             this.loading = false;
         });
@@ -51,5 +57,9 @@ export class DashboardComponent implements OnInit {
                 })
             }, () => this.item.IsPublic = false);
         }
+    }
+
+    selectTabDispatch(tab: string) {
+        this.tabDispatch = tab;
     }
 }

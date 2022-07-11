@@ -37,7 +37,7 @@ export class CompanyDto {
     @StringDecorator({ label: 'Surname', required: true, type: StringType.Text, max: 150 })
     LastName: string;
 
-    @StringDecorator({ type: StringType.MultiText, max: 500 })
+    @StringDecorator({ type: StringType.Text, max: 250 })
     Address: string;
 
     @StringDecorator({ type: StringType.Text, min: 6, max: 100 })
@@ -52,13 +52,16 @@ export class CompanyDto {
     @StringDecorator({ label: 'Name', required: true, type: StringType.Text, max: 100 })
     CompanyName: string;
 
+    @StringDecorator({ label: 'Website', type: StringType.Link, max: 250 })
+    Website: string;
+
     @StringDecorator({ label: 'Email', required: true, type: StringType.Email, max: 100 })
     CompanyEmail: string;
 
     @StringDecorator({ label: 'Phone', required: true, type: StringType.PhoneText, max: 15, min: 10 })
     CompanyPhone: string;
 
-    @StringDecorator({ type: StringType.Text, max: 500 })
+    @StringDecorator({ type: StringType.Text, max: 250 })
     CompanyAddress: string;
 
     @NumberDecorator({ decimals: 6, type: NumberType.Text })
@@ -71,8 +74,11 @@ export class CompanyDto {
     @StringDecorator({ required: true, type: StringType.Text, max: 150 })
     PHOName: string;
 
-    @StringDecorator({ label: 'Booking Office Number', type: StringType.Text, max: 20 })
+    @StringDecorator({ label: 'Phone', type: StringType.Text, max: 20 })
     PHOPhone: string;
+
+    @StringDecorator({ label: 'Email', type: StringType.Email, max: 250 })
+    PHOEmail: string;
 
     @StringDecorator({ label: 'Address', required: true, type: StringType.Text, max: 150 })
     PHOAddress: string;

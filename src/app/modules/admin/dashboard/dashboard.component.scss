@@ -1,133 +1,180 @@
 .kt-sc {
-  background-position: center top;
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-bottom: 2rem;
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 2rem;
 }
 
 .kt-sc .kt-sc__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2rem;
-  border-bottom: 1px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    border-bottom: 1px solid #ffffff;
 }
 
 .kt-sc .kt-sc__top .kt-sc__title {
-  margin-bottom: 0;
-  font-size: 1.45rem;
-  color: #48465b;
+    margin-bottom: 0;
+    font-size: 1.45rem;
+    color: #48465b;
 }
 
 .kt-sc .kt-sc__top .kt-sc__nav .kt-link {
-  margin-left: 2rem;
-  font-size: 1.1rem;
-  font-weight: 400;
+    margin-left: 2rem;
+    font-size: 1.1rem;
+    font-weight: 400;
 }
 
 .kt-sc .kt-sc__top .kt-sc__nav .kt-link:first-child {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 .kt-sc .kt-sc__bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 10rem;
-  padding-bottom: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10rem;
+    padding-bottom: 10rem;
 }
 
 .kt-sc .kt-sc__bottom .kt-sc__heading {
-  margin-bottom: 4rem;
+    margin-bottom: 4rem;
 }
 
 .kt-sc .kt-sc__bottom .kt-sc__form .input-group {
-  width: 630px;
-  box-shadow: 0px 0px 9px 0px rgba(122, 104, 181, 0.09);
+    width: 630px;
+    box-shadow: 0px 0px 9px 0px rgba(122, 104, 181, 0.09);
 }
 
 .kt-sc .kt-sc__bottom .kt-sc__form .input-group .input-group-text {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: none;
-  padding: 0.65rem 2rem;
-  background-color: #ffffff;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+    padding: 0.65rem 2rem;
+    background-color: #ffffff;
 }
 
 .kt-sc .kt-sc__bottom .kt-sc__form .input-group .form-control {
-  border: none;
-  padding: 2.5rem 0;
-  font-weight: 400;
-  font-size: 1.1rem;
+    border: none;
+    padding: 2.5rem 0;
+    font-weight: 400;
+    font-size: 1.1rem;
 }
 
 @media (max-width: 1024px) {
-  .kt-content--fit-top .kt-sc {
-    margin-top: -15px;
-  }
-
-  .kt-sc .kt-sc__top .kt-sc__nav .kt-link {
-    margin-left: 1rem;
-  }
-
-  .kt-sc .kt-sc__top .kt-sc__nav .kt-link:first-child {
-    margin-left: 0;
-  }
-
-  .kt-sc .kt-sc__bottom .kt-sc__form .input-group {
-    width: 100%;
-  }
+    .kt-content--fit-top .kt-sc {
+        margin-top: -15px;
+    }
+    .kt-sc .kt-sc__top .kt-sc__nav .kt-link {
+        margin-left: 1rem;
+    }
+    .kt-sc .kt-sc__top .kt-sc__nav .kt-link:first-child {
+        margin-left: 0;
+    }
+    .kt-sc .kt-sc__bottom .kt-sc__form .input-group {
+        width: 100%;
+    }
 }
 
 .kt-content {
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .accordion {
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-
-  &.accordion-grid {
-    .collapse {
-      margin: 0;
-      padding: 0;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    &.accordion-grid {
+        .collapse {
+            margin: 0;
+            padding: 0;
+        }
     }
-  }
-
-  .card-header {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    background-color: #eee;
-  }
-
-  .collapse {
-    margin: 0;
-    padding: 20px 20px 0 20px;
-  }
+    .card-header {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        background-color: #eee;
+    }
+    .collapse {
+        margin: 0;
+        padding: 20px 20px 0 20px;
+    }
 }
 
 ::ng-deep .company-parters {
-  h3 {
-    font-size: 1.32rem;
-    font-weight: 400 !important;
-    text-transform: none !important;
-  }
-
-  h4 {
-    margin-bottom: 20px;
-  }
-
-  .kt-portlet-popup {
-    margin-top: -10px !important;
-
-
-    .kt-portlet__body {
-      .card-body {
-        padding: 0;
-      }
+    h3 {
+        font-size: 1.32rem;
+        font-weight: 400 !important;
+        text-transform: none !important;
     }
-  }
+    h4 {
+        margin-bottom: 20px;
+    }
+    .kt-portlet-popup {
+        margin-top: -10px !important;
+        .kt-portlet__body {
+            .card-body {
+                padding: 0;
+            }
+        }
+    }
+}
+
+::ng-deep .box-item-border {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    &.none-border {
+        border: none;
+    }
+    h5 {
+        font-weight: bold;
+    }
+    .d-flex {
+        &.hidden {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+    }
+    .key-flex {
+        display: flex;
+        margin-bottom: 10px;
+        &:last-of-type {
+            margin: 0;
+        }
+        .form-group {
+            flex-grow: 1;
+        }
+        .btn {
+            max-width: 100px;
+            &:first-of-type {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            &:last-of-type {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+    .form-group {
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+        .kt-checkbox {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.tab-content {
+    padding: 0 20px;
 }

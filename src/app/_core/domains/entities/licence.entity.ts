@@ -26,7 +26,7 @@ export class LicenceEntity extends BaseEntity {
     DesktopClientKey: string;
 
     @DateTimeDecorator({ type: DateTimeType.Date })
-    ExpiryDate: string;
+    ExpiryDate: Date;
 
     @DropDownDecorator({ required: true, lookup: LookupData.Reference(CompanyEntity) })
     CompanyId: number;
@@ -39,4 +39,7 @@ export class LicenceEntity extends BaseEntity {
 
     @StringDecorator({ label: 'Whitelist IPs', type: StringType.Text, max: 500 })
     WhitelistIPs: string;
+
+    @StringDecorator({ label: 'Description', type: StringType.MultiText, max: 500 })
+    Description: string;
 }
