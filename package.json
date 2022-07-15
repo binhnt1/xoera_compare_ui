@@ -1,6 +1,6 @@
 {
   "name": "xoeracompare",
-  "version": "1.0.348",
+  "version": "1.0.350",
   "scripts": {
     "ng": "ng",
     "postbuild": "node ./build/post-build.js",
@@ -24,6 +24,7 @@
     "air-datepicker": "^2.2.3",
     "angular-user-idle": "^2.2.4",
     "crypto-js": "^4.0.0",
+    "html-to-pdf-js": "^0.9.3",
     "jsoneditor": "^9.2.0",
     "moment": "^2.29.1",
     "panzoom": "^9.4.2",

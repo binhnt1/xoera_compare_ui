@@ -8,6 +8,7 @@ export enum DialogType {
     AdminEdit,
     AdminView,
     AlertTimer,
+    WrapperAbove,
     ChangePassword,
 }
 export function DialogTypeAware(constructor: Function) {

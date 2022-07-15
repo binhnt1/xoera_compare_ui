@@ -6,6 +6,7 @@ import { ViewUserComponent } from './sercurity/user/view.user/view.user.componen
 import { ChoiceUserComponent } from './sercurity/user/choice.user/choice.user.component';
 import { ViewChoiceUserComponent } from './sercurity/user/choice.user/view.choice.user.component';
 import { EditRolePermissionComponent } from './sercurity/role/edit.permission/edit.permission.component';
+import { FileDispatchInvoiceComponent } from './dispatch.invoice/file.dispatch.invoice/file.dispatch.invoice.component';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { EditRolePermissionComponent } from './sercurity/role/edit.permission/ed
         ChoiceUserComponent,
         ViewChoiceUserComponent,  
         EditRolePermissionComponent,
+        FileDispatchInvoiceComponent,
     ],
     exports: [
         ViewRoleComponent,
@@ -26,6 +28,7 @@ import { EditRolePermissionComponent } from './sercurity/role/edit.permission/ed
         ChoiceUserComponent,
         ViewChoiceUserComponent,   
         EditRolePermissionComponent,
+        FileDispatchInvoiceComponent,
     ]
 })
 export class AdminShareModule { }

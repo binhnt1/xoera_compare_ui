@@ -3,10 +3,12 @@ import { ResultApi } from '../domains/data/result.api';
 import { Injectable, EventEmitter } from '@angular/core';
 import { DialogData } from '../domains/data/dialog.data';
 import { DialogType } from '../domains/enums/dialog.type';
+import { ModalSizeType } from '../domains/enums/modal.size.type';
 
 @Injectable()
 export class AdminDialogService {
     private wapperDialog: DialogData;
+    private wapperAboveDialog: DialogData;
     public EventDialog: EventEmitter<any> = new EventEmitter<any>();
     public EventHideDialog: EventEmitter<any> = new EventEmitter<any>();
     public EventHideAllDialog: EventEmitter<any> = new EventEmitter<any>();
@@ -115,6 +117,45 @@ export class AdminDialogService {
             }
         }
         this.EventDialog.emit(this.wapperDialog);
+    }
+    
+    public WapperAboveAsync(obj: DialogData,
+        okFunction?: (item?: any) => Promise<any>,
+        rejectFunction?: (item?: any) => Promise<any>,
+        resultFunction?: (item?: any) => Promise<any>,
+        cancelFunction: (item?: any) => void = null, minimizeFunction: (item?: any) => void = null) {
+        if (this.wapperAboveDialog) this.HideDialog(this.wapperAboveDialog);
+        if (obj.cancelText == null || obj.cancelText == undefined)
+            obj.cancelText = 'Đóng';
+
+        //Màn hình bé hơn 1400 tăng 1 size popup
+        if (window.innerWidth < 1400 && obj.size < ModalSizeType.FullScreen) {
+            obj.size += 1;
+        }
+        this.wapperAboveDialog = {
+            size: obj.size,
+            title: obj.title,
+            object: obj.object,
+            cancelText: obj.cancelText,
+            rejectText: obj.rejectText,
+            resultText: obj.resultText,
+            objectExtra: obj.objectExtra,
+            confirmText: obj.confirmText,
+            type: DialogType.WrapperAbove,
+            okFunctionAsync: async (item?: any) => {
+                if (okFunction) await okFunction(item);
+            },
+            cancelFunction: (item?: any) => {
+                if (cancelFunction) cancelFunction(item);
+            },
+            rejectFunctionAsync: async (item?: any) => {
+                if (rejectFunction) await rejectFunction(item);
+            },
+            resultFunctionAsync: async (item?: any) => {
+                if (resultFunction) await resultFunction(item);
+            },
+        }
+        this.EventDialog.emit(this.wapperAboveDialog);
     }
     public Confirm(content: string, okFunction: () => void, cancelFunction: () => void = null, title = 'Confirm') {
         let dialog: DialogData = {

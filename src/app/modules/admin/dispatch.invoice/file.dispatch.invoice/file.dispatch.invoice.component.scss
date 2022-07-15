@@ -1,0 +1,90 @@
+table {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+    }
+
+    th {
+        color: #fff;
+        padding: 10px;
+        font-weight: bold;
+        background-color: #444;
+        border: 1px solid #444;
+        text-transform: uppercase;
+
+        &.black {
+            color: #fff !important;
+            background-color: #000;
+            border-top: 1px solid #000;
+            border-right: 1px solid #000;
+        }
+    }
+
+    td {
+        color: #444;
+        background-color: #ddd;
+
+        &.bold {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        &.black {
+            color: #fff !important;
+            background-color: #000;
+        }
+
+        &.blue {
+            color: #fff !important;
+            background-color: cornflowerblue;
+            border-top: 1px solid cornflowerblue;
+            border-left: 1px solid cornflowerblue;
+        }
+    }
+
+    tfoot {
+        text-transform: uppercase;
+
+        td {
+            font-weight: bold;
+            color: #fff !important;
+            background-color: cornflowerblue;
+        }
+    }
+}
+
+.file-invoice {
+    margin: 0 20px;
+    padding: 20px 30px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+    .box-item {
+        width: 48%;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+
+        p {
+            margin: 0;
+            padding: 0;
+            font-size: small;
+        }
+    }
+
+    h3 {
+        font-size: 40px;
+        color: cornflowerblue;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UtilityModule } from '../../utility.module';
+import { AdminShareModule } from '../admin.share.module';
 import { DashboardComponent } from './dashboard.component';
 import { ListPriceComponent } from './components/list.price.component';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
@@ -20,6 +21,7 @@ import { AddCompanyPartnerComponent } from './add.company.partner/add.company.pa
     ],
     imports: [
         UtilityModule,
+        AdminShareModule,
         RouterModule.forChild([
             { path: '', component: DashboardComponent, pathMatch: 'full', data: { state: 'dashboard'}, canActivate: [AdminAuthGuard] },
         ])

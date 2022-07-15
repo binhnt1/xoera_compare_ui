@@ -42,6 +42,9 @@ export class CompanyEntity extends BaseEntity {
     PostCode: string;
 
     @StringDecorator({ required: true, type: StringType.Text, max: 150 })
+    Name: string;
+
+    @StringDecorator({ required: true, type: StringType.Text, max: 150 })
     PHOName: string;
 
     @StringDecorator({ label: 'Booking Office Number', type: StringType.Text, max: 20 })
@@ -64,4 +67,10 @@ export class CompanyEntity extends BaseEntity {
 
     @BooleanDecorator()
     IsPublic: boolean;
+
+    @StringDecorator({ type: StringType.Text, max: 200 })
+    BuildingNumber: string;
+
+    @StringDecorator({ type: StringType.Text, max: 200 })
+    Street: string;
 }

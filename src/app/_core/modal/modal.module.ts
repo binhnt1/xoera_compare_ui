@@ -13,6 +13,7 @@ import { ModalWrapperComponent } from './wrapper/wrapper.component';
 import { ModalExportDataComponent } from './export.data/export.data.component';
 import { ModalViewProfileComponent } from './view.profile/view.profile.component';
 import { ModalEditProfileComponent } from './edit.profile/edit.profile.component';
+import { ModalWrapperAboveComponent } from './wrapper.above/wrapper.above.component';
 import { ModalChangePasswordComponent } from './change.password/change.password.component';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ModalChangePasswordComponent } from './change.password/change.password.
         ModalExportDataComponent,
         ModalViewProfileComponent,
         ModalEditProfileComponent,
+        ModalWrapperAboveComponent,
         ModalChangePasswordComponent,
     ],
     exports: [
@@ -43,6 +45,7 @@ import { ModalChangePasswordComponent } from './change.password/change.password.
         ModalExportDataComponent,
         ModalViewProfileComponent,
         ModalEditProfileComponent,
+        ModalWrapperAboveComponent,
         ModalChangePasswordComponent,
     ]
 })

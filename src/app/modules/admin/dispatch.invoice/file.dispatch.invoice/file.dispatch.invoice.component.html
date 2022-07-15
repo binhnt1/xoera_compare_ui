@@ -1,0 +1,104 @@
+<div id="dvContainer" class="file-invoice" *ngIf="item && !loading">
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div>
+                <h4>Inovic labs</h4>
+                <p>{{ item.Address }}</p>
+                <p>Phone: {{ item.Phone }}</p>
+                <p>Email: {{ item.Email }}</p>
+            </div>
+            <div style="text-align: right;">
+                <h4>{{ item.Code }}</h4>
+                <h4>{{ item.IssueDate | datex }}</h4>
+                <h3>Invoice</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table>
+                <thead>
+                    <th>Billing Address</th>
+                    <th>Delivery Address</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ item.BillingAddress }}</td>
+                        <td>{{ item.DeliveryAddress }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ item.BillingPostcode }}</td>
+                        <td>{{ item.DeliveryPostcode }}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone: {{ item.BillingPhone }}</td>
+                        <td>Phone: {{ item.DeliveryPhone }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Payment Information</td>
+                        <td class="bold">Delivery Method</td>
+                    </tr>
+                    <tr>
+                        <td>Bank Transfer</td>
+                        <td>{{ item.PaymentType }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table>
+                <thead>
+                    <th>Period</th>
+                    <th>Amount</th>
+                    <th>Paid/Unpaid</th>
+                    <th class="black">SubTotal</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let child of item.Details">
+                        <td>{{ child.Period }}</td>
+                        <td>{{ child.Amount | numberx }}</td>
+                        <td>£{{ child.PaidUnpaid | numberx }}</td>
+                        <td class="blue">£{{ child.SubTotal | numberx }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="blue">
+                            <p>DueDate</p>
+                            <p>{{ item.DueDate | datex }}</p>
+                        </td>
+                        <td colspan="2" class="blue" style="text-align: right;">Total</td>
+                        <td class="blue">£{{ item.Total | numberx }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div class="box-item">
+                <h5>Additional comments:</h5>
+                <p>Payment should be made before the due date by money transfer.</p>
+                <p>Money transfer should be sent to:</p>
+                <p>Account Name: Oenix Lab Ltd</p>
+                <p>Sort Code: 309897</p>
+                <p>Account: 65349968</p>
+                <p>Reference: Use invoice number</p>
+            </div>
+            <div class="box-item">
+                <h5>Terms and Conditions:</h5>
+                <p>End user will be liable for third-party software licences unless stated otherwise.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-center">
+            <h3>Thank you for your business.</h3>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

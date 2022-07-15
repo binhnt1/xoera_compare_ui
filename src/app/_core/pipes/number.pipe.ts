@@ -1,4 +1,3 @@
-import { formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -11,6 +10,6 @@ export class NumberPipe implements PipeTransform {
         locale: string = 'en',
     ): string | null {
         if (!value) value = 0;
-        return value.toLocaleString("vi-VN", { maximumFractionDigits: 2 });
+        return value.toLocaleString("en-gb", { maximumFractionDigits: 2 });
     }
 }

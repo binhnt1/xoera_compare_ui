@@ -6,6 +6,7 @@ import { ActionType } from "../../../../_core/domains/enums/action.type";
 import { ModalSizeType } from "../../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../../_core/components/grid/grid.component";
 import { DispatchInvoiceEntity } from "../../../../_core/domains/entities/dispatch.invoice.entity";
+import { FileDispatchInvoiceComponent } from "../../dispatch.invoice/file.dispatch.invoice/file.dispatch.invoice.component";
 
 @Component({
     selector: 'list-dispatch-invoice',
@@ -24,15 +25,7 @@ export class ListDispatchInvoiceComponent extends GridComponent {
                 systemName: ActionType.Empty,
                 className: 'btn btn-warning',
                 click: (item: any) => {
-                    
-                }
-            },
-            {
-                icon: 'la la-download',
-                name: ActionType.Download,
-                className: 'btn btn-danger',
-                systemName: ActionType.Empty,
-                click: (item: any) => {
+                    this.viewFileInvoice(item);
                 }
             },
         ],
@@ -57,11 +50,29 @@ export class ListDispatchInvoiceComponent extends GridComponent {
                     return this.index.toString();
                 })
             },
-            { Property: 'Period', Type: DataType.String },
-            { Property: 'Amount', Type: DataType.Number },
-            { Property: 'PaidUnpaid', Type: DataType.Number },
+            { Property: 'Code', Type: DataType.String },
+            { Property: 'Address', Type: DataType.String },
+            { Property: 'PostCode', Type: DataType.String },
+            { Property: 'Details', Type: DataType.Number, Align: 'center' },
+            { Property: 'PaymentType', Type: DataType.DropDown },
             { Property: 'IssueDate', Type: DataType.DateTime, PipeType: PipeType.Date },
+            { Property: 'DueDate', Type: DataType.DateTime, PipeType: PipeType.Date },
         ];
         this.render(this.obj);
+    }
+
+    viewFileInvoice(item: DispatchInvoiceEntity) {
+        this.dialogService.WapperAsync({
+            cancelText: 'Close',
+            confirmText: 'Download',
+            title: 'View Invoice File',
+            size: ModalSizeType.Large,
+            object: FileDispatchInvoiceComponent,
+            objectExtra: {
+                invoiceId: item.Id,
+            }
+        }, async () => {
+            await this.loadItems();
+        });
     }
 }
