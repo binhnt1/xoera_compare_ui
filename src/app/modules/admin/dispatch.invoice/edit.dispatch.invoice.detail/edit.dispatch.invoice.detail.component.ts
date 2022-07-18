@@ -18,6 +18,7 @@ import { DispatchInvoiceDetailEntity } from '../../../../_core/domains/entities/
 })
 export class EditDispatchInvoiceDetailComponent extends EditComponent implements OnInit {
     id: number;
+    result: any;
     popup: boolean;
     viewer: boolean;
     invoiceId: number;
@@ -66,26 +67,10 @@ export class EditDispatchInvoiceDetailComponent extends EditComponent implements
         if (this.item) {
             let columns = ['Period', 'Amount', 'PaidUnpaid'];
             if (await validation(this.item, columns)) {
-                this.processing = true;
-                let obj: DispatchInvoiceDetailEntity = _.cloneDeep(this.item);
-
-                // save
-                if (!obj.DispatchInvoiceId)
-                    obj.DispatchInvoiceId = this.invoiceId;
-                return await this.service.save('dispatchinvoicedetail', obj).then((result: ResultApi) => {
-                    this.processing = false;
-                    if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save invoice detail success');
-                        if (complete) complete();
-                        return true;
-                    } else {
-                        ToastrHelper.ErrorResult(result);
-                        return false;
-                    }
-                }, () => {
-                    this.processing = false;
-                    return false;
-                });
+                this.item.SubTotal = this.item.Amount * this.item.PaidUnpaid - this.item.Discount;
+                this.result = _.cloneDeep(this.item);
+                if (complete) complete();
+                return true;
             }
         }
         return false;

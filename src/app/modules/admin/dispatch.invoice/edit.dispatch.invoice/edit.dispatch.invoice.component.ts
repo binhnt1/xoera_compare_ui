@@ -7,6 +7,7 @@ import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
 import { ActionData } from '../../../../_core/domains/data/action.data';
+import { MethodType } from '../../../../_core/domains/enums/method.type';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { CompanyEntity } from '../../../../_core/domains/entities/company.entity';
@@ -55,7 +56,7 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
     }
 
     accountChange() {
-        if (this.authen.account.UserType == UserType.Admin) {
+        if (this.authen.account.UserType == UserType.Admin && this.item.AccountId) {
             this.service.callApi('user', this.item.AccountId.toString()).then((result: ResultApi) => {
                 if (ResultApi.IsSuccess(result)) {
                     let company: CompanyEntity = result.Object.Company;
@@ -78,9 +79,12 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
                         var invoices: DispatchInvoiceEntity[] = result.Object.DispatchInvoices;
                         if (invoices && invoices.length > 0) {
                             let name = company.Name?.substring(0, 2).toUpperCase(),
-                                number = invoices.map(c => { return c.Code.replace(name, '') })
+                                number = invoices
+                                    .filter(c => c.Code.startsWith(name))
+                                    .map(c => { return c.Code.replace(name, '') })
                                     .map(c => parseInt(c))
-                                    .sort((a, b) => a - b)[0] || 1;
+                                    .sort((a, b) => a - b)[0] || 0;
+                            number += 1;
                             this.item.Code = name + number.toString().padStart(4, '0');
                         } else {
                             this.item.Code = company.Name?.substring(0, 2).toUpperCase() + '1'.padStart(4, '0');
@@ -93,6 +97,10 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
         }
     }
 
+    invoiceDetailChange(items: any[]) {
+        this.item.InvoiceDetails = _.cloneDeep(items);
+    }
+
     private async loadItem() {
         this.item = new DispatchInvoiceEntity();
         if (this.id) {
@@ -103,6 +111,8 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
                     ToastrHelper.ErrorResult(result);
                 }
             });
+        } else {
+            this.item.InvoiceDetails = [];
         }
     }
     private async confirmAndBack() {
@@ -127,8 +137,8 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
     private edit(item: DispatchInvoiceEntity) {
         let obj: NavigationStateData = {
             id: item.Id,
-            prevUrl: '/admin/dispatchinvoice',
             prevData: this.state.prevData,
+            prevUrl: '/admin/dispatchinvoice',
         };
         this.router.navigate(['/admin/dispatchinvoice/edit'], { state: { params: JSON.stringify(obj) } });
     }
@@ -136,7 +146,11 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
         if (this.item) {
             let columns = this.authen.management
                 ? ['Code', 'IssueDate', 'Address', 'DueDate', 'AccountId']
-                : ['Code', 'IssueDate', 'Address', 'DueDate']
+                : ['Code', 'IssueDate', 'Address', 'DueDate'];
+            if (!this.item.InvoiceDetails || this.item.InvoiceDetails.length == 0) {
+                ToastrHelper.Error('Please add new invoice details');
+                return;
+            }
             if (await validation(this.item, columns)) {
                 this.processing = true;
                 let obj: DispatchInvoiceEntity = _.cloneDeep(this.item);
@@ -145,7 +159,7 @@ export class EditDispatchInvoiceComponent extends EditComponent implements OnIni
                 if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
 
                 // save
-                return await this.service.save('dispatchinvoice', obj).then((result: ResultApi) => {
+                return await this.service.callApi('dispatchinvoice', 'createInvoice', obj, MethodType.Post).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
                         ToastrHelper.Success('Save invoice success');

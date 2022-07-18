@@ -31,6 +31,7 @@ import { LayoutAdminStackSignInComponent } from './_layout.admin.stack/signin/la
           { path: 'smtpaccount', loadChildren: () => import('./modules/admin/smtp.account/smtp.account.module').then(m => m.SmtpAccountModule) },
           { path: 'vehicletype', loadChildren: () => import('./modules/admin/vehicle.type/vehicle.type.module').then(m => m.VehicleTypeModule) },
           { path: 'permission', loadChildren: () => import('./modules/admin/sercurity/permission/permission.module').then(m => m.PermissionModule) },
+          { path: 'configuration', loadChildren: () => import('./modules/admin/configuration/configuration.module').then(m => m.ConfigurationModule) },
           { path: 'useragreement', loadChildren: () => import('./modules/admin/user.agreement/user.agreement.module').then(m => m.UserAgreementModule) },
           { path: 'emailtemplate', loadChildren: () => import('./modules/admin/email.template/email.template.module').then(m => m.EmailTemplateModule) },
           { path: 'companypartner', loadChildren: () => import('./modules/admin/company.partner/company.partner.module').then(m => m.CompanyPartnerModule) },

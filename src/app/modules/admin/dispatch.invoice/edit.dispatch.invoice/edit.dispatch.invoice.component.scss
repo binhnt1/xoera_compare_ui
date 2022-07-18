@@ -1,5 +1,14 @@
-::ng-deep .vehicle-type {
-    textarea {
-        height: 122px;
+.box-item {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+::ng-deep .edit-dispatch-invoice {
+    .box-item {
+        .card-body {
+            padding: 0 !important;
+        }
     }
 }

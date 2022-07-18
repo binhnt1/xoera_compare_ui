@@ -1,0 +1,36 @@
+<div class="kt-portlet kt-portlet-edit-form emailtemplateWrapper">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="box-item">
+                                    <h5>Company</h5>
+                                    <editor [(object)]="item" property="OurCompanyName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyPhone" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyEmail" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyAddress" [decorator]="{readonly: viewer}"></editor>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="box-item">
+                                    <h5>Bank Details</h5>
+                                    <editor [(object)]="item" property="OurCompanyBankName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyBankAccountName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyBankAccountNumber" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="OurCompanyBankSortCode" [decorator]="{readonly: viewer}"></editor>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

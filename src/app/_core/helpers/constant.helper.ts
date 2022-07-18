@@ -106,6 +106,7 @@ export class ConstantHelper {
         '/admin/vehicletype',
         '/admin/smtpaccount',
         '/admin/useractivity',
+        '/admin/configuration',
         '/admin/emailtemplate',
         '/admin/useragreement',
         '/admin/linkpermission',

@@ -1,4 +1,4 @@
-<div class="kt-portlet kt-portlet-edit-form">
+<div class="kt-portlet kt-portlet-edit-form edit-dispatch-invoice">
     <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
     <div class="kt-portlet__body card ">
         <div class="card-content">
@@ -6,19 +6,29 @@
                 <div class="row" *ngIf="item && !loading">
                     <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <editor *ngIf="authen.management" [(object)]="item" property="AccountId" [decorator]="{readonly: viewer}" (valueChange)="accountChange()"></editor>
-                                <editor [(object)]="item" property="Code" [decorator]="{readonly: viewer}"></editor>
-                                <editor [(object)]="item" property="IssueDate" [decorator]="{readonly: viewer}"></editor>
+                            <div class="col-sm-6">
+                                <div class=" box-item">
+                                    <editor *ngIf="authen.management" [(object)]="item" property="AccountId" [decorator]="{readonly: viewer}" (valueChange)="accountChange()"></editor>
+                                    <editor [(object)]="item" property="Code" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="IssueDate" [decorator]="{readonly: viewer}"></editor>
+                                </div>
+                                <div class="box-item">
+                                    <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="CompanyName" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="BuildingNumber" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Street" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="PostCode" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="Phone" [decorator]="{readonly: viewer}"></editor>
+                                </div>
                             </div>
-                            <div class="col-sm-12">
-                                <editor [(object)]="item" property="Address" [decorator]="{readonly: viewer}"></editor>
-                                <editor [(object)]="item" property="PostCode" [decorator]="{readonly: viewer}"></editor>
-                                <editor [(object)]="item" property="PaymentType" [decorator]="{readonly: viewer}"></editor>
-                                <editor [(object)]="item" property="DueDate" [decorator]="{readonly: viewer}"></editor>
-                            </div>
-                            <div class="col-sm-12">
-                                <list-dispatch-invoice-detail [params]="{id: }"></list-dispatch-invoice-detail>
+                            <div class="col-sm-6">
+                                <div class="box-item">
+                                    <editor [(object)]="item" property="DeliveryMethod" [decorator]="{readonly: viewer}"></editor>
+                                    <editor [(object)]="item" property="DueDate" [decorator]="{readonly: viewer}"></editor>
+                                </div>
+                                <div class="box-item" style="padding-bottom: 0;">
+                                    <list-dispatch-invoice-detail [params]="{items: item.InvoiceDetails, id: id, viewer: viewer || this.id > 0}" (valueChange)="invoiceDetailChange($event)"></list-dispatch-invoice-detail>
+                                </div>
                             </div>
                         </div>
                     </div>

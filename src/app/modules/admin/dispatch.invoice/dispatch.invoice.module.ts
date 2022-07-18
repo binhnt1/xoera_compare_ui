@@ -14,6 +14,8 @@ import { EditDispatchInvoiceComponent } from './edit.dispatch.invoice/edit.dispa
 import { ListDispatchInvoiceDetailComponent } from './components/list.dispatch.invoice.detail.component';
 import { EditDispatchInvoiceDetailComponent } from './edit.dispatch.invoice.detail/edit.dispatch.invoice.detail.component';
 import { FileDispatchInvoiceComponent } from './file.dispatch.invoice/file.dispatch.invoice.component';
+import { NavigationStateData } from 'src/app/_core/domains/data/navigation.state';
+import { ActionData } from 'src/app/_core/domains/data/action.data';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -24,23 +26,17 @@ export class DispatchInvoiceComponent extends GridComponent {
         Exports: [],
         Filters: [],
         UpdatedBy: false,
-        MoreActions: [
-            {
-                name: 'Add Invoice Detail',
-                systemName: ActionType.AddNew,
-                controllerName: 'DispatchInvoiceDetail',
-                click: (item: any) => {
-                    this.viewInvoiceDetails(item);
-                }
-            },
-            {
-                name: 'View Invoice File',
-                systemName: ActionType.View,
-                controllerName: 'DispatchInvoiceDetail',
-                click: (item: any) => {
-                    this.viewFileInvoice(item);
-                }
-            }],
+        Actions: [
+            ActionData.view((item: any) => this.view(item))
+        ],
+        MoreActions: [{
+            name: 'View Invoice File',
+            systemName: ActionType.View,
+            controllerName: 'DispatchInvoiceDetail',
+            click: (item: any) => {
+                this.viewFileInvoice(item);
+            }
+        }],
         Size: ModalSizeType.Default,
         Reference: DispatchInvoiceEntity,
     };
@@ -50,8 +46,9 @@ export class DispatchInvoiceComponent extends GridComponent {
         this.properties = [
             { Property: 'Id', Type: DataType.Number },
             { Property: 'Code', Type: DataType.String },
-            { Property: 'Address', Type: DataType.String },
-            { Property: 'PostCode', Type: DataType.String },
+            { Property: 'DeliveryPhone', Type: DataType.String },
+            { Property: 'DeliveryAddress', Type: DataType.String },
+            { Property: 'DeliveryPostCode', Type: DataType.String },
             {
                 Property: 'Details', Type: DataType.Number, Align: 'center',
                 Click: (item: any) => {
@@ -63,6 +60,7 @@ export class DispatchInvoiceComponent extends GridComponent {
                         object: ListDispatchInvoiceDetailComponent,
                         objectExtra: {
                             id: item.Id,
+                            viewer: true,
                         }
                     });
                 }
@@ -78,43 +76,21 @@ export class DispatchInvoiceComponent extends GridComponent {
     }
 
     addNew() {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Create',
-            title: 'Create Invoice',
-            size: ModalSizeType.Default,
-            object: EditDispatchInvoiceComponent,
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            prevData: this.itemData,
+            prevUrl: '/admin/dispatchinvoice',
+        };
+        this.router.navigate(['/admin/dispatchinvoice/add'], { state: { params: JSON.stringify(obj) } });
     }
 
-    edit(item: DispatchInvoiceEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Save',
-            title: 'Edit Invoice',
-            size: ModalSizeType.Default,
-            object: EditDispatchInvoiceComponent,
-            objectExtra: {
-                id: item.Id,
-            }
-        }, async () => {
-            await this.loadItems();
-        });
-    }
-
-    view(item: DispatchInvoiceEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            title: 'View Invoice',
-            size: ModalSizeType.Default,
-            object: EditDispatchInvoiceComponent,
-            objectExtra: {
-                id: item.Id,
-                viewer: true,
-            }
-        });
+    view(item: any) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            viewer: true,
+            prevData: this.itemData,
+            prevUrl: '/admin/dispatchinvoice',
+        };
+        this.router.navigate(['/admin/dispatchinvoice/view'], { state: { params: JSON.stringify(obj) } });
     }
 
     viewFileInvoice(item: DispatchInvoiceEntity) {
@@ -124,20 +100,6 @@ export class DispatchInvoiceComponent extends GridComponent {
             title: 'View Invoice File',
             size: ModalSizeType.Large,
             object: FileDispatchInvoiceComponent,
-            objectExtra: {
-                invoiceId: item.Id,
-            }
-        }, async () => {
-            await this.loadItems();
-        });
-    }
-
-    viewInvoiceDetails(item: DispatchInvoiceEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            size: ModalSizeType.Default,
-            title: 'Create Invoice Detail',
-            object: EditDispatchInvoiceDetailComponent,
             objectExtra: {
                 invoiceId: item.Id,
             }
@@ -159,6 +121,9 @@ export class DispatchInvoiceComponent extends GridComponent {
         AdminShareModule,
         RouterModule.forChild([
             { path: '', component: DispatchInvoiceComponent, pathMatch: 'full', data: { state: 'dispatch_invoice' }, canActivate: [AdminAuthGuard] },
+            { path: 'add', component: EditDispatchInvoiceComponent, pathMatch: 'full', data: { state: 'dispatch_invoice_add' }, canActivate: [AdminAuthGuard] },
+            { path: 'view', component: EditDispatchInvoiceComponent, pathMatch: 'full', data: { state: 'dispatch_invoice_view' }, canActivate: [AdminAuthGuard] },
+            { path: 'edit', component: EditDispatchInvoiceComponent, pathMatch: 'full', data: { state: 'dispatch_invoice_edit' }, canActivate: [AdminAuthGuard] },
         ])
     ]
 })

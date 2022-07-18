@@ -148,8 +148,10 @@ export class ModalWrapperAboveComponent implements OnInit, OnDestroy {
             this.processing = true;
             let success = await (<any>this.componentRef.instance).confirm();
             if (success) {
-                if (this.dialog.okFunctionAsync)
-                    await this.dialog.okFunctionAsync(success);
+                if (this.dialog.okFunctionAsync) {
+                    let result = (<any>this.componentRef.instance).result;
+                    await this.dialog.okFunctionAsync(result);
+                }
                 this.visible = false;
                 if (this.container) {
                     this.container.remove();
@@ -158,9 +160,6 @@ export class ModalWrapperAboveComponent implements OnInit, OnDestroy {
                 this.instance = null;
                 this.dialog = null;
             }
-            let confirmText = (<any>this.componentRef.instance)?.confirmText;
-            if (confirmText)
-                this.dialog.confirmText = confirmText;
             this.processing = false;
         }
     }

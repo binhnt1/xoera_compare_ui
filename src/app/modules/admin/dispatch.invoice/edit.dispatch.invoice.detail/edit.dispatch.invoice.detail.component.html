@@ -2,10 +2,10 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-12">
-                <editor [(object)]="item" property="DispatchInvoiceId" [decorator]="{readonly: true}"></editor>
                 <editor [(object)]="item" property="Period" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="Amount" [decorator]="{readonly: viewer}"></editor>
                 <editor [(object)]="item" property="PaidUnpaid" [decorator]="{readonly: viewer}"></editor>
+                <editor [(object)]="item" property="Discount" [decorator]="{readonly: viewer}"></editor>
             </div>
         </div>
     </div>

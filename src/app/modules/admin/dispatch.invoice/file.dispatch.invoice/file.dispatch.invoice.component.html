@@ -3,9 +3,9 @@
         <div class="col-sm-12 d-flex justify-content-between">
             <div>
                 <h4>Inovic labs</h4>
-                <p>{{ item.Address }}</p>
-                <p>Phone: {{ item.Phone }}</p>
-                <p>Email: {{ item.Email }}</p>
+                <p>{{ item.OurCompanyAddress }}</p>
+                <p>Phone: {{ item.OurCompanyPhone }}</p>
+                <p>Email: {{ item.OurCompanyEmail }}</p>
             </div>
             <div style="text-align: right;">
                 <h4>{{ item.Code }}</h4>
@@ -22,15 +22,15 @@
                     <th>Delivery Address</th>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngIf="item.BillingAddress || item.DeliveryAddress">
                         <td>{{ item.BillingAddress }}</td>
                         <td>{{ item.DeliveryAddress }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="item.BillingPostcode || item.DeliveryPostcode">
                         <td>{{ item.BillingPostcode }}</td>
                         <td>{{ item.DeliveryPostcode }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="item.BillingPhone || item.DeliveryPhone">
                         <td>Phone: {{ item.BillingPhone }}</td>
                         <td>Phone: {{ item.DeliveryPhone }}</td>
                     </tr>
@@ -38,7 +38,7 @@
                         <td class="bold">Payment Information</td>
                         <td class="bold">Delivery Method</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="item.PaymentType">
                         <td>Bank Transfer</td>
                         <td>{{ item.PaymentType }}</td>
                     </tr>
@@ -46,13 +46,14 @@
             </table>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="item.Details && item.Details.length > 0">
         <div class="col-sm-12">
             <table>
                 <thead>
                     <th>Period</th>
                     <th>Amount</th>
                     <th>Paid/Unpaid</th>
+                    <th>Discount</th>
                     <th class="black">SubTotal</th>
                 </thead>
                 <tbody>
@@ -60,6 +61,7 @@
                         <td>{{ child.Period }}</td>
                         <td>{{ child.Amount | numberx }}</td>
                         <td>£{{ child.PaidUnpaid | numberx }}</td>
+                        <td>£{{ child.Discount | numberx }}</td>
                         <td class="blue">£{{ child.SubTotal | numberx }}</td>
                     </tr>
                 </tbody>
@@ -69,7 +71,7 @@
                             <p>DueDate</p>
                             <p>{{ item.DueDate | datex }}</p>
                         </td>
-                        <td colspan="2" class="blue" style="text-align: right;">Total</td>
+                        <td colspan="3" class="blue" style="text-align: right;">Total</td>
                         <td class="blue">£{{ item.Total | numberx }}</td>
                     </tr>
                 </tfoot>
@@ -82,9 +84,9 @@
                 <h5>Additional comments:</h5>
                 <p>Payment should be made before the due date by money transfer.</p>
                 <p>Money transfer should be sent to:</p>
-                <p>Account Name: Oenix Lab Ltd</p>
-                <p>Sort Code: 309897</p>
-                <p>Account: 65349968</p>
+                <p>Account Name: {{ item.OurCompanyBankAccountName }}</p>
+                <p>Sort Code: {{ item.OurCompanyBankSortCode }}</p>
+                <p>Account: {{ item.OurCompanyBankAccountNumber }}</p>
                 <p>Reference: Use invoice number</p>
             </div>
             <div class="box-item">
@@ -94,11 +96,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 d-flex justify-content-center">
+        <div class="col-sm-12" style="text-align: center;">
             <h3>Thank you for your business.</h3>
         </div>
     </div>
 </div>
-<div class="row row-loading" *ngIf="loading">
-    <loading></loading>
+<div id="dvContainer" class="file-invoice" *ngIf="loading">
+    <div class="row row-loading">
+        <loading></loading>
+    </div>
 </div>

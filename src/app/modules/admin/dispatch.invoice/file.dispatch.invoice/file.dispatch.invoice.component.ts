@@ -43,6 +43,9 @@ export class FileDispatchInvoiceComponent implements OnInit {
         if (this.item) {
             var element = document.getElementById('dvContainer');
             html2pdf().set({
+                margin: [8, 3, 3, 3],
+                html2canvas:  { scale: 2 },
+                image: { type: 'jpeg', quality: 0.98 },
                 filename: 'invoice_' + this.item.Code + '.pdf',
             }).from(element).save();
             if (complete) complete();

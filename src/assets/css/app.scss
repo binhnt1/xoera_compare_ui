@@ -76,3 +76,31 @@
         }
     }
 }
+
+.btn-group {
+    .btn {
+        border-radius: 0;
+    }  
+    span {
+        &:first-of-type {
+            .btn {
+                border-top-left-radius: 0.21rem;
+                border-bottom-left-radius: 0.21rem;
+            }
+        }
+        &:last-of-type:not(:first-of-type) {
+            .btn {
+                border-top-right-radius: 0.21rem;
+                border-bottom-right-radius: 0.21rem;
+            }
+        }
+    } 
+    div {
+        &:last-of-type {
+            .btn {
+                border-top-right-radius: 0.21rem;
+                border-bottom-right-radius: 0.21rem;
+            }
+        }
+    } 
+}
