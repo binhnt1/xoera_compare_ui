@@ -23,6 +23,7 @@ import { ModalSizeType } from '../../../../../_core/domains/enums/modal.size.typ
 import { AdminAuthService } from '../../../../../_core/services/admin.auth.service';
 import { PermissionDto } from '../../../../../_core/domains/objects/permission.dto';
 import { EditComponent } from '../../../../../_core/components/edit/edit.component';
+import { UserActivityHelper } from '../../../../../_core/helpers/user.activity.helper';
 import { OrganizationDto } from '../../../../../_core/domains/objects/organization.dto';
 import { AdminDialogService } from '../../../../../_core/services/admin.dialog.service';
 import { NavigationStateData } from '../../../../../_core/domains/data/navigation.state';
@@ -195,6 +196,8 @@ export class EditUserComponent extends EditComponent {
                             Id: c.Id
                         };
                     });
+                obj.RawPassword = UtilityExHelper.randomText(6);
+                obj.Password = UserActivityHelper.CreateHash256(obj.RawPassword);
                 return await this.service.addOrUpdate(obj).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {

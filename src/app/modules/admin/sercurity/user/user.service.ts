@@ -40,7 +40,7 @@ export class UserService extends AdminApiService {
         return await this.ToResultApi(api, MethodType.Post, obj);
     }
     async addOrUpdate(item: AdminUserUpdateDto) {
-        const api = ApiUrl.ToUrl('/admin/user/');
+        const api = ApiUrl.ToUrl('/admin/security/adminAddOrUpdate');
         return await this.ToResultApi(api, MethodType.Put, item);
     }
     async allUsersByPositionId(positionId: number) {

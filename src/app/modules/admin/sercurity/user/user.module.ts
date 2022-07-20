@@ -20,6 +20,7 @@ import { UserEntity } from '../../../../_core/domains/entities/user.entity';
 import { ModalSizeType } from '../../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../../_core/components/grid/grid.component';
 import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
+import { UserType } from 'src/app/_core/domains/enums/user.type';
 
 @Component({
     templateUrl: '../../../../_core/components/grid/grid.component.html',
@@ -134,6 +135,9 @@ export class UserComponent extends GridComponent {
             },
             { Property: 'LastLogin', Type: DataType.DateTime, Align: 'center' },
         ];
+        if (this.authen.account.UserType == UserType.Normal) {
+            this.obj.Url = '/admin/user/items?type=' + UserType.Normal;
+        }
         this.render(this.obj);
     }
 

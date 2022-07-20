@@ -227,8 +227,10 @@ export class AdminUserUpdateDto {
     @StringDecorator({ required: true, type: StringType.Account, max: 100 })
     LastName: string;
 
+    Password: string;
     RoleIds: number[];
     Permissions: any[];
+    RawPassword: string;
 }
 
 @TableDecorator()
