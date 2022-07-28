@@ -1,18 +1,22 @@
+type AOA = any[][];
+import * as XLSX from 'xlsx';
 import { RouterModule } from '@angular/router';
 import { Component, NgModule } from '@angular/core';
 import { UtilityModule } from '../../utility.module';
 import { GridData } from '../../../_core/domains/data/grid.data';
 import { DataType } from '../../../_core/domains/enums/data.type';
-import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
+import { ActionType } from '../../../_core/domains/enums/action.type';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
-import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
+import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
+import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
 })
 export class FixedPriceComponent extends GridComponent {
+    importItems: any[];
     obj: GridData = {
         Imports: [],
         Exports: [],
@@ -20,6 +24,15 @@ export class FixedPriceComponent extends GridComponent {
         UpdatedBy: false,
         Size: ModalSizeType.Small,
         Reference: FixedPriceEntity,
+        Features: [{
+            name: 'Import File',
+            icon: 'la la-upload',
+            systemName: ActionType.Empty,
+            className: 'btn btn-success',
+            click: () => {
+                this.fileInput.nativeElement.click();
+            }
+        }],
     };
 
     constructor() {
@@ -79,6 +92,78 @@ export class FixedPriceComponent extends GridComponent {
                 viewer: true,
             }
         });
+    }
+
+    public readFile(files: any[]): void {
+        /* wire up file reader */
+        if (files && files.length > 0) {
+            this.loading = true;
+            let reader = new FileReader();
+            if (files.length == 0)
+                return;
+            reader.onload = (e: any) => {
+                /* read workbook */
+                const bstr: string = e.target.result;
+
+                const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+                /* grab first sheet */
+                const wsname: string = wb.SheetNames[0];
+                const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+                /* save data */
+                let excelData = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+                if (wb.SheetNames.length > 1) {
+                    let numb = wsname.replace(/[^0-9\.]+/g, "");
+                    if (numb.length > 0 && wsname.substr(0, 5) != "Sheet") {
+                        if (typeof excelData[0] === "object") {
+                            excelData[0][excelData[0].length] = "Uplift";
+                        }
+                        for (let j = 1; j < excelData.length; j++) {
+                            if (typeof excelData[j] === "object") {
+                                excelData[j][excelData[0].length - 1] = numb;
+                            }
+                        }
+                    }
+                }
+
+                for (let i = 1; i < wb.SheetNames.length; ++i) {
+                    const sheet: XLSX.WorkSheet = wb.Sheets[wb.SheetNames[i]];
+                    let sheetName = wb.SheetNames[i];
+                    let numb2 = sheetName.replace(/[^0-9\.]+/g, "");
+                    if (numb2.length > 0 && sheetName.substr(0, 5) != "Sheet") {
+                        let data = <AOA>(XLSX.utils.sheet_to_json(sheet, { header: 1, range: 1 }));
+                        for (let j = 0; j < data.length; j++) {
+                            if (typeof data[j] === "object") {
+                                data[j][excelData[0].length - 1] = numb2;
+                            }
+                        }
+                        excelData = excelData.concat(data);
+                    }
+                }
+                let items: any[] = [];
+                for (let i = 1; i < excelData.length; i++) {
+                    let item: any = {};
+                    for (let j = 0; j < excelData[i].length; j++) {
+                        let column: string = excelData[0][j].toString();
+                        switch (column.toUpperCase().trim()) {
+                            case 'TW6': item.tw6 = excelData[i][j]; break;
+                            case 'RH6': item.rh6 = excelData[i][j]; break;
+                            case 'LU2': item.lu2 = excelData[i][j]; break;
+                            case 'E16': item.e16 = excelData[i][j]; break;
+                            case 'SS2': item.ss2 = excelData[i][j]; break;
+                            case 'CM24': item.cm24 = excelData[i][j]; break;
+                            case 'PICKUP': item.pickup = excelData[i][j]; break;
+                        }
+                    }
+                    item.Id = i;
+                    items.push(item);
+                }
+                this.importItems = items;
+                this.loading = false;
+            };
+            reader.readAsBinaryString(files[0]);
+        }
     }
 }
 
