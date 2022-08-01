@@ -8,6 +8,7 @@ import { LockUserComponent } from './lock.user/lock.user.component';
 import { EditUserComponent } from './edit.user/edit.user.component';
 import { ViewUserComponent } from './view.user/view.user.component';
 import { GridData } from '../../../../_core/domains/data/grid.data';
+import { UserType } from '../../../../_core/domains/enums/user.type';
 import { DataType } from '../../../../_core/domains/enums/data.type';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
@@ -20,7 +21,6 @@ import { UserEntity } from '../../../../_core/domains/entities/user.entity';
 import { ModalSizeType } from '../../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../../_core/components/grid/grid.component';
 import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
-import { UserType } from 'src/app/_core/domains/enums/user.type';
 
 @Component({
     templateUrl: '../../../../_core/components/grid/grid.component.html',
@@ -175,8 +175,8 @@ export class UserComponent extends GridComponent {
         EditUserComponent,
     ],
     imports: [
-        AdminShareModule,
         UtilityModule,
+        AdminShareModule,
         RouterModule.forChild([
             { path: '', component: UserComponent, pathMatch: 'full', data: { state: 'user' }, canActivate: [AdminAuthGuard] },
             { path: 'add', component: EditUserComponent, pathMatch: 'full', data: { state: 'add_user' }, canActivate: [AdminAuthGuard] },

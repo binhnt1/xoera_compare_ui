@@ -33,7 +33,7 @@
     "tslib": "^2.0.0",
     "ua-parser-js": "^0.7.24",
     "uglify-js": "^3.15.5",
-    "xlsx": "^0.17.4",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
