@@ -16,7 +16,7 @@ import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.com
     templateUrl: '../../../_core/components/grid/grid.component.html',
 })
 export class FixedPriceComponent extends GridComponent {
-    importItems: any[];
+    importItems: FixedPriceEntity[] = [];
     obj: GridData = {
         Imports: [],
         Exports: [],
@@ -141,26 +141,32 @@ export class FixedPriceComponent extends GridComponent {
                         excelData = excelData.concat(data);
                     }
                 }
-                let items: any[] = [];
+
+                let index = 0;
                 for (let i = 1; i < excelData.length; i++) {
-                    let item: any = {};
-                    for (let j = 0; j < excelData[i].length; j++) {
-                        let column: string = excelData[0][j].toString();
-                        switch (column.toUpperCase().trim()) {
-                            case 'TW6': item.tw6 = excelData[i][j]; break;
-                            case 'RH6': item.rh6 = excelData[i][j]; break;
-                            case 'LU2': item.lu2 = excelData[i][j]; break;
-                            case 'E16': item.e16 = excelData[i][j]; break;
-                            case 'SS2': item.ss2 = excelData[i][j]; break;
-                            case 'CM24': item.cm24 = excelData[i][j]; break;
-                            case 'PICKUP': item.pickup = excelData[i][j]; break;
-                        }
+                    for (let j = 1; j < excelData[i].length; j++) {
+                        index += 1;
+                        let row: string = excelData[i][0].toString(),
+                            column: string = excelData[0][j].toString(),
+                            fixedprice: FixedPriceEntity = new FixedPriceEntity();
+
+                        fixedprice.Id = index;
+                        fixedprice.Start = row;
+                        fixedprice.End = column;
+                        fixedprice.Price = Number(excelData[i][j].toString());
+                        this.importItems.push(fixedprice);
                     }
-                    item.Id = i;
-                    items.push(item);
                 }
-                this.importItems = items;
                 this.loading = false;
+                this.dialogService.WapperAsync({
+                    cancelText: 'Close',
+                    confirmText: 'Import',
+                    title: 'Create Fixed Price',
+                    size: ModalSizeType.Large,
+                    object: EditFixedPriceComponent,
+                }, async () => {
+                    await this.loadItems();
+                });
             };
             reader.readAsBinaryString(files[0]);
         }
