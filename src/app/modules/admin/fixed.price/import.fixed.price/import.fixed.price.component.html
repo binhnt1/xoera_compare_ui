@@ -1,0 +1,39 @@
+<div class="row" *ngIf="item">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Tariff</label>
+                <editor [(object)]="item" property="TariffId" [decorator]="{label: ''}"></editor>
+            </div>
+            <div class="col-sm-2">
+                <label>Vehicle Type</label>
+                <editor [(object)]="item" property="VehTypeId" [decorator]="{label: ''}"></editor>
+            </div>
+            <div class="col-sm-2">
+                <label>Drop</label>
+                <editor [(object)]="item" property="Drop" [decorator]="{label: ''}"></editor>
+            </div>
+            <div class="col-sm-2">
+                <label>Return Price (%)</label>
+                <editor [(object)]="item" property="Return" [decorator]="{label: ''}"></editor>
+            </div>
+            <div class="col-sm-1">
+                <label style="margin-bottom: 18px;">&nbsp;</label>
+                <editor [(object)]="item" property="Active"></editor>
+            </div>
+            <div class="col-sm-2">
+                <label style="margin-bottom: 18px;">&nbsp;</label>
+                <editor [(object)]="item" property="ReverseDirection"></editor>
+            </div>
+            <div class="col-sm-1" style="margin-left: -40px">
+                <label>&nbsp;</label>
+                <button class="btn btn-success">Update Grid</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="items && items.length > 0">
+            <div class="col-sm-12">
+                <list-import-fixed-price [params]="{ items: items }"></list-import-fixed-price>
+            </div>
+        </div>
+    </div>
+</div>

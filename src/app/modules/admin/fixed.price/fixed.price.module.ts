@@ -11,6 +11,8 @@ import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
 import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
 import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
+import { ListImportFixedPriceComponent } from './import.fixed.price/list.import.fixed.price.component';
+import { ImportFixedPriceComponent } from './import.fixed.price/import.fixed.price.component';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -161,9 +163,12 @@ export class FixedPriceComponent extends GridComponent {
                 this.dialogService.WapperAsync({
                     cancelText: 'Close',
                     confirmText: 'Import',
-                    title: 'Create Fixed Price',
                     size: ModalSizeType.Large,
-                    object: EditFixedPriceComponent,
+                    title: 'Create Fixed Price',
+                    object: ImportFixedPriceComponent,
+                    objectExtra: {
+                        items: this.importItems
+                    },
                 }, async () => {
                     await this.loadItems();
                 });
@@ -174,7 +179,12 @@ export class FixedPriceComponent extends GridComponent {
 }
 
 @NgModule({
-    declarations: [FixedPriceComponent, EditFixedPriceComponent],
+    declarations: [
+        FixedPriceComponent, 
+        EditFixedPriceComponent,
+        ImportFixedPriceComponent,
+        ListImportFixedPriceComponent
+    ],
     imports: [
         UtilityModule,
         RouterModule.forChild([
