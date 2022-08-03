@@ -40,3 +40,24 @@ export class FixedPriceEntity extends BaseEntity {
     @DropDownDecorator({ required: true, lookup: LookupData.Reference(VehicleTypeEntity, ['TypeName']) })
     VehTypeId: number;
 }
+
+@TableDecorator({ title: 'Import Fixed Price' })
+export class ImportFixedPriceEntity extends BaseEntity {
+    @DropDownDecorator({ required: true, lookup: LookupData.Reference(TariffEntity) })
+    TariffId: number;
+
+    @DropDownDecorator({ required: true, lookup: LookupData.Reference(VehicleTypeEntity, ['TypeName']) })
+    VehTypeId: number;
+
+    @NumberDecorator({ type: NumberType.Text, decimals: 2 })
+    Drop: number;
+
+    @NumberDecorator({ type: NumberType.Text, decimals: 2 })
+    Return: number;
+
+    @BooleanDecorator()
+    Active: boolean;
+
+    @BooleanDecorator()
+    ApplyToReverseDirection: boolean;
+}
