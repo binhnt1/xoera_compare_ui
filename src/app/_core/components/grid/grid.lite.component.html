@@ -133,23 +133,23 @@
                                             <span *ngFor="let action of obj.Actions">
                                                 <ng-container [ngSwitch]="action.systemName">
                                                     <ng-container *ngSwitchCase="ActionType.Publish">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
-                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.IsActive && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
+                                                            <i [ngClass]="item.IsActive ? 'la la-power-off' : 'la la-check-circle'"></i>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngSwitchCase="ActionType.Delete">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
-                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.IsDelete ? 'Restore' : 'Delete'">
+                                                            <i [ngClass]="item.IsDelete ? 'la la-reply-all' : 'la la la-trash'"></i>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngSwitchDefault>
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.IsDelete && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
                                                             <i [ngClass]="action.icon"></i>
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
                                             </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.IsDelete && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
                                                 icon="la la-ellipsis-h"></dropdown>
                                         </div>
                                     </td>

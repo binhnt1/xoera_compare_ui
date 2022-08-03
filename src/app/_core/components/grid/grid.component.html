@@ -7,12 +7,12 @@
                 position: sticky;
                 background: #efefef;
             }
-
+            
             thead {
                 font-weight: 500;
                 color: rgba(0, 0, 0, 0.85);
             }
-
+            
             tbody tr:hover {
                 background: #e6f7ff;
             }
@@ -37,7 +37,8 @@
                 <div class="kt-margin-r-10" [ngStyle]="{width: property.dataType == DataType.DateTime ? '300px' : '200px'}" *ngFor="let property of inlineFilters">
                     <ng-container [ngSwitch]="property.dataType">
                         <ng-container *ngSwitchCase="DataType.DateTime">
-                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="inlineFilter()"></editor>
+                            <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
+                                (valueChange)="inlineFilter()"></editor>
                         </ng-container>
                         <ng-container *ngSwitchCase="DataType.DropDown">
                             <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ label: '', placeholder: 'All', type: DataType.DropDown, required: false, allowClear: true, autoSelect: false, readonly: false }" (valueChange)="inlineFilter()"></editor>
@@ -98,7 +99,8 @@
                         <div class="col-lg-3 kt-margin-t-15" *ngFor="let property of customFilters">
                             <ng-container [ngSwitch]="property.dataType">
                                 <ng-container *ngSwitchCase="DataType.DateTime">
-                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
+                                    <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ format: property.format, type: property.type == DateTimeType.SignleDate ? DateTimeType.Date : DateTimeType.DateRange, required: false, allowClear: true, autoSelect: false, readonly: false}"
+                                        (valueChange)="autoCustomFilter()"></editor>
                                 </ng-container>
                                 <ng-container *ngSwitchCase="DataType.DropDown">
                                     <editor [(object)]="objFilter" [property]="property.property" [decorator]="{ placeholder: 'All', type: property.type, required: false, allowClear: true, autoSelect: false, readonly: false}" (valueChange)="autoCustomFilter()"></editor>
@@ -389,23 +391,24 @@
                                             <span *ngFor="let action of obj.Actions">
                                                 <ng-container [ngSwitch]="action.systemName">
                                                     <ng-container *ngSwitchCase="ActionType.Publish">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
-                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.IsActive && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.IsActive ? 'De-Active' : 'Active'">
+                                                            <i [ngClass]="item.IsActive ? 'la la-power-off' : 'la la-check-circle'"></i>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngSwitchCase="ActionType.Delete">
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
-                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.IsDelete ? 'Restore' : 'Delete'">
+                                                            <i [ngClass]="item.IsDelete ? 'la la-reply-all' : 'la la la-trash'"></i>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngSwitchDefault>
-                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.IsDelete && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
                                                             <i [ngClass]="action.icon"></i>
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
                                             </span>
-                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary" icon="la la-ellipsis-h"></dropdown>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.IsDelete && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
+                                                icon="la la-ellipsis-h"></dropdown>
                                         </div>
                                     </td>
                                 </tr>
