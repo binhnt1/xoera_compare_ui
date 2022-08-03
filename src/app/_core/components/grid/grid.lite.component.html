@@ -1,0 +1,181 @@
+<div class="kt-portlet kt-portlet-grid kt-portlet--mobile kt-portlet-popup" *ngIf="obj">
+    <div class="kt-portlet__body card">
+        <div class="card-content">
+            <div class="card-body">
+                <div *ngIf="items && items.length > 0" style="border-bottom: 1px solid #ebedf2;">
+                    <div class="grid-content grid-popup" [ngClass]="{'grid-scroll':items.length >= 5}">
+                        <table [ngClass]="randomClass" class="table table-striped table-bordered table-hover table-checkable dataTable no-footer table-resizable">
+                            <thead>
+                                <tr class="heading" (clickOutside)="closeFilterMenu()">
+                                    <th *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable">
+                                            <input type="checkbox" class="kt-checkable" [checked]="checkAll" [(ngModel)]="checkAll" (change)="checkAllChange()"> <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="sorting" *ngFor="let item of activeProperties; let i = index;" [style.width]="item.Property == 'Id' ? '60px' : (item.ColumnWidth ? item.ColumnWidth + 'px' : '')" [ngClass]="{'filtering':item.AllowFilter, 'sorting_asc':item.Order == OrderType.Asc, 'sorting_desc':item.Order == OrderType.Desc}">
+                                        <div class="btn-group filter" *ngIf="item.AllowFilter">
+                                            <span (click)="toggleFilterMenu(item)">
+                                                <i class="la la-filter" [ngClass]="{'active':item.ActiveFilter}"></i>
+                                            </span>
+                                        </div>
+                                        <span *ngIf="item.Property == 'Id' || item.Title == 'Id'; else property_other">
+                                            <span (click)="sort(item)">Id</span>
+                                        </span>
+                                        <div class="handle-resize"></div>
+                                        <ng-template #property_other><span (click)="sort(item)" [attr.title]="item.Title">{{ item.Title }}</span>
+                                        </ng-template>
+                                        <div *ngIf="item.ColumnFilter">
+                                            <ng-container [ngSwitch]="item.ColumnFilter.dataType">
+                                                <ng-container *ngSwitchCase="DataType.String">
+                                                    <editor-textbox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-textbox>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Boolean">
+                                                    <editor-combobox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-combobox>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Number">
+                                                    <editor-numberic [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-numberic>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DateTime">
+                                                    <editor-datetime [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-datetime>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DropDown">
+                                                    <editor-combobox [(object)]="objFilter" [property]="item.Property" [decorator]="item.ColumnFilter">
+                                                    </editor-combobox>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </th>
+                                    <th *ngIf="obj.UpdatedBy">
+                                        Updated
+                                    </th>
+                                    <th class="actions" *ngIf="(obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        Actions
+                                        <div class="choice-column" (clickOutside)="activeChoiceColumn = false">
+                                            <a (click)="activeChoiceColumn = !activeChoiceColumn"><i class="la la-list"></i></a>
+                                            <div class="dropdown-menu header-filter portlet light" [ngClass]="{'active':activeChoiceColumn}">
+                                                <div class="kt-portlet__body">
+                                                    <h6>Choice columns</h6>
+                                                    <ul class="kt-checkbox-list">
+                                                        <li *ngFor="let column of properties">
+                                                            <editor-checkbox [(value)]="column.Active" [decorator]="{label: column.Title}" (valueChange)="choiceColumnChange()"></editor-checkbox>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items; let i = index;" [ngClass]="i % 2 == 0 ? 'odd' : 'even'" (dblclick)="rowDoubleClick(item)">
+                                    <td *ngIf="obj.Checkable || obj.Radioable" style="width: 40px; text-align: center;">
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid kt-checkbox--brand" *ngIf="obj.Checkable && item.Checkable">
+                                            <input type="checkbox" class="kt-checkable" [(ngModel)]="item.Checked" (change)="checkChange($event, item)"> <span></span>
+                                        </label>
+                                        <label class="kt-radio kt-radio--single kt-radio--solid kt-radio--brand" *ngIf="obj.Radioable && item.Checkable">
+                                            <input type="radio" [name]="obj.ReferenceName" class="kt-checkable" [(ngModel)]="item.Checked" (change)="checkRadioChange($event, item)"> <span></span>
+                                        </label>
+                                    </td>
+                                    <td *ngFor="let column of activeProperties" [style.width]="column.Property == 'Id' ? '60px' : (column.ColumnWidth ? column.ColumnWidth + 'px' : '')" [style.textAlign]="column.Align" [attr.data-label]="column.Title">
+                                        <span *ngIf="column.Property == 'Id' || column.Title == 'Id'; else property_other" [ngClass]="{'d-flex': obj.Checkable}" (click)="columlClick($event, item)">
+                                            <span *ngIf="item[column.Property]" [innerHTML]="item[column.Property] | sanitizeHtml"></span>
+                                        </span>
+                                        <ng-template #property_other>
+                                            <ng-container [ngSwitch]="column.Type">
+                                                <ng-container *ngSwitchCase="DataType.String">
+                                                    <div [innerHTML]="item[column.Property] | sanitizeHtml" [ngClass]="item[column.Property + '_Color']" *ngIf="!column.Click && column.Format" (click)="columlClick($event, item)"></div>
+                                                    <span [attr.title]="item[column.Property]" [ngClass]="item[column.Property + '_Color']" *ngIf="!column.Click && !column.Format">
+                                                        {{ item[column.Property] }}
+                                                    </span>
+                                                    <a [innerHTML]="item[column.Property] | sanitizeHtml" [ngClass]="item[column.Property + '_Color']" *ngIf="column.Click" (click)="column.Click(item)">
+                                                    </a>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Number">
+                                                    <span *ngIf="!column.Click">
+                                                        {{ item[column.Property] | numberx }}
+                                                    </span>
+                                                    <a *ngIf="column.Click" (click)="column.Click(item)">
+                                                        {{ item[column.Property] | numberx }}
+                                                    </a>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.DateTime">
+                                                    <span *ngIf="!column.PipeType || column.PipeType == PipeType.DateTime">{{ item[column.Property] | datetimex }}</span>
+                                                    <span *ngIf="column.PipeType == PipeType.Date">{{ item[column.Property] | datex }}</span>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Image">
+                                                    <img [src]="item[column.Property]" style="max-height: 45px; max-width: 300px;" />
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="DataType.Boolean">
+                                                    <editor-checkbox *ngIf="!item[column.Property + '_Text']" [(value)]="item[column.Property]" [decorator]="{'readonly':true}">
+                                                    </editor-checkbox>
+                                                    <span *ngIf="item[column.Property + '_Text']">
+                                                        {{ item[column.Property + '_Text'] }}
+                                                    </span>
+                                                </ng-container>
+                                                <ng-container *ngSwitchDefault>
+                                                    {{ item[column.Property] }}
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-template>
+                                    </td>
+                                    <td style="width: 200px;" data-label="Updated" *ngIf="obj.UpdatedBy">
+                                        <div><i class="la la-user"></i> {{ item.UpdatedBy || item.CreatedBy }}
+                                        </div>
+                                        <div><i class="la la-calendar"></i> {{ (item.UpdatedDate || item.CreatedDate) | datetimex }}
+                                        </div>
+                                    </td>
+                                    <td class="actions" style="text-align: center;" data-label="Actions" *ngIf="(obj.Actions && obj.Actions.length > 0) || (obj.MoreActions && obj.MoreActions.length > 0)">
+                                        <div class="btn-group" style="text-align: center;">
+                                            <span *ngFor="let action of obj.Actions">
+                                                <ng-container [ngSwitch]="action.systemName">
+                                                    <ng-container *ngSwitchCase="ActionType.Publish">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="item.Active ? 'De-Active' : 'Active'">
+                                                            <i [ngClass]="item.Active ? 'la la-power-off' : 'la la-check-circle'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchCase="ActionType.Delete">
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!action.hidden || !action.hidden(item)" [attr.tooltip]="item.Deleted ? 'Restore' : 'Delete'">
+                                                            <i [ngClass]="item.Deleted ? 'la la-reply-all' : 'la la la-trash'"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngSwitchDefault>
+                                                        <a class="btn btn-sm btn-icon btn-icon-md" [ngClass]="action.className" (click)="action.click(item)" *ngIf="!item.Deleted && (!action.hidden || !action.hidden(item))" [attr.tooltip]="action.name">
+                                                            <i [ngClass]="action.icon"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </span>
+                                            <dropdown [direction]="items.length > 2 && i >= items.length - 2 ? 'top' : 'bottom'" *ngIf="!item.Deleted && obj.MoreActions && obj.MoreActions.length > 0" [items]="obj.MoreActions" [obj]="item" cssClass="btn-outline-primary btn-sm btn btn-outline-primary"
+                                                icon="la la-ellipsis-h"></dropdown>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot *ngIf="activeTotalProperties && activeTotalProperties.length > 0 && totalItem">
+                                <tr>
+                                    <td [attr.colspan]="mergeCount">
+                                        {{ obj.TotalTitle || 'Total' }}
+                                    </td>
+                                    <td *ngFor="let column of activeTotalProperties;">
+                                        <span>{{ totalItem[column.Property] }}</span>
+                                    </td>
+                                    <td *ngFor="let column of [].constructor(notMergeCount);">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div *ngIf="!items || items.length == 0" style="padding: 25px 0;">
+                    {{ message }}
+                </div>
+                <loading *ngIf="loading"></loading>
+            </div>
+        </div>
+    </div>
+</div>
+<input #fileInput type="file" (change)="selectedFile($event)" style="width: 100%; height: 100%; display: none;">
