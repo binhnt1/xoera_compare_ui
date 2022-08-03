@@ -10,10 +10,10 @@ export class BaseEntity {
     Id: number;
 
     @BooleanDecorator()
-    Active?: boolean;
+    IsActive?: boolean;
 
     @BooleanDecorator()
-    Deleted?: boolean;
+    IsDelete?: boolean;
     
     @StringDecorator()
     CreatedBy?: number;

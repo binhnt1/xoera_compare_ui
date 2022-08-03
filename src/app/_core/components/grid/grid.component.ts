@@ -432,7 +432,7 @@ export abstract class GridComponent {
         }
         if (this.itemData && this.itemData.Filters) {
             this.itemData.Filters.forEach((item: FilterData) => {
-                if (item.Name != 'Active' && item.Name != 'Deleted') {
+                if (item.Name != 'IsActive' && item.Name != 'IsDelete') {
                     if (item.Value2) this.objFilter[item.Name] = [item.Value, item.Value2];
                     else this.objFilter[item.Name] = item.Value;
                     this.activeCustomFilter = true;
@@ -526,7 +526,7 @@ export abstract class GridComponent {
             if (this.items && this.items.length > 0) {
                 let item = this.items[0],
                     properties = Object.keys(item),
-                    ignoreProperties = ['CreatedDate', 'UpdatedDate', 'CreatedBy', 'UpdatedBy', 'Active', 'Deleted'];
+                    ignoreProperties = ['CreatedDate', 'UpdatedDate', 'CreatedBy', 'UpdatedBy', 'IsActive', 'IsDelete'];
                 if (!this.properties) {
                     this.properties = [];
                     properties.forEach((propertyItem: string) => {
@@ -668,10 +668,10 @@ export abstract class GridComponent {
     trash(item: BaseEntity) {
         if (this.obj && this.obj.Reference) {
             let table = DecoratorHelper.decoratorClass(this.obj.Reference);
-            this.dialogService.ConfirmAsync('Are you want <b>' + (item.Deleted ? 'restore' : 'delete') + '</b> this record?', async () => {
+            this.dialogService.ConfirmAsync('Are you want <b>' + (item.IsDelete ? 'restore' : 'delete') + '</b> this record?', async () => {
                 await this.service.trash(this.obj.ReferenceName, item.Id).then((result: ResultApi) => {
                     if (result && result.Type == ResultType.Success) {
-                        ToastrHelper.Success((item.Deleted ? 'Restore ' : 'Delete ') + this.obj.Title.toLowerCase() + ' success');
+                        ToastrHelper.Success((item.IsDelete ? 'Restore ' : 'Delete ') + this.obj.Title.toLowerCase() + ' success');
                         this.loadItems();
                     } else ToastrHelper.ErrorResult(result);
                 });
@@ -682,10 +682,10 @@ export abstract class GridComponent {
     active(item: BaseEntity) {
         if (this.obj && this.obj.Reference) {
             let table = DecoratorHelper.decoratorClass(this.obj.Reference);
-            this.dialogService.ConfirmAsync('Are you want <b>' + (item.Active ? 'de-active' : 'active') + '</b> this record?', async () => {
+            this.dialogService.ConfirmAsync('Are you want <b>' + (item.IsActive ? 'de-active' : 'active') + '</b> this record?', async () => {
                 await this.service.active(this.obj.ReferenceName, item.Id).then((result: ResultApi) => {
                     if (result && result.Type == ResultType.Success) {
-                        ToastrHelper.Success((item.Deleted ? 'De-Active ' : 'Active ') + this.obj.Title.toLowerCase() + ' success');
+                        ToastrHelper.Success((item.IsActive ? 'De-Active ' : 'Active ') + this.obj.Title.toLowerCase() + ' success');
                         this.loadItems();
                     } else ToastrHelper.ErrorResult(result);
                 });
@@ -858,7 +858,7 @@ export abstract class GridComponent {
                     click: (objItem: ActionData) => {
                         this.filters({
                             Value: false,
-                            Name: "Active",
+                            Name: "IsActive",
                             Compare: CompareType.B_Equals
                         });
                     },
@@ -878,7 +878,7 @@ export abstract class GridComponent {
                     click: (objItem: ActionData) => {
                         this.filters({
                             Value: true,
-                            Name: "Deleted",
+                            Name: "IsDelete",
                             Compare: CompareType.B_Equals
                         });
                     },

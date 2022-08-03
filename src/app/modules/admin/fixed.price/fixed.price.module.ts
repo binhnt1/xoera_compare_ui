@@ -5,14 +5,15 @@ import { Component, NgModule } from '@angular/core';
 import { UtilityModule } from '../../utility.module';
 import { GridData } from '../../../_core/domains/data/grid.data';
 import { DataType } from '../../../_core/domains/enums/data.type';
+import { ActionData } from '../../../_core/domains/data/action.data';
 import { ActionType } from '../../../_core/domains/enums/action.type';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
 import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
 import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
-import { ListImportFixedPriceComponent } from './import.fixed.price/list.import.fixed.price.component';
 import { ImportFixedPriceComponent } from './import.fixed.price/import.fixed.price.component';
+import { ListImportFixedPriceComponent } from './import.fixed.price/list.import.fixed.price.component';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -26,15 +27,18 @@ export class FixedPriceComponent extends GridComponent {
         UpdatedBy: false,
         Size: ModalSizeType.Small,
         Reference: FixedPriceEntity,
-        Features: [{
-            name: 'Import File',
-            icon: 'la la-upload',
-            systemName: ActionType.Empty,
-            className: 'btn btn-success',
-            click: () => {
-                this.fileInput.nativeElement.click();
+        Features: [
+            ActionData.addNew(() => this.addNew()),
+            {
+                name: 'Import File',
+                icon: 'la la-upload',
+                systemName: ActionType.Empty,
+                className: 'btn btn-success',
+                click: () => {
+                    this.fileInput.nativeElement.click();
+                }
             }
-        }],
+        ],
     };
 
     constructor() {
@@ -156,7 +160,8 @@ export class FixedPriceComponent extends GridComponent {
                         fixedprice.Start = row;
                         fixedprice.End = column;
                         fixedprice.Price = Number(excelData[i][j].toString());
-                        this.importItems.push(fixedprice);
+                        if (this.importItems.length < 10)
+                            this.importItems.push(fixedprice);
                     }
                 }
                 this.loading = false;
@@ -180,7 +185,7 @@ export class FixedPriceComponent extends GridComponent {
 
 @NgModule({
     declarations: [
-        FixedPriceComponent, 
+        FixedPriceComponent,
         EditFixedPriceComponent,
         ImportFixedPriceComponent,
         ListImportFixedPriceComponent

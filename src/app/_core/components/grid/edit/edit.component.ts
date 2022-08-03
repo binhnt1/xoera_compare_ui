@@ -19,10 +19,10 @@ export abstract class GridEditComponent extends GridComponent {
 
     trash(item: any) {
         if (this.obj && this.obj.Reference) {
-            this.dialogService.ConfirmAsync('Are you want <b>' + (item.Deleted ? 'restore' : 'delete') + '</b> this record?', async () => {
+            this.dialogService.ConfirmAsync('Are you want <b>' + (item.IsDelete ? 'restore' : 'delete') + '</b> this record?', async () => {
                 await this.service.trashVerify(this.obj.ReferenceName, item.Id).then((result: ResultApi) => {
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success((item.Deleted ? 'Restore ' : 'Delete ') + this.obj.Title.toLowerCase() + ' success');
+                        ToastrHelper.Success((item.IsDelete ? 'Restore ' : 'Delete ') + this.obj.Title.toLowerCase() + ' success');
                         this.loadItems();
                     } else ToastrHelper.ErrorResult(result);
                 });

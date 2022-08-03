@@ -6,9 +6,9 @@ import { LookupData } from "../data/lookup.data";
 import { VehicleTypeEntity } from "./vehicle.type.entity";
 import { TableDecorator } from "../../decorators/table.decorator";
 import { NumberDecorator } from "../../decorators/number.decorator";
-import { DropDownDecorator } from "../../decorators/dropdown.decorator";
 import { StringDecorator } from "../../decorators/string.decorator";
 import { BooleanDecorator } from "../../decorators/boolean.decorator";
+import { DropDownDecorator } from "../../decorators/dropdown.decorator";
 
 @TableDecorator({ title: 'Fixed Price' })
 export class FixedPriceEntity extends BaseEntity {
@@ -25,7 +25,7 @@ export class FixedPriceEntity extends BaseEntity {
     @NumberDecorator({ required: true, type: NumberType.Text, decimals: 2 })
     Price: number;
 
-    @NumberDecorator({ type: NumberType.Text, decimals: 2 })
+    @NumberDecorator({ type: NumberType.Text, decimals: 2, max: 100 })
     Return: number;
     
     @BooleanDecorator() 
@@ -54,9 +54,6 @@ export class ImportFixedPriceEntity extends BaseEntity {
 
     @NumberDecorator({ type: NumberType.Text, decimals: 2 })
     Return: number;
-
-    @BooleanDecorator()
-    Active: boolean;
 
     @BooleanDecorator()
     ApplyToReverseDirection: boolean;

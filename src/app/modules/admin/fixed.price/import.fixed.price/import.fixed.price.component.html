@@ -27,12 +27,12 @@
             </div>
             <div class="col-sm-1" style="margin-left: -40px">
                 <label>&nbsp;</label>
-                <button class="btn btn-success">Update Grid</button>
+                <button class="btn btn-success" (click)="updateGrid()">Update Grid</button>
             </div>
         </div>
         <div class="row" *ngIf="items && items.length > 0">
             <div class="col-sm-12">
-                <list-import-fixed-price [params]="{ items: items }"></list-import-fixed-price>
+                <list-import-fixed-price #fixedPriceComponent [params]="{ items: items }"></list-import-fixed-price>
             </div>
         </div>
     </div>

@@ -60,8 +60,8 @@ export class AdminApiService {
         const api = ApiUrl.ToUrl('/admin/' + objName);
 
         if (obj) {
-            delete obj.Active;
-            delete obj.Deleted;
+            delete obj.IsActive;
+            delete obj.IsDelete;
             delete obj.CreatedBy;
             delete obj.CreatedDate;
             delete obj.UpdatedBy;

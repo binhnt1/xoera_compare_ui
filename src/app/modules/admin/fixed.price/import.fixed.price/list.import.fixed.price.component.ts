@@ -7,7 +7,7 @@ import { FixedPriceEntity } from "../../../../_core/domains/entities/fixed.price
 
 @Component({
     selector: 'list-import-fixed-price',
-    templateUrl: '../../../../_core/components/grid/grid.component.html',
+    templateUrl: '../../../../_core/components/grid/grid.lite.component.html',
 })
 export class ListImportFixedPriceComponent extends GridComponent implements OnInit {
     @Input() params: any;
@@ -37,9 +37,9 @@ export class ListImportFixedPriceComponent extends GridComponent implements OnIn
             { Property: 'Price', Type: DataType.Number, Align: 'right' },
             { Property: 'Return', Type: DataType.Number, Align: 'right' },
             { Property: 'Drop', Type: DataType.Number, Align: 'right' },
-            { Property: 'Tariff', Type: DataType.String },
-            { Property: 'Vehicle', Type: DataType.String },
-            { Property: 'Active', Type: DataType.Boolean },
+            { Property: 'TariffId', Type: DataType.Number, Align: 'center' },
+            { Property: 'VehTypeId', Type: DataType.Number, Align: 'center' },
+            { Property: 'IsActive', Title: 'Active', Type: DataType.Boolean },
             { Property: 'ReverseDirection', Type: DataType.Boolean },
         ];
     }
