@@ -4,10 +4,11 @@ import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
+import { MethodType } from '../../../../_core/domains/enums/method.type';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
-import { ListImportFixedPriceComponent } from './list.import.fixed.price.component';
 import { FixedPriceEntity } from '../../../../_core/domains/entities/fixed.price.entity';
+import { ListImportFixedPriceComponent } from '../list.import.fixed.price/list.import.fixed.price.component';
 
 @Component({
     templateUrl: './import.fixed.price.component.html',
@@ -40,6 +41,7 @@ export class ImportFixedPriceComponent extends EditComponent implements OnInit {
             item.IsActive = this.item.IsActive;
             item.TariffId = this.item.TariffId;
             item.VehTypeId = this.item.VehTypeId;
+            item.AccountId = this.item.AccountId;
             item.ReverseDirection = this.item.ReverseDirection;
         }
         this.fixedPriceComponent.renderItems(this.items);
@@ -48,20 +50,34 @@ export class ImportFixedPriceComponent extends EditComponent implements OnInit {
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
             let columns = this.authen.management 
-                ? ['Price', 'TariffId', 'VehTypeId', 'AccountId']
-                : ['Price', 'TariffId', 'VehTypeId']
-            if (await validation(this.item, columns)) {
+                ? ['TariffId', 'VehTypeId', 'AccountId']
+                : ['TariffId', 'VehTypeId'];
+            let valid = await validation(this.item, columns);
+            if (valid) {
                 this.processing = true;
-                let obj: FixedPriceEntity = _.cloneDeep(this.item);
+                for (let i = 0; i < this.items.length; i++) {
+                    let item = this.items[i];
+                    valid = await validation(item, ['TariffId', 'VehTypeId'], true);
+                    if (!valid) 
+                        break;
+                }
+                if (!valid) {
+                    ToastrHelper.Error('Data import invalid, please try again');
+                    return false;
+                }
                 
                 // accountId
-                if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
+                for (let i = 0; i < this.items.length; i++) {
+                    let item = this.items[i];
+                    if (!item.AccountId)
+                        item.AccountId = this.authen.account.Id;
+                }
 
                 // save
-                return await this.service.save('fixedprice', obj).then((result: ResultApi) => {
+                return await this.service.callApi('FixedPrice', 'Save', this.items, MethodType.Post).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save fixed price success');
+                        ToastrHelper.Success('Import fixed price success');
                         if (complete) complete();
                         return true;
                     } else {

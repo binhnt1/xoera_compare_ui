@@ -16,8 +16,8 @@ import { GridComponent } from "../../../_core/components/grid/grid.component";
 export class TariffComponent extends GridComponent {
     obj: GridData = {
         UpdatedBy: false,
-        Size: ModalSizeType.FullScreen,
         Reference: TariffEntity,
+        Size: ModalSizeType.FullScreen,
     };
 
     constructor() {
@@ -28,6 +28,7 @@ export class TariffComponent extends GridComponent {
             { Property: 'Day', Type: DataType.Number },
             { Property: 'StartTime', Type: DataType.String },
             { Property: 'EndTime', Type: DataType.String },
+            { Property: 'Rule', Type: DataType.String },
             { Property: 'PriceModifyAmount', Type: DataType.Number },
         ];
         if (this.authen.management) {

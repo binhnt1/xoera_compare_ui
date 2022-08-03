@@ -17,7 +17,7 @@ export class Validator {
     unique?: LookupUniqueData;
 }
 
-export async function validation(target: any, columns?: string[]): Promise<boolean> {
+export async function validation(target: any, columns?: string[], disableEmit: boolean = false): Promise<boolean> {
     function matchPattern(value: string, pattern: any) {
         return pattern && pattern.test(String(value).toLowerCase());
     }
@@ -29,7 +29,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
     if (decorators) {
         for (let i = 0; i < decorators.length; i++) {
             let decorator: ObjectEx = decorators[i]; decorator.error = null;
-            eventService.Validate.emit(decorator);
+            if (!disableEmit) eventService.Validate.emit(decorator);
             let needValid: boolean = true;
             if (columns && columns.length > 0) {
                 let column = columns.find(c => c == decorator.property);
@@ -45,7 +45,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                     if (eventService) {
                         let validator = decorator.validators && decorator.validators.find(c => c.pattern && c.pattern == PatternType.Required);
                         decorator.error = (validator && validator.message) || (decorator.label + ' can\'t null or empty');
-                        eventService.Validate.emit(decorator);
+                        if (!disableEmit) eventService.Validate.emit(decorator);
                     }
                 }
             }
@@ -56,7 +56,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                         vaildProperty = matchPattern(value, validator.pattern);
                         if (!vaildProperty && eventService) {
                             decorator.error = (validator && validator.message) || (decorator.label + ' incorrect format');
-                            eventService.Validate.emit(decorator);
+                            if (!disableEmit) eventService.Validate.emit(decorator);
                         }
                     }
                 }
@@ -71,7 +71,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                                 vaildProperty = length <= decoratorString.max;
                                 if (!vaildProperty && eventService) {
                                     decorator.error = (validator && validator.message) || (decorator.label + ' the maximum length is ' + decoratorString.max + ' characters');
-                                    eventService.Validate.emit(decorator);
+                                    if (!disableEmit) eventService.Validate.emit(decorator);
                                 }
                             }
                         }
@@ -83,7 +83,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                                 vaildProperty = length >= decoratorString.min;
                                 if (!vaildProperty && eventService) {
                                     decorator.error = (validator && validator.message) || (decorator.label + ' the minimum length is ' + decoratorString.min + ' characters');
-                                    eventService.Validate.emit(decorator);
+                                    if (!disableEmit) eventService.Validate.emit(decorator);
                                 }
                             }
                         }
@@ -94,7 +94,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                                 vaildProperty = valueMatch == value;
                                 if (!vaildProperty && eventService) {
                                     decorator.error = (validator && validator.message) || (decorator.label + ' do not match ' + decoratorString.requiredMatch);
-                                    eventService.Validate.emit(decorator);
+                                    if (!disableEmit) eventService.Validate.emit(decorator);
                                 }
                             }
                         }
@@ -106,7 +106,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                                     vaildProperty = (<any>$).payment.validateCardNumber(value);
                                     if (!vaildProperty && eventService) {
                                         decorator.error = (validator && validator.message) || (decorator.label + ' incorrect format');
-                                        eventService.Validate.emit(decorator);
+                                        if (!disableEmit) eventService.Validate.emit(decorator);
                                     }
                                 }
                             }
@@ -121,7 +121,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                                             errorCode = $element.intlTelInput('getValidationError'),
                                             errorMessage = errorMap[errorCode];
                                         decorator.error = decorator.label + ' incorrect format';
-                                        eventService.Validate.emit(decorator);
+                                        if (!disableEmit) eventService.Validate.emit(decorator);
                                     }
                                 }
                             } 
@@ -134,7 +134,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
         if (valid) {
             for (let i = 0; i < decorators.length; i++) {
                 let decorator: ObjectEx = decorators[i]; decorator.error = null;
-                eventService.Validate.emit(decorator);
+                if (!disableEmit) eventService.Validate.emit(decorator);
                 let needValid: boolean = true;
                 if (columns && columns.length > 0) {
                     let column = columns.find(c => c == decorator.property);
@@ -164,7 +164,7 @@ export async function validation(target: any, columns?: string[]): Promise<boole
                             }
                             if (!vaildProperty && eventService) {
                                 decorator.error = (validator && validator.message) || (decorator.label + ' is exists');
-                                eventService.Validate.emit(decorator);
+                                if (!disableEmit) eventService.Validate.emit(decorator);
                             }
                         }
                     }

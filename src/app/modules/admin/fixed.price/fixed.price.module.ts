@@ -13,7 +13,7 @@ import { GridComponent } from '../../../_core/components/grid/grid.component';
 import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
 import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
 import { ImportFixedPriceComponent } from './import.fixed.price/import.fixed.price.component';
-import { ListImportFixedPriceComponent } from './import.fixed.price/list.import.fixed.price.component';
+import { ListImportFixedPriceComponent } from './list.import.fixed.price/list.import.fixed.price.component';
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -160,8 +160,7 @@ export class FixedPriceComponent extends GridComponent {
                         fixedprice.Start = row;
                         fixedprice.End = column;
                         fixedprice.Price = Number(excelData[i][j].toString());
-                        if (this.importItems.length < 10)
-                            this.importItems.push(fixedprice);
+                        this.importItems.push(fixedprice);
                     }
                 }
                 this.loading = false;
@@ -177,6 +176,7 @@ export class FixedPriceComponent extends GridComponent {
                 }, async () => {
                     await this.loadItems();
                 });
+                this.fileInput.nativeElement.value = null;
             };
             reader.readAsBinaryString(files[0]);
         }

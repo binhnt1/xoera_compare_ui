@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-4">
-                <div class="d-flex">
+                <div class="d-flex justify-content-between">
                     <div style="width: 50%;">
                         <label>Tariff</label>
                         <editor [(object)]="item" property="TariffId" [decorator]="{label: ''}"></editor>
@@ -11,30 +11,38 @@
                         <label>Vehicle Type</label>
                         <editor [(object)]="item" property="VehTypeId" [decorator]="{label: ''}"></editor>
                     </div>
-                    <div *ngIf="authen.management" style="margin-left: 10px;width: 50%;">
+                    <div *ngIf="authen.management" style="margin-left: 10px; width: 50%;">
                         <label>Account</label>
                         <editor [(object)]="item" property="AccountId" [decorator]="{label: ''}"></editor>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
-                <label>Drop</label>
-                <editor [(object)]="item" property="Drop" [decorator]="{label: ''}"></editor>
+            <div class="col-sm-3">
+                <div class="d-flex">
+                    <div>
+                        <label>Drop</label>
+                        <editor [(object)]="item" property="Drop" [decorator]="{label: ''}"></editor>
+                    </div>
+                    <div style="margin-left: 10px;">
+                        <label>Return Price (%)</label>
+                        <editor [(object)]="item" property="Return" [decorator]="{label: ''}"></editor>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-2">
-                <label>Return Price (%)</label>
-                <editor [(object)]="item" property="Return" [decorator]="{label: ''}"></editor>
+            <div class="col-sm-3">
+                <div class="d-flex">
+                    <div>
+                        <label style="margin-bottom: 18px;">&nbsp;</label>
+                        <editor [(object)]="item" property="IsActive"></editor>
+                    </div>
+                    <div style="margin-left: 10px;">
+                        <label style="margin-bottom: 18px;">&nbsp;</label>
+                        <editor [(object)]="item" property="ReverseDirection"></editor>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-1">
-                <label style="margin-bottom: 18px;">&nbsp;</label>
-                <editor [(object)]="item" property="IsActive"></editor>
-            </div>
-            <div class="col-sm-2">
-                <label style="margin-bottom: 18px;">&nbsp;</label>
-                <editor [(object)]="item" property="ReverseDirection"></editor>
-            </div>
-            <div class="col-sm-1" style="margin-left: -40px">
-                <label>&nbsp;</label>
+            <div class="col-sm-2" style="text-align: right;">
+                <label style="display: block;">&nbsp;</label>
                 <button class="btn btn-success" (click)="updateGrid()">Update Grid</button>
             </div>
         </div>

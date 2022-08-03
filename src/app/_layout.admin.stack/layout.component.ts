@@ -12,6 +12,11 @@ import { AdminDataService } from '../_core/services/admin.data.service';
 import { AdminDialogService } from "../_core/services/admin.dialog.service";
 import { AgreementEntity } from '../_core/domains/entities/agreement.entity';
 import { AcceptAgreementComponent } from '../_core/components/accept.agreement/accept.agreement.component';
+import { Router } from '@angular/router';
+import { AdminUserLoginDto } from '../_core/domains/objects/user.dto';
+import { UserActivityHelper } from '../_core/helpers/user.activity.helper';
+import { ResultType } from '../_core/domains/enums/result.type';
+import { ToastrHelper } from '../_core/helpers/toastr.helper';
 
 @Component({
   animations: [routerTransition],
@@ -35,6 +40,7 @@ export class LayoutAdminStackComponent implements OnInit {
   dialogRestrict: DialogData;
 
   constructor(
+    public router: Router,
     public data: AdminDataService,
     public service: AdminApiService,
     public authen: AdminAuthService,
@@ -45,20 +51,42 @@ export class LayoutAdminStackComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.data.loadCountryIp();
-    this.loading = false;
-    setTimeout(() => {
-      let url = window.location.href;
-      if (url.indexOf('localhost') < 0) {
-        this.versionService.initVersionCheck('version.json', 60000, (version: string) => {
-          this.dialog.ConfirmAsync('Already have a new version, would you like to update? <p> Version: <b>' + version + '</b></p>', async () => {
-            (<any>location).reload(true);
+    let queryParams = this.router.parseUrl(this.router.url).queryParams,
+      username: string = queryParams && queryParams['username'],
+      password: string = queryParams && queryParams['password'];
+    if (username && password) {
+      this.loading = true;
+      let obj: AdminUserLoginDto = {
+        UserName: username,
+        Password: UserActivityHelper.CreateHash256(password)
+      };
+      this.service.adminSignin(obj).then(async (result: ResultApi) => {
+        if (result && result.Type == ResultType.Success) {
+          await this.authen.login(result.Object, true);
+        } else ToastrHelper.ErrorResult(result);
+        this.router.navigateByUrl('admin/signin');
+        this.loading = false;
+      }, (ex: any) => {
+        this.loading = false;
+        ToastrHelper.Exception(ex);
+        this.router.navigateByUrl('admin/signin');
+      });
+    } else {
+      await this.data.loadCountryIp();
+      this.loading = false;
+      setTimeout(() => {
+        let url = window.location.href;
+        if (url.indexOf('localhost') < 0) {
+          this.versionService.initVersionCheck('version.json', 60000, (version: string) => {
+            this.dialog.ConfirmAsync('Already have a new version, would you like to update? <p> Version: <b>' + version + '</b></p>', async () => {
+              (<any>location).reload(true);
+            });
           });
-        });
-      } 
-    }, 1000);
-    if (!this.authen.account?.IsAdmin) {
+        }
+      }, 1000);
+      if (!this.authen.account?.IsAdmin) {
         this.loadNotYetAgreements();
+      }
     }
   }
 
@@ -68,23 +96,23 @@ export class LayoutAdminStackComponent implements OnInit {
   }
 
   private loadNotYetAgreements() {
-      this.service.callApi('UserAgreement', 'NotYetAgreements').then((result: ResultApi) => {
-          if (ResultApi.IsSuccess(result)) {
-              let items: AgreementEntity[] = result.Object;
-              if (items && items.length > 0) {
-                  this.dialog.WapperAsync({
-                      restrict: true,
-                      cancelText: '',
-                      confirmText: '',
-                      title: 'Agreement',
-                      size: ModalSizeType.ExtraLarge,
-                      object: AcceptAgreementComponent,
-                      objectExtra: {
-                        items: items
-                      }
-                  });
-              }
-          }
-      })
+    this.service.callApi('UserAgreement', 'NotYetAgreements').then((result: ResultApi) => {
+      if (ResultApi.IsSuccess(result)) {
+        let items: AgreementEntity[] = result.Object;
+        if (items && items.length > 0) {
+          this.dialog.WapperAsync({
+            restrict: true,
+            cancelText: '',
+            confirmText: '',
+            title: 'Agreement',
+            size: ModalSizeType.ExtraLarge,
+            object: AcceptAgreementComponent,
+            objectExtra: {
+              items: items
+            }
+          });
+        }
+      }
+    })
   }
 }

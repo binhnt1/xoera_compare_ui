@@ -7,7 +7,8 @@ import { FixedPriceEntity } from "../../../../_core/domains/entities/fixed.price
 
 @Component({
     selector: 'list-import-fixed-price',
-    templateUrl: '../../../../_core/components/grid/grid.lite.component.html',
+    styleUrls: ['list.import.fixed.price.component.scss'],
+    templateUrl: 'list.import.fixed.price.component.html',
 })
 export class ListImportFixedPriceComponent extends GridComponent implements OnInit {
     @Input() params: any;
@@ -25,31 +26,22 @@ export class ListImportFixedPriceComponent extends GridComponent implements OnIn
         HideHeadActions: true,
         HideCustomFilter: true,
         Size: ModalSizeType.Small,
-        Reference: FixedPriceEntity,        
+        Reference: FixedPriceEntity,
     };
 
     constructor() {
         super();
-        this.properties = [
-            { Property: 'Id', Type: DataType.String },
-            { Property: 'Start', Type: DataType.String },
-            { Property: 'End', Type: DataType.String },
-            { Property: 'Price', Type: DataType.Number, Align: 'right' },
-            { Property: 'Return', Type: DataType.Number, Align: 'right' },
-            { Property: 'Drop', Type: DataType.Number, Align: 'right' },
-            { Property: 'TariffId', Type: DataType.Number, Align: 'center' },
-            { Property: 'VehTypeId', Type: DataType.Number, Align: 'center' },
-            { Property: 'IsActive', Title: 'Active', Type: DataType.Boolean },
-            { Property: 'ReverseDirection', Type: DataType.Boolean },
-        ];
+        this.loading = true;
     }
 
     async ngOnInit(): Promise<void> {
         let items = this.params && this.params['items'];
         if (items && items.length > 0) {
             this.loading = true;
-            await this.render(this.obj, items);
-            this.loading = false;
+            setTimeout(async () => {
+                await this.render(this.obj, items);
+                this.loading = false;
+            }, 2000);
         }
     }
 }
