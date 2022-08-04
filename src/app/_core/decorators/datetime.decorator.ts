@@ -6,7 +6,6 @@ import { DateTimeType, DataType } from "../domains/enums/data.type";
 
 export enum DateTimeFormat {
     HM = 'hh:ii',
-    HMS = 'hh:ii:ss',
     DMY = 'dd/mm/yyyy',
     MDY = 'mm/dd/yyyy',
     YMD = 'yyyy/mm/dd',

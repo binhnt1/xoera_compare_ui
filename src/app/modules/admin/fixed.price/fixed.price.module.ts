@@ -10,6 +10,7 @@ import { ActionType } from '../../../_core/domains/enums/action.type';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
+import { NavigationStateData } from '../../../_core/domains/data/navigation.state';
 import { FixedPriceEntity } from '../../../_core/domains/entities/fixed.price.entity';
 import { EditFixedPriceComponent } from './edit.fixed.price/edit.fixed.price.component';
 import { ImportFixedPriceComponent } from './import.fixed.price/import.fixed.price.component';
@@ -61,43 +62,30 @@ export class FixedPriceComponent extends GridComponent {
     }
 
     addNew() {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Create',
-            title: 'Create Fixed Price',
-            size: ModalSizeType.Large,
-            object: EditFixedPriceComponent,
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            prevData: this.itemData,
+            prevUrl: '/admin/fixedprice',
+        };
+        this.router.navigate(['/admin/fixedprice/add'], { state: { params: JSON.stringify(obj) } });
     }
 
     edit(item: FixedPriceEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Save',
-            title: 'Edit Fixed Price',
-            size: ModalSizeType.Large,
-            object: EditFixedPriceComponent,
-            objectExtra: {
-                id: item.Id,
-            }
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.itemData,
+            prevUrl: '/admin/fixedprice',
+        };
+        this.router.navigate(['/admin/fixedprice/edit'], { state: { params: JSON.stringify(obj) } });
     }
 
     view(item: FixedPriceEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            title: 'View Fixed Price',
-            size: ModalSizeType.Large,
-            object: EditFixedPriceComponent,
-            objectExtra: {
-                id: item.Id,
-                viewer: true,
-            }
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            viewer: true,
+            prevData: this.itemData,
+            prevUrl: '/admin/fixedprice',
+        };
+        this.router.navigate(['/admin/fixedprice/view'], { state: { params: JSON.stringify(obj) } });
     }
 
     public readFile(files: any[]): void {
@@ -194,6 +182,9 @@ export class FixedPriceComponent extends GridComponent {
         UtilityModule,
         RouterModule.forChild([
             { path: '', component: FixedPriceComponent, pathMatch: 'full', data: { state: 'fixedprice' }, canActivate: [AdminAuthGuard] },
+            { path: 'add', component: EditFixedPriceComponent, pathMatch: 'full', data: { state: 'add_fixedprice'}, canActivate: [AdminAuthGuard] },
+            { path: 'edit', component: EditFixedPriceComponent, pathMatch: 'full', data: { state: 'edit_fixedprice'}, canActivate: [AdminAuthGuard] },
+            { path: 'view', component: EditFixedPriceComponent, pathMatch: 'full', data: { state: 'view_fixedprice'}, canActivate: [AdminAuthGuard] },
         ])
     ]
 })

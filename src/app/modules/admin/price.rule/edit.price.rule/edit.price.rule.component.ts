@@ -8,23 +8,20 @@ import { EntityHelper } from '../../../../_core/helpers/entity.helper';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { PriceRuleEntity } from '../../../../_core/domains/entities/price.rule.entity';
+import { ActionData } from 'src/app/_core/domains/data/action.data';
+import { NavigationStateData } from 'src/app/_core/domains/data/navigation.state';
 
 @Component({
     templateUrl: './edit.price.rule.component.html',
-    styleUrls: [
-        './edit.price.rule.component.scss',
-        '../../../../../assets/css/modal.scss'
-    ],
+    styleUrls: ['./edit.price.rule.component.scss'],
 })
 export class EditPriceRuleComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
-    tab: string = 'content';
     loading: boolean = true;
     service: AdminApiService;
-    loadingTemplate: boolean = false;
     item: PriceRuleEntity = new PriceRuleEntity();
 
     constructor() {
@@ -43,13 +40,10 @@ export class EditPriceRuleComponent extends EditComponent implements OnInit {
                 this.viewer = this.state.viewer;
                 this.addBreadcrumb(this.id ? 'Edit' : 'Add');
             }
+            this.renderActions();
         }
         await this.loadItem();
         this.loading = false;
-    }
-
-    selectedTab(tab: string) {
-        this.tab = tab;
     }
 
     private async loadItem() {
@@ -64,15 +58,42 @@ export class EditPriceRuleComponent extends EditComponent implements OnInit {
             });
         }
     }
+    private async renderActions() {
+        let actions: ActionData[] = this.id
+            ? [
+                ActionData.back(() => { this.back() }),
+                this.viewer
+                    ? ActionData.gotoEdit("Edit", () => { this.edit(this.item) })
+                    : ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
+            ]
+            : [
+                ActionData.back(() => { this.back() }),
+                ActionData.saveAddNew('Add new', () => { this.confirmAndBack() })
+            ];
+        this.actions = await this.authen.actionsAllow(PriceRuleEntity, actions);
+    }
+    private async confirmAndBack() {
+        await this.confirm(() => {
+            this.back();
+        });
+    }
+    private edit(item: PriceRuleEntity) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.state.prevData,
+            prevUrl: '/admin/pricerule',
+        };
+        this.router.navigate(['/admin/pricerule/edit'], { state: { params: JSON.stringify(obj) } });
+    }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            let columns = this.authen.management 
+            let columns = this.authen.management
                 ? ['Rate', 'Miles', 'TariffId', 'VehTypeId', 'AccountId']
                 : ['Rate', 'Miles', 'TariffId', 'VehTypeId']
             if (await validation(this.item, columns)) {
                 this.processing = true;
                 let obj: PriceRuleEntity = _.cloneDeep(this.item);
-                
+
                 // accountId
                 if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
 

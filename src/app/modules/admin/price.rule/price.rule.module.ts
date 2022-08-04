@@ -3,10 +3,10 @@ import { Component, NgModule } from '@angular/core';
 import { UtilityModule } from '../../utility.module';
 import { GridData } from '../../../_core/domains/data/grid.data';
 import { DataType } from '../../../_core/domains/enums/data.type';
-import { UserType } from '../../../_core/domains/enums/user.type';
 import { AdminAuthGuard } from '../../../_core/guards/admin.auth.guard';
 import { ModalSizeType } from '../../../_core/domains/enums/modal.size.type';
 import { GridComponent } from '../../../_core/components/grid/grid.component';
+import { NavigationStateData } from '../../../_core/domains/data/navigation.state';
 import { PriceRuleEntity } from '../../../_core/domains/entities/price.rule.entity';
 import { EditPriceRuleComponent } from './edit.price.rule/edit.price.rule.component';
 
@@ -39,52 +39,45 @@ export class PriceRuleComponent extends GridComponent {
     }
 
     addNew() {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Create',
-            title: 'Create Price Rule',
-            size: ModalSizeType.Small,
-            object: EditPriceRuleComponent,
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            prevData: this.itemData,
+            prevUrl: '/admin/pricerule',
+        };
+        this.router.navigate(['/admin/pricerule/add'], { state: { params: JSON.stringify(obj) } });
     }
 
     edit(item: PriceRuleEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Save',
-            title: 'Edit Price Rule',
-            size: ModalSizeType.Small,
-            object: EditPriceRuleComponent,
-            objectExtra: {
-                id: item.Id,
-            }
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.itemData,
+            prevUrl: '/admin/pricerule',
+        };
+        this.router.navigate(['/admin/pricerule/edit'], { state: { params: JSON.stringify(obj) } });
     }
 
     view(item: PriceRuleEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            title: 'View Price Rule',
-            size: ModalSizeType.Small,
-            object: EditPriceRuleComponent,
-            objectExtra: {
-                id: item.Id,
-                viewer: true,
-            }
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            viewer: true,
+            prevData: this.itemData,
+            prevUrl: '/admin/pricerule',
+        };
+        this.router.navigate(['/admin/pricerule/view'], { state: { params: JSON.stringify(obj) } });
     }
 }
 
 @NgModule({
-    declarations: [PriceRuleComponent, EditPriceRuleComponent],
+    declarations: [
+        PriceRuleComponent,
+        EditPriceRuleComponent
+    ],
     imports: [
         UtilityModule,
         RouterModule.forChild([
             { path: '', component: PriceRuleComponent, pathMatch: 'full', data: { state: 'pricerule' }, canActivate: [AdminAuthGuard] },
+            { path: 'add', component: EditPriceRuleComponent, pathMatch: 'full', data: { state: 'add_pricerule'}, canActivate: [AdminAuthGuard] },
+            { path: 'edit', component: EditPriceRuleComponent, pathMatch: 'full', data: { state: 'edit_pricerule'}, canActivate: [AdminAuthGuard] },
+            { path: 'view', component: EditPriceRuleComponent, pathMatch: 'full', data: { state: 'view_pricerule'}, canActivate: [AdminAuthGuard] },
         ])
     ]
 })

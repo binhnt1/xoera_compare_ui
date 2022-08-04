@@ -9,6 +9,7 @@ import { ModalSizeType } from "../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
 import { VehicleTypeMappingEntity } from "../../../_core/domains/entities/vehicle.type.mapping.entity";
 import { EditVehicleTypeMappingComponent } from "./edit.vehicle.type.mapping/edit.vehicle.type.mapping.component";
+import { NavigationStateData } from "src/app/_core/domains/data/navigation.state";
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -35,43 +36,30 @@ export class VehicleTypeMappingComponent extends GridComponent {
     }
 
     addNew() {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Create',
-            size: ModalSizeType.Small,
-            title: 'Create Vehicle Type Mapping',
-            object: EditVehicleTypeMappingComponent,
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            prevData: this.itemData,
+            prevUrl: '/admin/vehicletypemapping',
+        };
+        this.router.navigate(['/admin/vehicletypemapping/add'], { state: { params: JSON.stringify(obj) } });
     }
 
     edit(item: VehicleTypeMappingEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            confirmText: 'Save',
-            size: ModalSizeType.Small,
-            title: 'Edit Vehicle Type Mapping',
-            object: EditVehicleTypeMappingComponent,
-            objectExtra: {
-                id: item.Id,
-            }
-        }, async () => {
-            await this.loadItems();
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.itemData,
+            prevUrl: '/admin/vehicletypemapping',
+        };
+        this.router.navigate(['/admin/vehicletypemapping/edit'], { state: { params: JSON.stringify(obj) } });
     }
 
     view(item: VehicleTypeMappingEntity) {
-        this.dialogService.WapperAsync({
-            cancelText: 'Close',
-            size: ModalSizeType.Small,
-            title: 'View Vehicle Type Mapping',
-            object: EditVehicleTypeMappingComponent,
-            objectExtra: {
-                id: item.Id,
-                viewer: true,
-            }
-        });
+        let obj: NavigationStateData = {
+            id: item.Id,
+            viewer: true,
+            prevData: this.itemData,
+            prevUrl: '/admin/vehicletypemapping',
+        };
+        this.router.navigate(['/admin/vehicletypemapping/view'], { state: { params: JSON.stringify(obj) } });
     }
 }
 
@@ -84,6 +72,9 @@ export class VehicleTypeMappingComponent extends GridComponent {
         UtilityModule,
         RouterModule.forChild([
             { path: '', component: VehicleTypeMappingComponent, pathMatch: 'full', data: { state: 'vehicletypemapping' }, canActivate: [AdminAuthGuard] },
+            { path: 'add', component: EditVehicleTypeMappingComponent, pathMatch: 'full', data: { state: 'add_vehicletypemapping'}, canActivate: [AdminAuthGuard] },
+            { path: 'edit', component: EditVehicleTypeMappingComponent, pathMatch: 'full', data: { state: 'edit_vehicletypemapping'}, canActivate: [AdminAuthGuard] },
+            { path: 'view', component: EditVehicleTypeMappingComponent, pathMatch: 'full', data: { state: 'view_vehicletypemapping'}, canActivate: [AdminAuthGuard] },
         ])
     ]
 })

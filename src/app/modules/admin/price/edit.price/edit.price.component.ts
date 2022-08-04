@@ -5,9 +5,11 @@ import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { ActionData } from '../../../../_core/domains/data/action.data';
 import { PriceEntity } from '../../../../_core/domains/entities/price.entity';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
+import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
 
 @Component({
     templateUrl: './edit.price.component.html',
@@ -21,10 +23,8 @@ export class EditPriceComponent extends EditComponent implements OnInit {
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
-    tab: string = 'content';
     loading: boolean = true;
     service: AdminApiService;
-    loadingTemplate: boolean = false;
     item: PriceEntity = new PriceEntity();
 
     constructor() {
@@ -43,13 +43,10 @@ export class EditPriceComponent extends EditComponent implements OnInit {
                 this.viewer = this.state.viewer;
                 this.addBreadcrumb(this.id ? 'Edit' : 'Add');
             }
+            this.renderActions();
         }
         await this.loadItem();
         this.loading = false;
-    }
-
-    selectedTab(tab: string) {
-        this.tab = tab;
     }
 
     private async loadItem() {
@@ -64,11 +61,38 @@ export class EditPriceComponent extends EditComponent implements OnInit {
             });
         }
     }
+    private async renderActions() {
+        let actions: ActionData[] = this.id
+            ? [
+                ActionData.back(() => { this.back() }),
+                this.viewer
+                    ? ActionData.gotoEdit("Edit", () => { this.edit(this.item) })
+                    : ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
+            ]
+            : [
+                ActionData.back(() => { this.back() }),
+                ActionData.saveAddNew('Add new', () => { this.confirmAndBack() })
+            ];
+        this.actions = await this.authen.actionsAllow(PriceEntity, actions);
+    }
+    private async confirmAndBack() {
+        await this.confirm(() => {
+            this.back();
+        });
+    }
+    private edit(item: PriceEntity) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.state.prevData,
+            prevUrl: '/admin/price',
+        };
+        this.router.navigate(['/admin/price/edit'], { state: { params: JSON.stringify(obj) } });
+    }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
             let columns = this.authen.management 
-                ? ['PerMile', 'TariffId', 'VehTypeId', 'AccountId']
-                : ['PerMile', 'TariffId', 'VehTypeId']
+                ? ['PerMile', 'PriceId', 'VehTypeId', 'AccountId']
+                : ['PerMile', 'PriceId', 'VehTypeId']
             if (await validation(this.item, columns)) {
                 this.processing = true;
                 let obj: PriceEntity = _.cloneDeep(this.item);

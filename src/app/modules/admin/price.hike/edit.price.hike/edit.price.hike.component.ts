@@ -5,26 +5,23 @@ import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { ActionData } from '../../../../_core/domains/data/action.data';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
 import { PriceHikeEntity } from '../../../../_core/domains/entities/price.hike.entity';
+import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
 
 @Component({
     templateUrl: './edit.price.hike.component.html',
-    styleUrls: [
-        './edit.price.hike.component.scss',
-        '../../../../../assets/css/modal.scss'
-    ],
+    styleUrls: ['./edit.price.hike.component.scss'],
 })
 export class EditPriceHikeComponent extends EditComponent implements OnInit {
     id: number;
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
-    tab: string = 'content';
     loading: boolean = true;
     service: AdminApiService;
-    loadingTemplate: boolean = false;
     item: PriceHikeEntity = new PriceHikeEntity();
 
     constructor() {
@@ -43,13 +40,10 @@ export class EditPriceHikeComponent extends EditComponent implements OnInit {
                 this.viewer = this.state.viewer;
                 this.addBreadcrumb(this.id ? 'Edit' : 'Add');
             }
+            this.renderActions();
         }
         await this.loadItem();
         this.loading = false;
-    }
-
-    selectedTab(tab: string) {
-        this.tab = tab;
     }
 
     private async loadItem() {
@@ -64,15 +58,42 @@ export class EditPriceHikeComponent extends EditComponent implements OnInit {
             });
         }
     }
+    private async renderActions() {
+        let actions: ActionData[] = this.id
+            ? [
+                ActionData.back(() => { this.back() }),
+                this.viewer
+                    ? ActionData.gotoEdit("Edit", () => { this.edit(this.item) })
+                    : ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
+            ]
+            : [
+                ActionData.back(() => { this.back() }),
+                ActionData.saveAddNew('Add new', () => { this.confirmAndBack() })
+            ];
+        this.actions = await this.authen.actionsAllow(PriceHikeEntity, actions);
+    }
+    private async confirmAndBack() {
+        await this.confirm(() => {
+            this.back();
+        });
+    }
+    private edit(item: PriceHikeEntity) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.state.prevData,
+            prevUrl: '/admin/pricehike',
+        };
+        this.router.navigate(['/admin/pricehike/edit'], { state: { params: JSON.stringify(obj) } });
+    }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            let columns = this.authen.management 
+            let columns = this.authen.management
                 ? ['Amount', 'AccountId']
                 : ['Amount']
             if (await validation(this.item, columns)) {
                 this.processing = true;
                 let obj: PriceHikeEntity = _.cloneDeep(this.item);
-                
+
                 // accountId
                 if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
 
@@ -80,7 +101,7 @@ export class EditPriceHikeComponent extends EditComponent implements OnInit {
                 return await this.service.save('pricehike', obj).then((result: ResultApi) => {
                     this.processing = false;
                     if (ResultApi.IsSuccess(result)) {
-                        ToastrHelper.Success('Save price hike success');
+                        ToastrHelper.Success('Save price hike hike success');
                         if (complete) complete();
                         return true;
                     } else {

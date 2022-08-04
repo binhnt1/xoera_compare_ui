@@ -5,16 +5,16 @@ import { validation } from '../../../../_core/decorators/validator';
 import { ResultApi } from '../../../../_core/domains/data/result.api';
 import { ToastrHelper } from '../../../../_core/helpers/toastr.helper';
 import { EntityHelper } from '../../../../_core/helpers/entity.helper';
+import { ActionData } from '../../../../_core/domains/data/action.data';
 import { EditorComponent } from '../../../../_core/editor/editor.component';
 import { AdminApiService } from '../../../../_core/services/admin.api.service';
 import { EditComponent } from '../../../../_core/components/edit/edit.component';
+import { NavigationStateData } from '../../../../_core/domains/data/navigation.state';
 import { VehicleTypeMappingEntity } from '../../../../_core/domains/entities/vehicle.type.mapping.entity';
 
 @Component({
     templateUrl: './edit.vehicle.type.mapping.component.html',
-    styleUrls: [
-        './edit.vehicle.type.mapping.component.scss',
-        '../../../../../assets/css/modal.scss'
+    styleUrls: ['./edit.vehicle.type.mapping.component.scss'
     ],
 })
 export class EditVehicleTypeMappingComponent extends EditComponent implements OnInit {
@@ -22,10 +22,8 @@ export class EditVehicleTypeMappingComponent extends EditComponent implements On
     popup: boolean;
     viewer: boolean;
     @Input() params: any;
-    tab: string = 'content';
     loading: boolean = true;
     service: AdminApiService;
-    loadingTemplate: boolean = false;
     @ViewChild('uploadIcon') uploadIcon: EditorComponent;
     item: VehicleTypeMappingEntity = new VehicleTypeMappingEntity();
 
@@ -45,13 +43,10 @@ export class EditVehicleTypeMappingComponent extends EditComponent implements On
                 this.viewer = this.state.viewer;
                 this.addBreadcrumb(this.id ? 'Edit' : 'Add');
             }
+            this.renderActions();
         }
         await this.loadItem();
         this.loading = false;
-    }
-
-    selectedTab(tab: string) {
-        this.tab = tab;
     }
 
     private async loadItem() {
@@ -66,15 +61,42 @@ export class EditVehicleTypeMappingComponent extends EditComponent implements On
             });
         }
     }
+    private async renderActions() {
+        let actions: ActionData[] = this.id
+            ? [
+                ActionData.back(() => { this.back() }),
+                this.viewer
+                    ? ActionData.gotoEdit("Edit", () => { this.edit(this.item) })
+                    : ActionData.saveUpdate('Save', () => { this.confirmAndBack() }),
+            ]
+            : [
+                ActionData.back(() => { this.back() }),
+                ActionData.saveAddNew('Add new', () => { this.confirmAndBack() })
+            ];
+        this.actions = await this.authen.actionsAllow(VehicleTypeMappingEntity, actions);
+    }
+    private async confirmAndBack() {
+        await this.confirm(() => {
+            this.back();
+        });
+    }
+    private edit(item: VehicleTypeMappingEntity) {
+        let obj: NavigationStateData = {
+            id: item.Id,
+            prevData: this.state.prevData,
+            prevUrl: '/admin/vehicletypemapping',
+        };
+        this.router.navigate(['/admin/vehicletypemapping/edit'], { state: { params: JSON.stringify(obj) } });
+    }
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            let columns = this.authen.management 
+            let columns = this.authen.management
                 ? ['Name', 'AccountId', 'VehTypeId']
                 : ['Name', 'VehTypeId']
             if (await validation(this.item, columns)) {
                 this.processing = true;
                 let obj: VehicleTypeMappingEntity = _.cloneDeep(this.item);
-                
+
                 // accountId
                 if (!obj.AccountId) obj.AccountId = this.authen.account.Id;
 
