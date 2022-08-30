@@ -13,6 +13,7 @@ import { LayoutAdminStackSignInComponent } from './_layout.admin.stack/signin/la
         path: 'admin',
         component: LayoutAdminStackComponent,
         children: [
+          { path: 'job', loadChildren: () => import('./modules/admin/job/job.module').then(m => m.JobModule) },
           { path: 'zone', loadChildren: () => import('./modules/admin/zone/zone.module').then(m => m.ZoneModule) },
           { path: 'price', loadChildren: () => import('./modules/admin/price/price.module').then(m => m.PriceModule) },
           { path: 'error', loadChildren: () => import('./_core/modules/error/error.module').then(m => m.ErrorModule) },

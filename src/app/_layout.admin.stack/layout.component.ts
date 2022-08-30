@@ -17,6 +17,11 @@ import { AdminUserLoginDto } from '../_core/domains/objects/user.dto';
 import { UserActivityHelper } from '../_core/helpers/user.activity.helper';
 import { ResultType } from '../_core/domains/enums/result.type';
 import { ToastrHelper } from '../_core/helpers/toastr.helper';
+import { AppConfig } from '../_core/helpers/app.config';
+import * as signalR from '@microsoft/signalr';
+import { NotifyEntity } from '../_core/domains/entities/notify.entity';
+import { NotifyType } from '../_core/domains/enums/notify.type';
+import { AdminEventService } from '../_core/services/admin.event.service';
 
 @Component({
   animations: [routerTransition],
@@ -42,6 +47,7 @@ export class LayoutAdminStackComponent implements OnInit {
   constructor(
     public router: Router,
     public data: AdminDataService,
+    public event: AdminEventService,
     public service: AdminApiService,
     public authen: AdminAuthService,
     public userIdle: UserIdleService,
@@ -88,6 +94,8 @@ export class LayoutAdminStackComponent implements OnInit {
         this.loadNotYetAgreements();
       }
     }
+
+    if (this.authen.account) this.signlar();
   }
 
 
@@ -95,6 +103,73 @@ export class LayoutAdminStackComponent implements OnInit {
     return outlet.activatedRouteData.state;
   }
 
+  private play() {
+    try {
+      var audio = new Audio();
+      audio.src = './assets/soundfiles/all-eyes-on-me.mp3';
+      audio.load();
+      audio.play();
+    }
+    catch { }
+  }
+  private signlar() {
+    // Signlar
+    let email = this.authen.account.Email;
+    let signlarUrl = AppConfig.SignalrUrl + '?email=' + email;
+    this.data.connection = new signalR.HubConnectionBuilder()
+      .withUrl(signlarUrl)
+      .withAutomaticReconnect()
+      .build();
+    this.data.connection.start().then(() => {
+      console.log('connected');
+    }).catch((err: any) => {
+      console.error(err);
+      setTimeout(() => {
+        if (this.data.connection)
+          this.data.connection.start();
+      }, 2000);
+    });
+    this.data.connection.onclose(() => {
+      console.log('disconected');
+    });
+    this.data.connection.on('notify', (notify: NotifyEntity) => {
+      this.play();
+      if (notify) {
+        if (notify.Title) ToastrHelper.Success(notify.Title);
+        switch (notify.Type) {
+          case NotifyType.LockUser: {
+            this.authen.logout(false);
+            this.dialog.AlertTimeOut('Message', '<p>' + notify.Title + '</p><br /><p>' + notify.Content + '</p><br /><p>The system will log out after <b> 10 seconds </b>', 10, true);
+            setTimeout(() => {
+              this.authen.logout();
+            }, 10000);
+          }
+            break;
+          case NotifyType.UpdateRole: {
+            this.authen.logout(false);
+            this.dialog.AlertTimeOut('Message', '<p>' + notify.Title + '</p><br /><p>The system will log out after <b> 10 seconds </b>', 10, true);
+            setTimeout(() => {
+              this.authen.logout();
+            }, 10000);
+          }
+            break;
+          case NotifyType.ChangePassword: {
+            this.authen.logout(false);
+            this.dialog.AlertTimeOut('Message', '<p>' + notify.Title + '</p><br /><p>' + notify.Content + '</p><br /><p>The system will log out after <b> 10 seconds </b>', 10, true);
+            setTimeout(() => {
+              this.authen.logout();
+            }, 10000);
+          }
+            break;
+          case NotifyType.JobAccepted:
+          case NotifyType.JobPublished: {
+            this.event.RefreshGrids.emit(notify);
+          }
+            break;
+        }
+      }
+    });
+  }
   private loadNotYetAgreements() {
     this.service.callApi('UserAgreement', 'NotYetAgreements').then((result: ResultApi) => {
       if (ResultApi.IsSuccess(result)) {

@@ -88,6 +88,7 @@ export class ConstantHelper {
     ];
     public static LINKS = [
         '/admin',
+        '/admin/job',
         '/admin/user',
         '/admin/zone',
         '/admin/role',

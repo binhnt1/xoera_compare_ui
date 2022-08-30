@@ -55,21 +55,11 @@ export class LayoutAdminComponent implements OnInit {
       if (url.indexOf('localhost') < 0) {
         this.versionService.initVersionCheck('version.json', 60000, (version: string) => {
           this.dialog.ConfirmAsync('Already have a new version, would you like to update? <p> Version: <b>' + version + '</b></p>', async () => {
-            location.reload(true);
+            location.reload();
           });
         });
       }
     }, 1000);
-    // sysend.on('notification', (type: string) => {
-    //   if (type == 'new') {
-    //     sysend.broadcast('notification', 'close');
-    //     if (this.dialogRestrict)
-    //       this.dialog.EventHideDialog.emit(this.dialogRestrict);
-    //   } else {
-    //     this.dialogRestrict = this.dialog.Alert('Hạn chế', 'Bạn đang sử dụng website ở trên một tab khác', true);
-    //   }
-    // });
-    // sysend.broadcast('notification', 'new');
     if (this.authen.account) this.signlar();
   }
 

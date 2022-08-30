@@ -14,6 +14,7 @@ export enum ActionType {
     Verify = 'Verify',
     AddNew = 'Add new',
     Publish = 'Active',
+    Bidding = 'Bidding',
     Disable = 'Disable',
     History = 'History',
     Approve = 'Approve',

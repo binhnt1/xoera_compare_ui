@@ -1,0 +1,14 @@
+<div class="row" *ngIf="item && !loading">
+    <div class="col-sm-12">
+        <editor [(object)]="item" property="Type"></editor>
+        <div *ngIf="item.Type == JobBiddingType.Accepted">
+            <editor [(object)]="item" property="PriceBidding"></editor>
+        </div>
+        <div *ngIf="item.Type == JobBiddingType.Rejected">
+            <editor [(object)]="item" property="Reason"></editor>
+        </div>
+    </div>
+</div>
+<div class="row row-loading" *ngIf="loading">
+    <loading></loading>
+</div>

@@ -17,10 +17,10 @@ export class NotifyEntity extends BaseEntity {
     @BooleanDecorator()
     IsRead: string;
 
-    @StringDecorator({ type: StringType.Json, max: 2000 })
+    @StringDecorator({ type: StringType.Text, max: 200 })
     Title: string;
 
-    @StringDecorator({ type: StringType.Json, max: 2000 })
+    @StringDecorator({ type: StringType.MultiText, max: 2000 })
     Content: string;
 
     @DropDownDecorator({ allowSearch: true, lookup: LookupData.ReferenceEnum(NotifyType) })
@@ -28,4 +28,7 @@ export class NotifyEntity extends BaseEntity {
 
     @DateTimeDecorator({ type: DateTimeType.DateTime })
     DateTime: Date;
+
+    @StringDecorator({ type: StringType.Json, max: 2000 })
+    JsonObject: string;
 }
