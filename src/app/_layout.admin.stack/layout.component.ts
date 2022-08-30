@@ -161,6 +161,8 @@ export class LayoutAdminStackComponent implements OnInit {
             }, 10000);
           }
             break;
+          case NotifyType.JobExpried:
+            case NotifyType.JobBidding:
           case NotifyType.JobAccepted:
           case NotifyType.JobPublished: {
             this.event.RefreshGrids.emit(notify);

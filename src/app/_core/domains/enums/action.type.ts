@@ -6,6 +6,7 @@ export enum ActionType {
     Role = 'Role',
     Lock = 'Lock',
     Pause = 'Pause',
+    Reject = 'Reject',
     Enable = 'Enable',
     UnLock = 'UnLock',
     Import = 'Import',

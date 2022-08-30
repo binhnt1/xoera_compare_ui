@@ -6,7 +6,9 @@ export enum NotifyType {
     ChangePassword,
     Answer,
     JobPublished,
-    JobAccepted
+    JobAccepted,
+    JobBidding,
+    JobExpried
 }
 export function NotifyTypeAware(constructor: Function) {
     constructor.prototype.NotifyType = NotifyType;

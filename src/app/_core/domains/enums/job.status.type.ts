@@ -1,10 +1,12 @@
 export enum JobStatusType {
-    New = 1,
+    Expired = -2,
+    Rejected = -1,
+    New = 0,
+    Bidding,
     Accepted,
-    Rejected
 }
 
 export enum JobBiddingType {
-    Accepted = 2,
-    Rejected
+    Rejected = -1,
+    Bidding = 1,
 }

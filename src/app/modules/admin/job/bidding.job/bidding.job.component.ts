@@ -19,13 +19,13 @@ import { MethodType } from 'src/app/_core/domains/enums/method.type';
     ],
 })
 export class BiddingJobComponent extends EditComponent implements OnInit {
-    id: number;
-    popup: boolean;
+    priceMin: number;
+    priceMax: number;
+    item: JobBiddingDto;
     @Input() params: any;
     loading: boolean = true;
     service: AdminApiService;
     JobBiddingType = JobBiddingType;
-    item: JobBiddingDto = new JobBiddingDto();
 
     constructor() {
         super();
@@ -34,68 +34,38 @@ export class BiddingJobComponent extends EditComponent implements OnInit {
     }
 
     async ngOnInit() {
-        this.id = this.params && this.params['id'];
-        this.popup = this.params && this.params['popup'];
-        if (!this.popup) {
-            if (this.state) {
-                this.id = this.state.id;
-                this.addBreadcrumb(this.id ? 'Edit' : 'Add');
-            }
-        }
-        await this.loadItem();
-        this.loading = false;
-    }
+        let id = this.params && this.params['id'],
+            price = (this.params && this.params['price']) || 0,
+            marginPrice = (this.params && this.params['margin']) || 0;
 
-    private async loadItem() {
-        this.item.Type = JobBiddingType.Accepted;
+        this.priceMin = price - marginPrice;
+        this.priceMax = price + marginPrice;
+        this.item = EntityHelper.createEntity(JobBiddingDto, { Id: id });
+        this.loading = false;
     }
 
     public async confirm(complete: () => void): Promise<boolean> {
         if (this.item) {
-            let columns = this.item.Type == JobBiddingType.Accepted
-                ? ['PriceBidding']
-                : ['Reason'];
-            if (await validation(this.item, columns)) {
+            if (await validation(this.item, ['PriceBidding'])) {
+                // biding
                 this.processing = true;
-                if (this.item.Type == JobBiddingType.Accepted) {
-                    // accept
-                    return await this.service.callApi('job', 'accept', {
-                        Id: this.id,
-                        PriceBidding: this.item.PriceBidding
-                    }, MethodType.Post).then((result: ResultApi) => {
-                        this.processing = false;
-                        if (ResultApi.IsSuccess(result)) {
-                            ToastrHelper.Success('Accept job success');
-                            if (complete) complete();
-                            return true;
-                        } else {
-                            ToastrHelper.ErrorResult(result);
-                            return false;
-                        }
-                    }, () => {
-                        this.processing = false;
+                return await this.service.callApi('job', 'bidding', {
+                    Id: this.item.Id,
+                    PriceBidding: this.item.PriceBidding
+                }, MethodType.Post).then((result: ResultApi) => {
+                    this.processing = false;
+                    if (ResultApi.IsSuccess(result)) {
+                        ToastrHelper.Success('Bidding job success');
+                        if (complete) complete();
+                        return true;
+                    } else {
+                        ToastrHelper.ErrorResult(result);
                         return false;
-                    });
-                } else {
-                    // reject
-                    return await this.service.callApi('job', 'reject', {
-                        Id: this.id,
-                        Reason: this.item.Reason
-                    }, MethodType.Post).then((result: ResultApi) => {
-                        this.processing = false;
-                        if (ResultApi.IsSuccess(result)) {
-                            ToastrHelper.Success('Reject job success');
-                            if (complete) complete();
-                            return true;
-                        } else {
-                            ToastrHelper.ErrorResult(result);
-                            return false;
-                        }
-                    }, () => {
-                        this.processing = false;
-                        return false;
-                    });
-                }
+                    }
+                }, () => {
+                    this.processing = false;
+                    return false;
+                });
             }
         }
         return false;

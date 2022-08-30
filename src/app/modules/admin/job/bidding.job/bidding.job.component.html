@@ -1,11 +1,13 @@
 <div class="row" *ngIf="item && !loading">
     <div class="col-sm-12">
-        <editor [(object)]="item" property="Type"></editor>
-        <div *ngIf="item.Type == JobBiddingType.Accepted">
-            <editor [(object)]="item" property="PriceBidding"></editor>
+        <div>
+            <ul>
+                <li>Min price: {{ priceMin | numberx }}</li>
+                <li>Max price: {{ priceMax | numberx }}</li>
+            </ul>
         </div>
-        <div *ngIf="item.Type == JobBiddingType.Rejected">
-            <editor [(object)]="item" property="Reason"></editor>
+        <div>
+            <editor [(object)]="item" property="PriceBidding" [decorator]="{ min: priceMin, max: prixeMax }"></editor>
         </div>
     </div>
 </div>

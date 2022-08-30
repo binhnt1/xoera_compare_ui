@@ -8,7 +8,7 @@ import { StringDecorator } from "../../decorators/string.decorator";
 import { NumberDecorator } from "../../decorators/number.decorator";
 import { BooleanDecorator } from "../../decorators/boolean.decorator";
 import { DropDownDecorator } from "../../decorators/dropdown.decorator";
-import { DateTimeDecorator } from "../../decorators/datetime.decorator";
+import { DateTimeDecorator, DateTimeFormat } from "../../decorators/datetime.decorator";
 import { DateTimeType, NumberType, StringType } from "../enums/data.type";
 
 @TableDecorator({ title: 'Job' })
@@ -25,6 +25,12 @@ export class JobEntity extends BaseEntity {
 
     @NumberDecorator({ max: 100000, step: 1, decimals: 2, type: NumberType.Text })
     Price: number;
+
+    @NumberDecorator({ max: 100000, step: 1, decimals: 2, type: NumberType.Text })
+    FixedPrice: number;
+
+    @NumberDecorator({ max: 100000, step: 1, decimals: 2, type: NumberType.Text })
+    MarginPrice: number;
 
     @StringDecorator({ type: StringType.Text, max: 20 })
     OutCode: string;
@@ -107,6 +113,9 @@ export class JobEntity extends BaseEntity {
     @DropDownDecorator({ lookup: LookupData.ReferenceEnum(JobStatusType) })
     Status: JobStatusType;
 
+    @DropDownDecorator({ lookup: LookupData.ReferenceEnum(JobStatusType) })
+    StatusType: JobStatusType;
+
     @StringDecorator({ type: StringType.Email, max: 250 })
     PassengerEmail: string;
 
@@ -145,4 +154,10 @@ export class JobEntity extends BaseEntity {
 
     @StringDecorator({ type: StringType.MultiText, max: 500 })
     MeetAndGreetMessage: string;
+
+    @DateTimeDecorator({ format: DateTimeFormat.DMYHM })
+    ExpireTime: Date;
+
+    @NumberDecorator({ max: 100000, step: 1, type: NumberType.Text })
+    ExpireTimeSeconds: number;
 }
