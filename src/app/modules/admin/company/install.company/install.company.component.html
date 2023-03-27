@@ -1,0 +1,78 @@
+<div class="kt-portlet kt-portlet-edit-form">
+    <edit-header *ngIf="breadcrumbs && actions && actions.length > 0" [breadcrumbs]="breadcrumbs" [actions]="actions" [processing]="processing"></edit-header>
+    <div class="kt-portlet__body card ">
+        <div class="card-content">
+            <div class="card-body">
+                <div class="row edit-company" *ngIf="item && !loading">
+                    <div class="col-sm-12">
+                        <section class="cd-horizontal-timeline loaded">
+                            <div class="timeline">
+                                <div class="events-wrapper">
+                                    <div class="events">
+                                        <ol>
+                                            <li><a class="selected">Parameters</a></li>
+                                            <li><a>Database</a></li>
+                                            <li><a>Deploy API</a></li>
+                                            <li><a>Deploy UI</a></li>
+                                        </ol>
+                                        <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.0807422);"></span>
+                                    </div>
+                                    <!-- .events -->
+                                </div>
+                                <!-- .events-wrapper -->
+
+                                <ul class="cd-timeline-navigation">
+                                    <li><a class="prev inactive">Prev</a></li>
+                                    <li><a class="next">Next</a></li>
+                                </ul>
+                                <!-- .cd-timeline-navigation -->
+                            </div>
+                            <!-- .timeline -->
+
+                            <div class="events-content">
+                                <ol>
+                                    <li class="selected" data-date="16/01/2015">
+                                        <h2>Setup System parameters</h2>
+                                        <h3 class="text-muted mb-1"><em>January 16th, 2015</em></h3>
+                                        <p class="lead">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi
+                                            reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <h2>Install Database & Seed Data</h2>
+                                        <h3 class="text-muted mb-1"><em>February 28th, 2015</em></h3>
+                                        <p class="lead">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi
+                                            reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <h2>Create Sub-Domain & Deploy API</h2>
+                                        <h3 class="text-muted mb-1"><em>March 20th, 2015</em></h3>
+                                        <p class="lead">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi
+                                            reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <h2>Deploy UI (Angular)</h2>
+                                        <h3 class="text-muted mb-1"><em>May 20th, 2015</em></h3>
+                                        <p class="lead">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi
+                                            reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+                                        </p>
+                                    </li>
+                                </ol>
+                            </div>
+                            <!-- .events-content -->
+                        </section>
+                    </div>
+                </div>
+                <div class="row row-loading" *ngIf="loading">
+                    <loading></loading>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

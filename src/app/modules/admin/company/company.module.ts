@@ -14,6 +14,7 @@ import { ModalSizeType } from "../../../_core/domains/enums/modal.size.type";
 import { GridComponent } from "../../../_core/components/grid/grid.component";
 import { CompanyEntity } from "../../../_core/domains/entities/company.entity";
 import { NavigationStateData } from "../../../_core/domains/data/navigation.state";
+import { InstallCompanyComponent } from "./install.company/install.company.component";
 
 @Component({
     templateUrl: '../../../_core/components/grid/grid.component.html',
@@ -103,7 +104,8 @@ export class CompanyComponent extends GridComponent {
 @NgModule({
     declarations: [
         CompanyComponent,
-        EditCompanyComponent
+        EditCompanyComponent,
+        InstallCompanyComponent
     ],
     imports: [
         UtilityModule,
@@ -112,6 +114,7 @@ export class CompanyComponent extends GridComponent {
             { path: 'add', component: EditCompanyComponent, pathMatch: 'full', data: { state: 'add_company'}, canActivate: [AdminAuthGuard] },
             { path: 'edit', component: EditCompanyComponent, pathMatch: 'full', data: { state: 'edit_company'}, canActivate: [AdminAuthGuard] },
             { path: 'view', component: EditCompanyComponent, pathMatch: 'full', data: { state: 'view_company'}, canActivate: [AdminAuthGuard] },
+            { path: 'install', component: InstallCompanyComponent, pathMatch: 'full', data: { state: 'install_company'}, canActivate: [AdminAuthGuard] },
         ])
     ]
 })

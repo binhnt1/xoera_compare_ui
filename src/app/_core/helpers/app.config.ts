@@ -24,8 +24,8 @@ export class AppConfig {
     public static setEnvironment() {
         let domain = AppConfig.getDomain();
         if (domain.indexOf('localhost') >= 0) {
-            AppConfig.ApiUrl = 'https://localhost:5001/api';
-            AppConfig.SignalrUrl = 'https://localhost:5001/notifyhub';
+            AppConfig.ApiUrl = 'https://localhost:44323/api';
+            AppConfig.SignalrUrl = 'https://localhost:44323/notifyhub';
             AppConfig.SecretKey = 'MM3CRqxyYn1Fa501lDqovopBHl+bL8z0le2qjnbbwNlLz77QVLnoOW5yilst';
         } else {
             switch (domain) {

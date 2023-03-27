@@ -3,8 +3,27 @@
 }
 
 .kt-spinner {
+    position: relative;
     padding-right: 40px;
     &:before {
+        right: 0;
+        width: 20px;
+        content: " ";
+        height: 20px;
+        display: block;
+        position: absolute;
+        border-radius: 50%;
         margin-right: 10px;
-    } 
+        top: calc(50% - 10px);
+        box-sizing: border-box;
+        border: 2px solid #fff;
+        border-right: 2px solid transparent;
+        animation: kt-spinner 0.5s linear infinite;
+    }
+}
+
+@keyframes kt-spinner {
+    to {
+        transform: rotate(360deg);
+    }
 }
